@@ -1,6 +1,0 @@
-function [] = flexupdateboth(t, num)
-
-flexsnd(t,['dcp ',num2str(num),' update:u')
-
-end
-
