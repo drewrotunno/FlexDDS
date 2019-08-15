@@ -9,4 +9,5 @@ Connection relies on a static local IP set on the SD card. We use 192.168.0.45 h
 ### Useful links
 ---
 [AD9910 Documentation](https://www.analog.com/media/en/technical-documentation/data-sheets/AD9910.pdf)
-[WieserLabs FlexDDS User Manual]{https://www.wieserlabs.com/prods/radio-frequency/flexdds-ng/FlexDDS-NG_Manual.pdf}
+
+[WieserLabs FlexDDS User Manual](https://www.wieserlabs.com/prods/radio-frequency/flexdds-ng/FlexDDS-NG_Manual.pdf)
