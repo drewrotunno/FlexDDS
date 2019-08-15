@@ -1,6 +1,6 @@
 % test script for talking to the Flex DDS
 
-
+%% OLD, simple test for DHCP assigning at .100 by default
 
 ip = '192.168.0.100';
 port = 26000;
