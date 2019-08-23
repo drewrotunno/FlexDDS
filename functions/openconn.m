@@ -12,9 +12,9 @@ fopen(t);
 
 fprintf(t,password);
 
-if(t.BytesAvailable)
-fscanf(t)
-end
+% if(t.BytesAvailable)
+% fscanf(t)
+% end
 pause(.1);
 flexlst(t)
 

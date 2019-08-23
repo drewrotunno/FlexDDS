@@ -1,4 +1,4 @@
-function [ampword] = ampscale(ampin)
+function [ampword] = amp2ASF(ampin)
 
 amp = ampin*2^14-1;
 

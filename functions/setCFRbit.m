@@ -9,11 +9,16 @@ function newhexCFR = setCFRbit(t, chan, cfrnum, bitnum, bitset, lastCFR)
 %       needed for multiple changes. Will return updated CFR
 %
 %% disp(nargin)
+% sanitize. 
 if cfrnum==1 || cfrnum==2; else disp('not a valid CFR number. Try 1 or 2 ');return; end
 if chan==0||chan==1||chan==2; else disp('not a valid Channel number. Try 0/1 or 2 for both ');return; end
-if length(lastCFR)==8||length(lastCFR)==10||lastCFR==0; else disp('CFR is the wrong length. Try 0 for default'); return; end
-if length(lastCFR)==10 && strcmp(lastCFR(1:2),'0x');    lastCFR=lastCFR(3:end); end
-if bitset==0 || bitset==1; else disp('Bitset should be 0 or 1');return; end
+
+if ischar(lastCFR)||isstr(lastCFR)
+    if strcmp(lastCFR(1:2),'0x');    lastCFR=lastCFR(3:end); end
+    if length(lastCFR) ~=8 ; disp('CFR is the wrong length. Try 0 for default'); return; end
+elseif lastCFR==0
+else disp('CFR is the wrong length. Try 0 for default'); return; end 
+if ~(bitset==0 || bitset==1); disp('Bitset should be 0 or 1');return; end
 
 if lastCFR==0
     switch cfrnum
