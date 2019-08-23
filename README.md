@@ -3,7 +3,10 @@
  
 Used Matlab's TCPIP to open a connection, then prints and scans like a file or something. 
 
-Connection relies on a static local IP set on the SD card. We use 192.168.0.45 here. Default is DHCP, or 192.168.11.99 (iirc)
+Connection relies on a static local IP set on the SD card. We use 192.168.0.45 here. Default is DHCP, or 192.168.11.99
+
+A folder of functions to communicate in the command line hopefully covers everything but RAM, lmk if something else should be added. 
+The GUI is on the way which utilizes these functions. 
 
 
 ### Useful links
