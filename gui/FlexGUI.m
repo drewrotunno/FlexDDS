@@ -58,8 +58,6 @@ handles.output = hObject;
 % Update handles structure
 guidata(hObject, handles);
 
-addpath('\\snapdragon\common\DATA\MATLAB Code\FlexDDS\functions');
-
 % --- Outputs from this function are returned to the command line.
 function varargout = FlexGUI_OutputFcn(hObject, eventdata, handles) 
 % varargout  cell array for returning output args (see VARARGOUT);
