@@ -58,9 +58,7 @@ handles.output = hObject;
 % Update handles structure
 guidata(hObject, handles);
 
-% UIWAIT makes FlexGUI wait for user response (see UIRESUME)
-% uiwait(handles.figure1);
-
+addpath('\\snapdragon\common\DATA\MATLAB Code\FlexDDS\functions');
 
 % --- Outputs from this function are returned to the command line.
 function varargout = FlexGUI_OutputFcn(hObject, eventdata, handles) 
