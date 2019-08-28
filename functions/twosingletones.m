@@ -7,7 +7,11 @@ if nargin==8
 
 flexsnd(t,['dcp 0 spi:STP',num2str(prof),'=0x',amp2ASF(amp1),phase2powdeg(phase1),freq2ftw(freqHz1)])
 flexsnd(t,['dcp 1 spi:STP',num2str(prof),'=0x',amp2ASF(amp2),phase2powdeg(phase2),freq2ftw(freqHz2)])
-flexupdateboth(t)
+flexsnd(t,['dcp update:=',num2str(prof),'pu']);
+
+% just do both at once ^
+% flexupdateboth(t)
+% setprof(t,prof);
 
 else
     disp('sorry bro, need the right arguments');
