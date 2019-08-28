@@ -5,6 +5,7 @@ if( size(inhex,2) == 1 ) %disp('size is right')
 else disp('size is WRONG'); return; end
 if( ismember(inhex, '0123456789abcdef') ) % disp('digits are fine')
 else disp('not a hex digit!'); return; end
+strrep(inhex, '0x', '');
 
 if(     inhex == 'f' ) 
     outarray = [1,1,1,1];

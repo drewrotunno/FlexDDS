@@ -4,6 +4,7 @@ function [ outint ] = hex2uint16( inhex )
 numbindig = 16;
 numhexdig = numbindig/4;
 outint =uint16(0);
+inhex=strrep(inhex, '0x', '');
 if( class(inhex) ~= 'char' ) disp('typre is wrong - must be char array in'); return; end
 if( size(inhex,2)  ~= numhexdig ) disp('size is WRONG'); return; end
 
