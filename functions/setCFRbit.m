@@ -1,4 +1,4 @@
-function newhexCFR = setCFRbit(t, chan, cfrnum, bitnum, bitset, lastCFR)
+function newknownCFR = setCFRbit(t, chan, cfrnum, bitnum, bitset, lastCFR)
 %  setCFRbit(t, chan, cfrnum, bitnum, bitset, lastCFR)
 %  t = TCP connection
 % chan = 0/1 for DDS 0/1, 2 for both
@@ -13,27 +13,28 @@ function newhexCFR = setCFRbit(t, chan, cfrnum, bitnum, bitset, lastCFR)
 if cfrnum==1 || cfrnum==2; else disp('not a valid CFR number. Try 1 or 2 ');return; end
 if chan==0||chan==1||chan==2; else disp('not a valid Channel number. Try 0/1 or 2 for both ');return; end
 
-if ischar(lastCFR)||isstr(lastCFR)
-    if strcmp(lastCFR(1:2),'0x');    lastCFR=lastCFR(3:end); end
-    if length(lastCFR) ~=8 ; disp('CFR is the wrong length. Try 0 for default'); return; end
+if ischar(lastCFR(cfrnum,:))||isstr(lastCFR(cfrnum,:))
+    if strcmp(lastCFR(cfrnum,1:2),'0x');    lastCFR=lastCFR(cfrnum,3:end); end
+    if length(lastCFR(cfrnum,:)) ~=8 ; disp('CFR is the wrong length. Try 0 for default'); return; end
 elseif lastCFR==0
 else disp('CFR is the wrong length. Try 0 for default'); return; end 
 if ~(bitset==0 || bitset==1); disp('Bitset should be 0 or 1');return; end
 
-if lastCFR==0
-    switch cfrnum
-        case 1
-            lastCFR = '00410002';  %default value
-        case 2
-            lastCFR = '004008c0';  %default value
-    end
+if size(lastCFR)==[1,1] %lastCFR==0 && 
+lastCFR = [['00410002'];['004008c0']];  %default value
 end
  
-binCFR = hex2bin(lastCFR);
-
+binCFR = hex2bin(lastCFR(cfrnum,:));
 binCFR(32-bitnum) = bitset;
-
 newhexCFR = binaryVectorToHex(binCFR);
+
+switch cfrnum
+    case 1
+        newknownCFR = [newhexCFR; lastCFR(2,:)];
+    case 2
+        newknownCFR = [lastCFR(1,:); newhexCFR];
+end
+
 
 switch chan
     case 0

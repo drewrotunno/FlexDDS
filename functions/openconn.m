@@ -2,6 +2,8 @@ function [t] = openconn()
 
 % test script for talking to the Flex DDS
 
+% knownCFR = [['00410002'];['004008c0']];
+
 ip = '192.168.0.45';
 port = 26000;
 
