@@ -83,11 +83,11 @@ switch chan
         flexsnd(t,['dcp 0 spi:CFR',num2str(cfrnum),'=0x',newhexCFR{1}]);
         flexsnd(t,['dcp 1 spi:CFR',num2str(cfrnum),'=0x',newhexCFR{2}]);
         
-%         pause(.25);      %% this is a big problem! I want it faster why not plz
+%         pause(.25);      %% uncomment to fix
 %         flexlst(t);
         flexupdateboth(t);
 %         flexsnd(t, 'dcp wait::48:u')
-%         flexsnd(t, 'dcp wait::2:u')
+%         flexsnd(t, 'dcp wait::2:u')         % wait for all FIFO
 %         flexsnd(t, 'dcp 0 wait::2:u')        
 %         flexsnd(t, 'dcp 1 wait::2:u')
         %         flexupdateone(t,0)
