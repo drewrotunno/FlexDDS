@@ -5,13 +5,13 @@ function waitforRackA(t, chan)
 switch chan
     case 0
         flexsnd(t, 'dcp 0 wait::15');
-        flexsnd(t, 'dcp 0 update:u');
+%         flexsnd(t, 'dcp 0 update:u');
     case 1 
         flexsnd(t, 'dcp 1 wait::15');
-        flexsnd(t, 'dcp 1 update:u');
+%         flexsnd(t, 'dcp 1 update:u');
     case 2
         flexsnd(t, 'dcp wait::15');
-        flexsnd(t, 'dcp update:u');
+%         flexsnd(t, 'dcp update:u');
 end
 
 
