@@ -1,4 +1,4 @@
-function [DRL, DRSS, DRR] = oneramp(t,chan, freqstart, freqend, tstepns, freqstephz)
+function [DRL, DRSS, DRR] = onerampfreq(t,chan, freqstart, freqend, tstepns, freqstephz)
 %ONERAMP will calculate good freq and time steps for one DDS ramp.
 
 % sweep direction

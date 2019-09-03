@@ -83,7 +83,7 @@ switch chan
         flexsnd(t,['dcp 0 spi:CFR',num2str(cfrnum),'=0x',newhexCFR{1}]);
         flexsnd(t,['dcp 1 spi:CFR',num2str(cfrnum),'=0x',newhexCFR{2}]);
         
-%         pause(.25);      %% uncomment to fix
+        pause(.25);      %% uncomment to fix
 %         flexlst(t);
         flexupdateboth(t);
 %         flexsnd(t, 'dcp wait::48:u')
@@ -94,6 +94,6 @@ switch chan
         %         flexupdateone(t,1)
 end
 
-flexlst(t);
+% flexlst(t);
 end
 
