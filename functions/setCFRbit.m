@@ -13,43 +13,87 @@ function newknownCFR = setCFRbit(t, chan, cfrnum, bitnum, bitset, lastCFR)
 if cfrnum==1 || cfrnum==2; else disp('not a valid CFR number. Try 1 or 2 ');return; end
 if chan==0||chan==1||chan==2; else disp('not a valid Channel number. Try 0/1 or 2 for both ');return; end
 
-if ischar(lastCFR(cfrnum,:))||isstr(lastCFR(cfrnum,:))
-    if strcmp(lastCFR(cfrnum,1:2),'0x');    lastCFR=lastCFR(cfrnum,3:end); end
-    if length(lastCFR(cfrnum,:)) ~=8 ; disp('CFR is the wrong length. Try 0 for default'); return; end
-elseif lastCFR==0
-else disp('CFR is the wrong length. Try 0 for default'); return; end 
+% if ischar(lastCFR{chan+1}(cfrnum,:))||isstr(lastCFR{chan+1}(cfrnum,:))
+%     if strcmp(lastCFR{chan+1}(cfrnum,1:2),'0x');    lastCFR{chan+1}=lastCFR{chan+1}(cfrnum,3:end); end
+%     if length(lastCFR{chan+1}(cfrnum,:)) ~=8 ; disp('CFR is the wrong length. Try 0 for default'); return; end
+% elseif lastCFR==0
+% else disp('CFR is the wrong length. Try 0 for default'); return; end 
 if ~(bitset==0 || bitset==1); disp('Bitset should be 0 or 1');return; end
 
-if size(lastCFR)==[1,1] %lastCFR==0 && 
-lastCFR = [['00410002'];['004008c0']];  %default value
+if size(lastCFR,2)== 1%lastCFR==0 && 
+    lastCFR = cell(1,2);
+    lastCFR{1} = ['00410002';'004008C0'];  %default value
+    lastCFR{2} = ['00410002';'004008C0'];  %default value
 end
- 
-binCFR = hex2bin(lastCFR(cfrnum,:));
-binCFR(32-bitnum) = bitset;
-newhexCFR = binaryVectorToHex(binCFR);
-
-switch cfrnum
-    case 1
-        newknownCFR = [newhexCFR; lastCFR(2,:)];
-    case 2
-        newknownCFR = [lastCFR(1,:); newhexCFR];
-end
-
 
 switch chan
     case 0
-%         ['dcp 0 spi:CFR',num2str(cfrnum),'=0x',newhexCFR]
-        flexsnd(t,['dcp 0 spi:CFR',num2str(cfrnum),'=0x',newhexCFR]);
-        flexupdateone(t,0);
+        binCFR{1} = hex2bin(lastCFR{1}(cfrnum,:));
+        binCFR{1}(32-bitnum) = bitset;
+        newhexCFR{chan+1} = binaryVectorToHex(binCFR{1});
     case 1
-%         ['dcp 1 spi:CFR',num2str(cfrnum),'=0x',newhexCFR]
-        flexsnd(t,['dcp 1 spi:CFR',num2str(cfrnum),'=0x',newhexCFR]);
-        flexupdateone(t,1);
+        binCFR{2} = hex2bin(lastCFR{2}(cfrnum,:));
+        binCFR{2}(32-bitnum) = bitset;
+        newhexCFR{2} = binaryVectorToHex(binCFR{2});
     case 2
-%         ['dcp spi:CFR',num2str(cfrnum),'=0x',newhexCFR]
-        flexsnd(t,['dcp spi:CFR',num2str(cfrnum),'=0x',newhexCFR]);
-        flexupdateboth(t);
+        binCFR{1} = hex2bin(lastCFR{1}(cfrnum,:));
+        binCFR{1}(32-bitnum) = bitset;
+        newhexCFR{1} = binaryVectorToHex(binCFR{1});
+        binCFR{2} = hex2bin(lastCFR{2}(cfrnum,:));
+        binCFR{2}(32-bitnum) = bitset;
+        newhexCFR{2} = binaryVectorToHex(binCFR{2});
 end
 
+switch cfrnum
+    case 1
+        switch chan
+            case 0
+                newknownCFR{1} = [newhexCFR{1}; lastCFR{1}(2,:)];
+                newknownCFR{2} = lastCFR{2};
+            case 1
+                newknownCFR{1} = lastCFR{1};
+                newknownCFR{2} = [newhexCFR{2}; lastCFR{2}(2,:)];
+            case 2
+                newknownCFR{1} = [newhexCFR{1}; lastCFR{1}(2,:)];
+                newknownCFR{2} = [newhexCFR{2}; lastCFR{2}(2,:)];
+        end
+    case 2
+        switch chan
+            case 0
+                newknownCFR{1} = [lastCFR{1}(1,:); newhexCFR{1}];
+                newknownCFR{2} = lastCFR{2};
+            case 1
+                newknownCFR{1} = lastCFR{1};
+                newknownCFR{2} = [lastCFR{2}(1,:); newhexCFR{2}];
+            case 2
+                newknownCFR{1} = [lastCFR{1}(1,:); newhexCFR{1}];
+                newknownCFR{2} = [lastCFR{2}(1,:); newhexCFR{2}];
+        end
+end
+
+switch chan
+    case 0
+        flexsnd(t,['dcp 0 spi:CFR',num2str(cfrnum),'=0x',newhexCFR{1}]);
+        flexupdateone(t,0);
+    case 1
+        flexsnd(t,['dcp 1 spi:CFR',num2str(cfrnum),'=0x',newhexCFR{2}]);
+        flexupdateone(t,1);
+    case 2
+%         flexsnd(t,['dcp 1 spi:CFR',num2str(cfrnum),'=0x',newhexCFR{2}]);        
+        flexsnd(t,['dcp 0 spi:CFR',num2str(cfrnum),'=0x',newhexCFR{1}]);
+        flexsnd(t,['dcp 1 spi:CFR',num2str(cfrnum),'=0x',newhexCFR{2}]);
+        
+%         pause(.25);      %% this is a big problem! I want it faster why not plz
+%         flexlst(t);
+        flexupdateboth(t);
+%         flexsnd(t, 'dcp wait::48:u')
+%         flexsnd(t, 'dcp wait::2:u')
+%         flexsnd(t, 'dcp 0 wait::2:u')        
+%         flexsnd(t, 'dcp 1 wait::2:u')
+        %         flexupdateone(t,0)
+        %         flexupdateone(t,1)
+end
+
+flexlst(t);
 end
 

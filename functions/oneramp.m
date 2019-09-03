@@ -1,13 +1,13 @@
-function [DRL, DRSS, DRR, updown] = oneramp(t,chan, freqstart, freqend, tstepns, freqstephz)
+function [DRL, DRSS, DRR] = oneramp(t,chan, freqstart, freqend, tstepns, freqstephz)
 %ONERAMP will calculate good freq and time steps for one DDS ramp.
 
 % sweep direction
 if(freqstart>freqend)
-    updown = 1;
+%     updown = 1;
     highftw = freq2ftw(freqstart);
     lowftw = freq2ftw(freqend);
 elseif(freqstart<freqend)
-    updown = 0;
+%     updown = 0;
     lowftw = freq2ftw(freqstart);
     highftw = freq2ftw(freqend);
 else

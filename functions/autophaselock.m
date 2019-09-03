@@ -1,7 +1,7 @@
-function autophaselock(t, chan, setbit, lastCFR)
+function newCFR = autophaselock(t, chan, setbit, lastCFR)
 
 
-        setCFRbit(t,chan,1,13,setbit,lastCFR);
+        newCFR = setCFRbit(t,chan,1,13,setbit,lastCFR);
 
 
         % sets bit 13='Autoclear phase accumulator'  in CFR1 to LOW
