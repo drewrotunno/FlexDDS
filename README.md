@@ -2,6 +2,8 @@
  Control via MATLAB for the WieserLabs FlexDDS
  
 depends on the tcpip() function in the Instrument Control Toolbox 
+
+In the MATLAB directory, right-click the top folder FlexDDS, Add to Path >> Selected Folders and Subfolders to access all functions. Will need to similarly remove and re-add if any subsequent folder management happens. 
  
 Used Matlab's TCPIP to open a connection, then prints and scans like a file or something. 
 
