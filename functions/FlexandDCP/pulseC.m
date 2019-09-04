@@ -1,9 +1,9 @@
-function pulseB(t, time)
+function pulseC(t, time)
 %PULSEA Summary of this function goes here
 
-setSlotBNCBhigh(t)
+setSlotBNCChigh(t)
 waitns(t,0,time)
-setSlotBNCBlow(t)
+setSlotBNCClow(t)
 
 end
 
