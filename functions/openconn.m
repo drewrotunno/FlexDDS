@@ -9,7 +9,7 @@ port = 26000+slot;
 
 password = ['75f4a4e10dd4b6b', num2str(slot)];
 
-t = tcpip(ip,port);
+t = tcpip(ip,port, 'OutputBufferSize', uint32(2^31));
 fopen(t);
 
 fprintf(t,password);
