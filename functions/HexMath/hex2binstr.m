@@ -13,6 +13,18 @@ for i=1:length(hex)
         bin((i*4)-3:i*4)=[1 0 1 1];
     elseif hex(i)=='a'
         bin((i*4)-3:i*4)=[1 0 1 0];
+    elseif hex(i)=='F'
+        bin((i*4)-3:i*4)=[1 1 1 1];
+    elseif hex(i)=='E'
+        bin((i*4)-3:i*4)=[1 1 1 0];
+    elseif hex(i)=='D'
+        bin((i*4)-3:i*4)=[1 1 0 1];
+    elseif hex(i)=='C'
+        bin((i*4)-3:i*4)=[1 1 0 0];
+    elseif hex(i)=='B'
+        bin((i*4)-3:i*4)=[1 0 1 1];
+    elseif hex(i)=='A'
+        bin((i*4)-3:i*4)=[1 0 1 0];
     elseif hex(i)=='9'
         bin((i*4)-3:i*4)=[1 0 0 1];
     elseif hex(i)=='8'

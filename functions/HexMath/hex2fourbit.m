@@ -19,6 +19,18 @@ elseif( inhex == 'b')
     outarray = [1,0,1,1] ;
 elseif( inhex == 'a' ) 
     outarray = [1,0,1,0];
+elseif( inhex == 'F' ) 
+    outarray = [1,1,1,1];
+elseif( inhex == 'E' ) 
+    outarray = [1,1,1,0];
+elseif( inhex == 'D' ) 
+    outarray = [1,1,0,1];
+elseif( inhex == 'C' ) 
+    outarray = [1,1,0,0];
+elseif( inhex == 'B') 
+    outarray = [1,0,1,1] ;
+elseif( inhex == 'A' ) 
+    outarray = [1,0,1,0];
 elseif( inhex == '9' ) 
     outarray = [1,0,0,1];
 elseif( inhex == '8' ) 
