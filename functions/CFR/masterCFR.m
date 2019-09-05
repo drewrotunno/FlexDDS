@@ -1,9 +1,12 @@
 function newknownCFR = masterCFR(t, chan)
-% t, chan
+%% Set bits in this file to initialize all CFR's as you wish
 %  write entire CFR register with presettings
 
-defaultCFR{1} = ['00410002';'004008C0'];  %default value
-defaultCFR{2} = ['00410002';'004008C0'];  %default value
+%for reference
+% defaultCFR = ['00410002';'004008C0'];  %default value
+% CFR1: all 0's except: 22, 16, 1
+% CFR2: all 0's except: 22, 11, 7, 6
+
 
 % 1's and 0's only please! 
 %% CFR 1
@@ -85,9 +88,6 @@ binCFR{2} = [0,0,0,0,0,0,0,EnableAmpSTP,...
  MatLatEnable,DataAssHoldLast,SyncTimingValDis,ParallelDataEnable,FMGainA,FMGainB,FMGainC,FMGainD];
 
 hexCFR{2} = binaryVectorToHex(binCFR{2});
-
-
-
 
 
 switch chan
