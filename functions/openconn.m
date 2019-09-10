@@ -9,7 +9,7 @@ port = 26000+slot;
 
 password = ['75f4a4e10dd4b6b', num2str(slot)];
 
-t = tcpip(ip,port, 'OutputBufferSize', uint32(2^31));
+t = tcpip(ip,port, 'OutputBufferSize', uint32(2^30));
 fopen(t);
 
 fprintf(t,password);
@@ -17,8 +17,9 @@ fprintf(t,password);
 % if(t.BytesAvailable)
 % fscanf(t)
 % end
-pause(.1);
-flexlst(t)
+% pause(.1);
+% response = flexlst(t);
+% disp(response);
 
 end
 

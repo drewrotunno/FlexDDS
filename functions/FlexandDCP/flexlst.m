@@ -1,11 +1,13 @@
-function [] = flexlst(t)
+function [out] = flexlst(t)
 
 
 if(~t.BytesAvailable)
+    out = 'nothing yet';
     disp('nothing yet');
 else
     while(t.BytesAvailable)
-        disp(deblank(fscanf(t)))
+        out = deblank(fscanf(t));
+%         disp(out)
 %         if(~strcmp(deblank(fscanf(t)), 'OK'))
 %             disp('something bad happened. NOT OK');
 %         end    
