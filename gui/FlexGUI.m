@@ -22,7 +22,7 @@ function varargout = FlexGUI(varargin)
 
 % Edit the above text to modify the response to help FlexGUI
 
-% Last Modified by GUIDE v2.5 12-Sep-2019 14:10:02
+% Last Modified by GUIDE v2.5 12-Sep-2019 15:07:28
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -409,8 +409,6 @@ handles.amp1.String = adata1{slot+1,prof1+1};
 
 
 
-
-
 function unitfreq_Callback(hObject, eventdata, handles)
 unitname = {'Hz'; 'kHz'; 'MHz'; 'GHz' };
 newunit = unitname(handles.unitfreq.Value);
@@ -660,3 +658,37 @@ update_FPA_values(hObject, eventdata, handles)
 
 
 function multiplier_Callback(hObject, eventdata, handles)
+
+
+function savevalues_Callback(hObject, eventdata, handles)
+assignin('base','FreqChan0',handles.freq0.UserData);
+assignin('base','FreqChan1',handles.freq1.UserData);
+assignin('base','PhaseChan0',handles.phase0.UserData);
+assignin('base','PhaseChan1',handles.phase1.UserData);
+assignin('base','AmpChan0',handles.amp0.UserData);
+assignin('base','AmpChan1',handles.amp1.UserData);
+
+function loadvalues_Callback(hObject, eventdata, handles)
+
+f0data=evalin('base','FreqChan0');
+f1data=evalin('base','FreqChan1');
+p0data=evalin('base','PhaseChan0');
+p1data=evalin('base','PhaseChan1');
+a0data=evalin('base','AmpChan0');
+a1data=evalin('base','AmpChan1');
+
+handles.freq0.UserData = f0data;
+handles.freq1.UserData = f1data;
+handles.phase0.UserData = p0data;
+handles.phase1.UserData = p1data;
+handles.amp0.UserData = a0data;
+handles.amp1.UserData = a1data;
+
+
+
+
+
+
+
+
+
