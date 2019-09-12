@@ -22,7 +22,7 @@ function varargout = FlexGUI(varargin)
 
 % Edit the above text to modify the response to help FlexGUI
 
-% Last Modified by GUIDE v2.5 12-Sep-2019 15:07:28
+% Last Modified by GUIDE v2.5 12-Sep-2019 18:47:03
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -118,7 +118,8 @@ end
 
 function setbothbutton_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
-[prof, profhandle] = getprof0(hObject, eventdata, handles);
+[prof0, profhandle] = getprof0(hObject, eventdata, handles);
+[prof1, profhandle] = getprof1(hObject, eventdata, handles);
 [slot, thisslot] = getslot(hObject, eventdata, handles);
 
 amp0 = str2double(get(handles.amp0, 'String'));
@@ -128,7 +129,11 @@ phase1 = str2double(get(handles.phase1, 'String'));
 freq0 = str2double(get(handles.freq0, 'String'))*freqmult(handles);
 freq1 = str2double(get(handles.freq1, 'String'))*freqmult(handles);
 
-twosingletones(t{slot+1}, prof,amp0,phase0,freq0,amp1,phase1,freq1);
+% twosingletones(t{slot+1}, prof0,amp0,phase0,freq0,amp1,phase1,freq1);
+onesingletone(t{slot+1}, 0, prof0, amp0,  phase0, freq0);
+onesingletone(t{slot+1}, 1, prof1, amp1,  phase1, freq1);
+flexupdateboth(t{slot+1});
+
 
 handles.lastprofc0.Enable = 'on';
 handles.nextprofc0.Enable = 'on';
@@ -139,14 +144,15 @@ handles.nextprofc1.Enable = 'on';
 
 function setchan0_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
-[prof, profhandle] = getprof0(hObject, eventdata, handles);
+[prof0, profhandle] = getprof0(hObject, eventdata, handles);
 [slot, thisslot] = getslot(hObject, eventdata, handles);
 
 amp0 = str2double(get(handles.amp0, 'String'));
 phase0 = str2double(get(handles.phase0, 'String'));
 freq0 = str2double(get(handles.freq0, 'String'))*freqmult(handles);
 
-onesingletone(t{slot+1}, 0, prof, amp0,  phase0, freq0);
+onesingletone(t{slot+1}, 0, prof0, amp0,  phase0, freq0);
+flexupdateone(t{slot+1}, 0);
 
 handles.lastprofc0.Enable = 'on';
 handles.nextprofc0.Enable = 'on';
@@ -154,14 +160,15 @@ handles.nextprofc0.Enable = 'on';
 
 function setchan1_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
-[prof, profhandle] = getprof0(hObject, eventdata, handles);
+[prof1, profhandle] = getprof1(hObject, eventdata, handles);
 [slot, thisslot] = getslot(hObject, eventdata, handles);
 
 amp1 = str2double(get(handles.amp1, 'String'));
 phase1 = str2double(get(handles.phase1, 'String'));
 freq1 = str2double(get(handles.freq1, 'String'))*freqmult(handles);
 
-onesingletone(t{slot+1}, 1, prof, amp1,  phase1, freq1);
+onesingletone(t{slot+1}, 1, prof1, amp1,  phase1, freq1);
+flexupdateone(t{slot+1}, 1);
 
 handles.lastprofc1.Enable = 'on';
 handles.nextprofc1.Enable = 'on';
@@ -430,10 +437,10 @@ function unittime_Callback(hObject, eventdata, handles)
 function nextprofc0_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
 [slot, thisslot] = getslot(hObject, eventdata, handles);
-[prof, profhandle] = getprof0(hObject, eventdata, handles);
-
+[prof0, profhandle] = getprof0(hObject, eventdata, handles);
 nextprof(t{slot+1}, 0)
-switch prof
+
+switch prof0
     case 0
         handles.stp0c0.Value = 0;
         handles.stp1c0.Value = 1;
@@ -463,11 +470,11 @@ update_FPA_values(hObject, eventdata, handles)
 function lastprofc0_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
 [slot, thisslot] = getslot(hObject, eventdata, handles);
-[prof, profhandle] = getprof0(hObject, eventdata, handles);
+[prof0, profhandle] = getprof0(hObject, eventdata, handles);
 
 lastprof(t{slot+1}, 0)
 
-switch prof
+switch prof0
     case 0
         handles.stp0c0.Value = 0;
         handles.stp7c0.Value = 1;
@@ -504,15 +511,14 @@ setprof(t{slot+1}, 0, prof)
 handles.lastprofc0.Enable = 'on';
 handles.nextprofc0.Enable = 'on';
 update_FPA_values(hObject, eventdata, handles)
-
 function nextprofc1_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
 [slot, thisslot] = getslot(hObject, eventdata, handles);
-[prof, profhandle] = getprof1(hObject, eventdata, handles);
+[prof1, profhandle] = getprof1(hObject, eventdata, handles);
 
-nextprof(t{slot+1}, 1)
+nextprof(t{slot+1}, 1);
 %change radios
-switch prof
+switch prof1
     case 0
         handles.stp0c1.Value = 0;
         handles.stp1c1.Value = 1;
@@ -542,11 +548,11 @@ update_FPA_values(hObject, eventdata, handles)
 function lastprofc1_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
 [slot, thisslot] = getslot(hObject, eventdata, handles);
-[prof, profhandle] = getprof1(hObject, eventdata, handles);
+[prof1, profhandle] = getprof1(hObject, eventdata, handles);
 
 lastprof(t{slot+1}, 1)
 
-switch prof
+switch prof1
     case 0
         handles.stp0c1.Value = 0;
         handles.stp7c1.Value = 1;
@@ -585,6 +591,16 @@ setprof(t{slot+1}, 1, prof)
 handles.lastprofc1.Enable = 'on';
 handles.nextprofc1.Enable = 'on';
 update_FPA_values(hObject, eventdata, handles)
+
+function bothnextprof_Callback(hObject, eventdata, handles)
+nextprofc0_Callback(hObject, eventdata, handles);
+nextprofc1_Callback(hObject, eventdata, handles);
+function bothlastprof_Callback(hObject, eventdata, handles)
+lastprofc0_Callback(hObject, eventdata, handles);
+lastprofc1_Callback(hObject, eventdata, handles)
+function bothsetprof_Callback(hObject, eventdata, handles)
+setprofc0_Callback(hObject, eventdata, handles)
+setprofc1_Callback(hObject, eventdata, handles)
 
 
 function stp6c1_Callback(hObject, eventdata, handles)
@@ -655,12 +671,11 @@ handles.nextprofc0.Enable = 'off';
 update_FPA_values(hObject, eventdata, handles)
 
 
-
-
 function multiplier_Callback(hObject, eventdata, handles)
 
 
 function savevalues_Callback(hObject, eventdata, handles)
+%save the wokrspace for loading later
 assignin('base','FreqChan0',handles.freq0.UserData);
 assignin('base','FreqChan1',handles.freq1.UserData);
 assignin('base','PhaseChan0',handles.phase0.UserData);
@@ -669,7 +684,7 @@ assignin('base','AmpChan0',handles.amp0.UserData);
 assignin('base','AmpChan1',handles.amp1.UserData);
 
 function loadvalues_Callback(hObject, eventdata, handles)
-
+% read from matlab's workspace
 f0data=evalin('base','FreqChan0');
 f1data=evalin('base','FreqChan1');
 p0data=evalin('base','PhaseChan0');
@@ -686,9 +701,10 @@ handles.amp1.UserData = a1data;
 
 
 
+function CFR1c0_Callback(hObject, eventdata, handles)
 
+function CFR2c0_Callback(hObject, eventdata, handles)
 
+function CFR1c1_Callback(hObject, eventdata, handles)
 
-
-
-
+function CFR2c1_Callback(hObject, eventdata, handles)
