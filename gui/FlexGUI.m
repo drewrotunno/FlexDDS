@@ -22,7 +22,7 @@ function varargout = FlexGUI(varargin)
 
 % Edit the above text to modify the response to help FlexGUI
 
-% Last Modified by GUIDE v2.5 12-Sep-2019 13:45:35
+% Last Modified by GUIDE v2.5 12-Sep-2019 14:10:02
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -80,19 +80,7 @@ varargout{1} = handles.output;
 
 function iptext_Callback(hObject, eventdata, handles)
 
-function iptext_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to iptext (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
 
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-% --- Executes on button press in connectbutton.
 function connectbutton_Callback(hObject, eventdata, handles)
 
 [slot, thisslot] = getslot(hObject, eventdata, handles);
@@ -179,7 +167,6 @@ handles.lastprofc1.Enable = 'on';
 handles.nextprofc1.Enable = 'on';
 
 
-
 function [slot, thisslot] = getslot(~, ~, handles)
     if get(handles.slot0, 'Value')
         slot=0;
@@ -202,7 +189,6 @@ function [slot, thisslot] = getslot(~, ~, handles)
     else
         return
     end
-    
 function [prof, thisprof] = getprof0(~, ~, handles)
     if get(handles.stp0c0, 'Value')
         prof=0;
@@ -231,7 +217,6 @@ function [prof, thisprof] = getprof0(~, ~, handles)
     else
         return
     end
-    
 function [prof, thisprof] = getprof1(~, ~, handles)
     if get(handles.stp0c1, 'Value')
         prof=0;
@@ -277,6 +262,7 @@ if strcmp(class(t{slot+1}), 'tcpip')
 else
     set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
 end
+update_FPA_values(hObject, eventdata, handles)
 function slot1_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
 [slot, thisslot] = getslot(hObject, eventdata, handles);
@@ -292,6 +278,7 @@ if strcmp(class(t{slot+1}), 'tcpip')
 else
     set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
 end
+update_FPA_values(hObject, eventdata, handles)
 function slot2_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
 [slot, thisslot] = getslot(hObject, eventdata, handles);
@@ -307,6 +294,7 @@ if strcmp(class(t{slot+1}), 'tcpip')
 else
     set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
 end
+update_FPA_values(hObject, eventdata, handles)
 function slot3_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
 [slot, thisslot] = getslot(hObject, eventdata, handles);
@@ -322,6 +310,7 @@ if strcmp(class(t{slot+1}), 'tcpip')
 else
     set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
 end
+update_FPA_values(hObject, eventdata, handles)
 function slot4_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
 [slot, thisslot] = getslot(hObject, eventdata, handles);
@@ -337,6 +326,7 @@ if strcmp(class(t{slot+1}), 'tcpip')
 else
     set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
 end
+update_FPA_values(hObject, eventdata, handles)
 function slot5_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
 [slot, thisslot] = getslot(hObject, eventdata, handles);
@@ -352,44 +342,73 @@ if strcmp(class(t{slot+1}), 'tcpip')
 else
     set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
 end
+update_FPA_values(hObject, eventdata, handles)
 
 function freq0_Callback(hObject, eventdata, handles)
-function freq0_CreateFcn(hObject, eventdata, handles)
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-function phase0_Callback(hObject, eventdata, handles)
-function phase0_CreateFcn(hObject, eventdata, handles)
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-function amp0_Callback(hObject, eventdata, handles)
-function amp0_CreateFcn(hObject, eventdata, handles)
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
+[slot, thisslot] = getslot(hObject, eventdata, handles);
+[prof0, profhandle] = getprof0(hObject, eventdata, handles);
+data = handles.freq0.UserData;
+data{slot+1,prof0+1} = handles.freq0.String;
+handles.freq0.UserData  =  data;
+
 function freq1_Callback(hObject, eventdata, handles)
-function freq1_CreateFcn(hObject, eventdata, handles)
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
+[slot, thisslot] = getslot(hObject, eventdata, handles);
+[prof1, profhandle] = getprof1(hObject, eventdata, handles);
+data = handles.freq1.UserData;
+data{slot+1,prof1+1} = handles.freq1.String;
+handles.freq1.UserData  =  data;
+
+function phase0_Callback(hObject, eventdata, handles)
+[slot, thisslot] = getslot(hObject, eventdata, handles);
+[prof0, profhandle] = getprof0(hObject, eventdata, handles);
+data = handles.phase0.UserData;
+data{slot+1,prof0+1} = handles.phase0.String;
+handles.phase0.UserData  =  data;
+
 function phase1_Callback(hObject, eventdata, handles)
-function phase1_CreateFcn(hObject, eventdata, handles)
+[slot, thisslot] = getslot(hObject, eventdata, handles);
+[prof1, profhandle] = getprof1(hObject, eventdata, handles);
+data = handles.phase1.UserData;
+data{slot+1,prof1+1} = handles.phase1.String;
+handles.phase1.UserData  =  data;
 
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
+function amp0_Callback(hObject, eventdata, handles)
+[slot, thisslot] = getslot(hObject, eventdata, handles);
+[prof0, profhandle] = getprof0(hObject, eventdata, handles);
+data = handles.amp0.UserData;
+data{slot+1,prof0+1} = handles.amp0.String;
+handles.amp0.UserData  =  data;
+
 function amp1_Callback(hObject, eventdata, handles)
-function amp1_CreateFcn(hObject, eventdata, handles)
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
+[slot, thisslot] = getslot(hObject, eventdata, handles);
+[prof1, profhandle] = getprof1(hObject, eventdata, handles);
+data = handles.amp1.UserData;
+data{slot+1,prof1+1} = handles.amp1.String;
+handles.amp1.UserData  =  data;
 
 
-function swtab_CellEditCallback(hObject, eventdata, handles)
-% assignin('base','table',get(handles.swtab, 'data'));
-assignin('base','table',handles.swtab.Data);
-assignin('base','element',handles.swtab.Data{2,1});
+function update_FPA_values(hObject, eventdata, handles)
+[slot, thisslot] = getslot(hObject, eventdata, handles);
+[prof0, profhandle] = getprof0(hObject, eventdata, handles);
+[prof1, profhandle] = getprof1(hObject, eventdata, handles);
+
+fdata0 = handles.freq0.UserData;
+fdata1 = handles.freq1.UserData;
+handles.freq0.String = fdata0{slot+1,prof0+1} ;
+handles.freq1.String = fdata1{slot+1,prof1+1};
+
+pdata0 = handles.phase0.UserData;
+pdata1 = handles.phase1.UserData;
+handles.phase0.String = pdata0{slot+1,prof0+1} ;
+handles.phase1.String = pdata1{slot+1,prof1+1};
+
+adata0 = handles.amp0.UserData;
+adata1 = handles.amp1.UserData;
+handles.amp0.String = adata0{slot+1,prof0+1} ;
+handles.amp1.String = adata1{slot+1,prof1+1};
+
+
+
 
 
 function unitfreq_Callback(hObject, eventdata, handles)
@@ -401,24 +420,13 @@ function outmult = freqmult(handles)
 power = 10^(3*(handles.unitfreq.Value-1));
 multiplier = str2double(handles.multiplier.String);
 outmult = multiplier*power;
+function timeunit = timemult(handles)
+timeunit = 10^(-3*(handles.unittime.Value-1));
 
-
-function power = timemult(handles)
-power = 10^(-3*(handles.unittime.Value-1));
-
-
-function unitfreq_CreateFcn(hObject, eventdata, handles)
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
 
 
 function unittime_Callback(hObject, eventdata, handles)
 %% change table headers
-function unittime_CreateFcn(hObject, eventdata, handles)
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
 
 
 function nextprofc0_Callback(hObject, eventdata, handles)
@@ -427,7 +435,6 @@ t = get(handles.conn, 'UserData');
 [prof, profhandle] = getprof0(hObject, eventdata, handles);
 
 nextprof(t{slot+1}, 0)
-
 switch prof
     case 0
         handles.stp0c0.Value = 0;
@@ -454,6 +461,7 @@ switch prof
         handles.stp7c0.Value = 0;
         handles.stp0c0.Value = 1;
 end
+update_FPA_values(hObject, eventdata, handles)
 function lastprofc0_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
 [slot, thisslot] = getslot(hObject, eventdata, handles);
@@ -487,6 +495,7 @@ switch prof
         handles.stp1c0.Value = 0;
         handles.stp0c0.Value = 1;
 end
+update_FPA_values(hObject, eventdata, handles)
 function setprofc0_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
 [slot, thisslot] = getslot(hObject, eventdata, handles);
@@ -496,6 +505,7 @@ setprof(t{slot+1}, 0, prof)
 
 handles.lastprofc0.Enable = 'on';
 handles.nextprofc0.Enable = 'on';
+update_FPA_values(hObject, eventdata, handles)
 
 function nextprofc1_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
@@ -530,6 +540,7 @@ switch prof
         handles.stp7c1.Value = 0;
         handles.stp0c1.Value = 1;
 end
+update_FPA_values(hObject, eventdata, handles)
 function lastprofc1_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
 [slot, thisslot] = getslot(hObject, eventdata, handles);
@@ -563,6 +574,7 @@ switch prof
         handles.stp1c1.Value = 0;
         handles.stp0c1.Value = 1;
 end
+update_FPA_values(hObject, eventdata, handles)
 function setprofc1_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
 [slot, thisslot] = getslot(hObject, eventdata, handles);
@@ -574,80 +586,77 @@ setprof(t{slot+1}, 1, prof)
 
 handles.lastprofc1.Enable = 'on';
 handles.nextprofc1.Enable = 'on';
+update_FPA_values(hObject, eventdata, handles)
 
 
 function stp6c1_Callback(hObject, eventdata, handles)
 handles.lastprofc1.Enable = 'off';
 handles.nextprofc1.Enable = 'off';
+update_FPA_values(hObject, eventdata, handles)
 function stp5c1_Callback(hObject, eventdata, handles)
 handles.lastprofc1.Enable = 'off';
 handles.nextprofc1.Enable = 'off';
+update_FPA_values(hObject, eventdata, handles)
 function stp7c1_Callback(hObject, eventdata, handles)
 handles.lastprofc1.Enable = 'off';
 handles.nextprofc1.Enable = 'off';
+update_FPA_values(hObject, eventdata, handles)
 function stp3c1_Callback(hObject, eventdata, handles)
 handles.lastprofc1.Enable = 'off';
 handles.nextprofc1.Enable = 'off';
+update_FPA_values(hObject, eventdata, handles)
 function stp2c1_Callback(hObject, eventdata, handles)
 handles.lastprofc1.Enable = 'off';
 handles.nextprofc1.Enable = 'off';
+update_FPA_values(hObject, eventdata, handles)
 function stp1c1_Callback(hObject, eventdata, handles)
 handles.lastprofc1.Enable = 'off';
 handles.nextprofc1.Enable = 'off';
+update_FPA_values(hObject, eventdata, handles)
 function stp0c1_Callback(hObject, eventdata, handles)
 handles.lastprofc1.Enable = 'off';
 handles.nextprofc1.Enable = 'off';
+update_FPA_values(hObject, eventdata, handles)
 function stp4c1_Callback(hObject, eventdata, handles)
 handles.lastprofc1.Enable = 'off';
 handles.nextprofc1.Enable = 'off';
+update_FPA_values(hObject, eventdata, handles)
 
 
 function stp6c0_Callback(hObject, eventdata, handles)
 handles.lastprofc0.Enable = 'off';
 handles.nextprofc0.Enable = 'off';
+update_FPA_values(hObject, eventdata, handles)
 function stp5c0_Callback(hObject, eventdata, handles)
 handles.lastprofc0.Enable = 'off';
 handles.nextprofc0.Enable = 'off';
+update_FPA_values(hObject, eventdata, handles)
 function stp4c0_Callback(hObject, eventdata, handles)
 handles.lastprofc0.Enable = 'off';
 handles.nextprofc0.Enable = 'off';
+update_FPA_values(hObject, eventdata, handles)
 function stp7c0_Callback(hObject, eventdata, handles)
 handles.lastprofc0.Enable = 'off';
 handles.nextprofc0.Enable = 'off';
+update_FPA_values(hObject, eventdata, handles)
 function stp3c0_Callback(hObject, eventdata, handles)
 handles.lastprofc0.Enable = 'off';
 handles.nextprofc0.Enable = 'off';
+update_FPA_values(hObject, eventdata, handles)
 function stp2c0_Callback(hObject, eventdata, handles)
 handles.lastprofc0.Enable = 'off';
 handles.nextprofc0.Enable = 'off';
+update_FPA_values(hObject, eventdata, handles)
 function stp1c0_Callback(hObject, eventdata, handles)
 handles.lastprofc0.Enable = 'off';
 handles.nextprofc0.Enable = 'off';
+update_FPA_values(hObject, eventdata, handles)
 function stp0c0_Callback(hObject, eventdata, handles)
 handles.lastprofc0.Enable = 'off';
 handles.nextprofc0.Enable = 'off';
+update_FPA_values(hObject, eventdata, handles)
 
-
-
-
-% --- Executes during object creation, after setting all properties.
-function multiplier_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to multiplier (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
 
 
 
 function multiplier_Callback(hObject, eventdata, handles)
-% hObject    handle to multiplier (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of multiplier as text
-%        str2double(get(hObject,'String')) returns contents of multiplier as a double
