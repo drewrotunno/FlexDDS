@@ -22,7 +22,7 @@ function varargout = FlexGUI(varargin)
 
 % Edit the above text to modify the response to help FlexGUI
 
-% Last Modified by GUIDE v2.5 09-Sep-2019 15:32:15
+% Last Modified by GUIDE v2.5 11-Sep-2019 17:51:12
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -67,6 +67,8 @@ handles.output = hObject;
 % set(handles.p2,'position',get(handles.p1,'position'));
 % set(handles.p3,'position',get(handles.p1,'position'));
 
+% set units
+unitfreq_Callback(hObject, eventdata, handles)
 % Update handles structure
 guidata(hObject, handles);
 
@@ -135,8 +137,8 @@ amp0 = str2double(get(handles.amp0, 'String'));
 amp1 = str2double(get(handles.amp1, 'String'));
 phase0 = str2double(get(handles.phase0, 'String'));
 phase1 = str2double(get(handles.phase1, 'String'));
-freq0 = str2double(get(handles.freq0, 'String'));
-freq1 = str2double(get(handles.freq1, 'String'));
+freq0 = str2double(get(handles.freq0, 'String'))*freqmult(handles);
+freq1 = str2double(get(handles.freq1, 'String'))*freqmult(handles);
 
 twosingletones(t{slot+1}, prof,amp0,phase0,freq0,amp1,phase1,freq1);
 
@@ -149,7 +151,7 @@ t = get(handles.conn, 'UserData');
 
 amp0 = str2double(get(handles.amp0, 'String'));
 phase0 = str2double(get(handles.phase0, 'String'));
-freq0 = str2double(get(handles.freq0, 'String'));
+freq0 = str2double(get(handles.freq0, 'String'))*freqmult(handles);
 
 onesingletone(t{slot+1}, 0, prof, amp0,  phase0, freq0);
 
@@ -160,11 +162,9 @@ t = get(handles.conn, 'UserData');
 
 amp1 = str2double(get(handles.amp1, 'String'));
 phase1 = str2double(get(handles.phase1, 'String'));
-freq1 = str2double(get(handles.freq1, 'String'));
+freq1 = str2double(get(handles.freq1, 'String'))*freqmult(handles);
 
 onesingletone(t{slot+1}, 1, prof, amp1,  phase1, freq1);
-
-
 
 
 function [slot, thisslot] = getslot(~, ~, handles)
@@ -189,7 +189,7 @@ function [slot, thisslot] = getslot(~, ~, handles)
     else
         return
     end
-
+    
 function [prof, thisprof] = getprof(~, ~, handles)
     if get(handles.stp0, 'Value')
         prof=0;
@@ -255,6 +255,66 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 function amp1_Callback(hObject, eventdata, handles)
 function amp1_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes when entered data in editable cell(s) in swtab.
+function swtab_CellEditCallback(hObject, eventdata, handles)
+
+% assignin('base','table',get(handles.swtab, 'data'));
+assignin('base','table',handles.swtab.Data);
+assignin('base','element',handles.swtab.Data{2,1});
+
+
+function unitfreq_Callback(hObject, eventdata, handles)
+
+unitname = {'Hz'; 'kHz'; 'MHz'; 'GHz' };
+
+newunit = unitname(handles.unitfreq.Value);
+
+handles.freqtext.String = strcat('Frequency (',newunit,')');
+
+
+function power = freqmult(handles)
+power = 10^(3*(handles.unitfreq.Value-1));
+
+function power = timemult(handles)
+power = 10^(-3*(handles.unittime.Value-1));
+
+
+% --- Executes during object creation, after setting all properties.
+function unitfreq_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to unitfreq (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on selection change in unittime.
+function unittime_Callback(hObject, eventdata, handles)
+% hObject    handle to unittime (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns unittime contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from unittime
+
+
+% --- Executes during object creation, after setting all properties.
+function unittime_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to unittime (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
