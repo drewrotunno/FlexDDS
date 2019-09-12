@@ -1,14 +1,21 @@
-function nextprof(t)
+function nextprof(t, chan)
 % increment single tone profile number
 
-flexsnd(t,'dcp update:+p');
-
-while(~t.BytesAvailable)    
-    % wait for ok's
+switch chan
+    case 2
+        flexsnd(t,'dcp update:+p');
+    case 1
+        flexsnd(t,'dcp 1 update:+p');
+    case 0
+        flexsnd(t,'dcp 0 update:+p');
 end
-
-% get those OK's
-flexlst(t);
+% 
+% while(~t.BytesAvailable)    
+%     % wait for ok's
+% end
+% 
+% % get those OK's
+% flexlst(t);
 
 end
 
