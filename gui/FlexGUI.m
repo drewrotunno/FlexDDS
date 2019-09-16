@@ -22,7 +22,7 @@ function varargout = FlexGUI(varargin)
 
 % Edit the above text to modify the response to help FlexGUI
 
-% Last Modified by GUIDE v2.5 12-Sep-2019 18:47:03
+% Last Modified by GUIDE v2.5 13-Sep-2019 19:43:39
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -69,6 +69,9 @@ handles.output = hObject;
 
 % set units
 unitfreq_Callback(hObject, eventdata, handles)
+%load saved data
+update_FPA_values(hObject, eventdata, handles)
+update_CFR_values(hObject, eventdata, handles)
 % Update handles structure
 guidata(hObject, handles);
 
@@ -270,6 +273,7 @@ else
     set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
 end
 update_FPA_values(hObject, eventdata, handles)
+update_CFR_values(hObject, eventdata, handles)
 function slot1_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
 [slot, thisslot] = getslot(hObject, eventdata, handles);
@@ -286,6 +290,7 @@ else
     set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
 end
 update_FPA_values(hObject, eventdata, handles)
+update_CFR_values(hObject, eventdata, handles)
 function slot2_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
 [slot, thisslot] = getslot(hObject, eventdata, handles);
@@ -302,6 +307,7 @@ else
     set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
 end
 update_FPA_values(hObject, eventdata, handles)
+update_CFR_values(hObject, eventdata, handles)
 function slot3_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
 [slot, thisslot] = getslot(hObject, eventdata, handles);
@@ -318,6 +324,7 @@ else
     set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
 end
 update_FPA_values(hObject, eventdata, handles)
+update_CFR_values(hObject, eventdata, handles)
 function slot4_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
 [slot, thisslot] = getslot(hObject, eventdata, handles);
@@ -334,6 +341,7 @@ else
     set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
 end
 update_FPA_values(hObject, eventdata, handles)
+update_CFR_values(hObject, eventdata, handles)
 function slot5_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
 [slot, thisslot] = getslot(hObject, eventdata, handles);
@@ -350,6 +358,7 @@ else
     set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
 end
 update_FPA_values(hObject, eventdata, handles)
+update_CFR_values(hObject, eventdata, handles)
 
 function freq0_Callback(hObject, eventdata, handles)
 [slot, thisslot] = getslot(hObject, eventdata, handles);
@@ -357,42 +366,36 @@ function freq0_Callback(hObject, eventdata, handles)
 data = handles.freq0.UserData;
 data{slot+1,prof0+1} = handles.freq0.String;
 handles.freq0.UserData  =  data;
-
 function freq1_Callback(hObject, eventdata, handles)
 [slot, thisslot] = getslot(hObject, eventdata, handles);
 [prof1, profhandle] = getprof1(hObject, eventdata, handles);
 data = handles.freq1.UserData;
 data{slot+1,prof1+1} = handles.freq1.String;
 handles.freq1.UserData  =  data;
-
 function phase0_Callback(hObject, eventdata, handles)
 [slot, thisslot] = getslot(hObject, eventdata, handles);
 [prof0, profhandle] = getprof0(hObject, eventdata, handles);
 data = handles.phase0.UserData;
 data{slot+1,prof0+1} = handles.phase0.String;
 handles.phase0.UserData  =  data;
-
 function phase1_Callback(hObject, eventdata, handles)
 [slot, thisslot] = getslot(hObject, eventdata, handles);
 [prof1, profhandle] = getprof1(hObject, eventdata, handles);
 data = handles.phase1.UserData;
 data{slot+1,prof1+1} = handles.phase1.String;
 handles.phase1.UserData  =  data;
-
 function amp0_Callback(hObject, eventdata, handles)
 [slot, thisslot] = getslot(hObject, eventdata, handles);
 [prof0, profhandle] = getprof0(hObject, eventdata, handles);
 data = handles.amp0.UserData;
 data{slot+1,prof0+1} = handles.amp0.String;
 handles.amp0.UserData  =  data;
-
 function amp1_Callback(hObject, eventdata, handles)
 [slot, thisslot] = getslot(hObject, eventdata, handles);
 [prof1, profhandle] = getprof1(hObject, eventdata, handles);
 data = handles.amp1.UserData;
 data{slot+1,prof1+1} = handles.amp1.String;
 handles.amp1.UserData  =  data;
-
 
 function update_FPA_values(hObject, eventdata, handles)
 [slot, thisslot] = getslot(hObject, eventdata, handles);
@@ -404,15 +407,19 @@ fdata1 = handles.freq1.UserData;
 handles.freq0.String = fdata0{slot+1,prof0+1} ;
 handles.freq1.String = fdata1{slot+1,prof1+1};
 
-pdata0 = handles.phase0.UserData;
-pdata1 = handles.phase1.UserData;
-handles.phase0.String = pdata0{slot+1,prof0+1} ;
-handles.phase1.String = pdata1{slot+1,prof1+1};
+function update_CFR_values(hObject, eventdata, handles)
+[slot, thisslot] = getslot(hObject, eventdata, handles);
 
-adata0 = handles.amp0.UserData;
-adata1 = handles.amp1.UserData;
-handles.amp0.String = adata0{slot+1,prof0+1} ;
-handles.amp1.String = adata1{slot+1,prof1+1};
+CFR1c0data = handles.CFR1c0.UserData;
+CFR2c0data = handles.CFR2c0.UserData;
+CFR1c1data = handles.CFR1c1.UserData;
+CFR2c1data = handles.CFR2c1.UserData;
+
+handles.CFR1c0.String = CFR1c0data{slot+1};
+handles.CFR2c0.String = CFR2c0data{slot+1};
+handles.CFR1c1.String = CFR1c1data{slot+1};
+handles.CFR2c1.String = CFR2c1data{slot+1};
+
 
 
 
@@ -682,6 +689,11 @@ assignin('base','PhaseChan0',handles.phase0.UserData);
 assignin('base','PhaseChan1',handles.phase1.UserData);
 assignin('base','AmpChan0',handles.amp0.UserData);
 assignin('base','AmpChan1',handles.amp1.UserData);
+assignin('base','CFR1c0',handles.CFR1c0.UserData);
+assignin('base','CFR2c0',handles.CFR2c0.UserData);
+assignin('base','CFR1c1',handles.CFR1c1.UserData);
+assignin('base','CFR2c1',handles.CFR2c1.UserData);
+
 
 function loadvalues_Callback(hObject, eventdata, handles)
 % read from matlab's workspace
@@ -691,6 +703,10 @@ p0data=evalin('base','PhaseChan0');
 p1data=evalin('base','PhaseChan1');
 a0data=evalin('base','AmpChan0');
 a1data=evalin('base','AmpChan1');
+CFR1c0data = evalin('base','CFR1c0');
+CFR2c0data = evalin('base','CFR2c0');
+CFR1c1data = evalin('base','CFR1c1');
+CFR2c1data = evalin('base','CFR2c1');
 
 handles.freq0.UserData = f0data;
 handles.freq1.UserData = f1data;
@@ -698,13 +714,335 @@ handles.phase0.UserData = p0data;
 handles.phase1.UserData = p1data;
 handles.amp0.UserData = a0data;
 handles.amp1.UserData = a1data;
-
-
+handles.CFR1c0.UserData = CFR1c0data;
+handles.CFR2c0.UserData = CFR2c0data;
+handles.CFR1c1.UserData = CFR1c1data;
+handles.CFR2c1.UserData = CFR2c1data;
 
 function CFR1c0_Callback(hObject, eventdata, handles)
-
 function CFR2c0_Callback(hObject, eventdata, handles)
-
 function CFR1c1_Callback(hObject, eventdata, handles)
-
 function CFR2c1_Callback(hObject, eventdata, handles)
+
+
+function setcfrc0_Callback(hObject, eventdata, handles)
+function setcfrc1_Callback(hObject, eventdata, handles)
+
+
+function openCFRpanel_Callback(hObject, eventdata, handles)
+thepos = handles.CFRpanel.OuterPosition;
+thepos(1) = 7;
+handles.CFRpanel.OuterPosition = thepos;
+
+function closeCFRpanel_Callback(hObject, eventdata, handles)
+thepos = handles.CFRpanel.OuterPosition;
+thepos(1) = 130;
+handles.CFRpanel.OuterPosition = thepos;
+
+
+% --- Executes on button press in cfr1b31.
+function cfr1b31_Callback(hObject, eventdata, handles)
+% hObject    handle to cfr1b31 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of cfr1b31
+
+
+% --- Executes on button press in cfr1b30.
+function cfr1b30_Callback(hObject, eventdata, handles)
+% hObject    handle to cfr1b30 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of cfr1b30
+
+
+% --- Executes on button press in cfr1b29.
+function cfr1b29_Callback(hObject, eventdata, handles)
+% hObject    handle to cfr1b29 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of cfr1b29
+
+
+% --- Executes on button press in cfr1b23.
+function cfr1b23_Callback(hObject, eventdata, handles)
+% hObject    handle to cfr1b23 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of cfr1b23
+
+
+% --- Executes on button press in cfr1b22.
+function cfr1b22_Callback(hObject, eventdata, handles)
+% hObject    handle to cfr1b22 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of cfr1b22
+
+
+% --- Executes on button press in cfr1b20.
+function cfr1b20_Callback(hObject, eventdata, handles)
+% hObject    handle to cfr1b20 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of cfr1b20
+
+
+% --- Executes on button press in cfr1b19.
+function cfr1b19_Callback(hObject, eventdata, handles)
+% hObject    handle to cfr1b19 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of cfr1b19
+
+
+% --- Executes on button press in cfr1b18.
+function cfr1b18_Callback(hObject, eventdata, handles)
+% hObject    handle to cfr1b18 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of cfr1b18
+
+
+% --- Executes on button press in cfr1b17.
+function cfr1b17_Callback(hObject, eventdata, handles)
+% hObject    handle to cfr1b17 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of cfr1b17
+
+
+% --- Executes on button press in cfr1b16.
+function cfr1b16_Callback(hObject, eventdata, handles)
+% hObject    handle to cfr1b16 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of cfr1b16
+
+
+% --- Executes on button press in cfr1b12.
+function cfr1b12_Callback(hObject, eventdata, handles)
+% hObject    handle to cfr1b12 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of cfr1b12
+
+
+% --- Executes on button press in cfr1b14.
+function cfr1b14_Callback(hObject, eventdata, handles)
+% hObject    handle to cfr1b14 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of cfr1b14
+
+
+% --- Executes on button press in cfr1b13.
+function cfr1b13_Callback(hObject, eventdata, handles)
+% hObject    handle to cfr1b13 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of cfr1b13
+
+
+% --- Executes on button press in cfr1b11.
+function cfr1b11_Callback(hObject, eventdata, handles)
+% hObject    handle to cfr1b11 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of cfr1b11
+
+
+% --- Executes on button press in cfr1b10.
+function cfr1b10_Callback(hObject, eventdata, handles)
+% hObject    handle to cfr1b10 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of cfr1b10
+
+
+% --- Executes on button press in cfr1b9.
+function cfr1b9_Callback(hObject, eventdata, handles)
+% hObject    handle to cfr1b9 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of cfr1b9
+
+
+% --- Executes on button press in cfr1b8.
+function cfr1b8_Callback(hObject, eventdata, handles)
+% hObject    handle to cfr1b8 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of cfr1b8
+
+
+% --- Executes on button press in cfr2b21.
+function cfr2b21_Callback(hObject, eventdata, handles)
+% hObject    handle to cfr2b21 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of cfr2b21
+
+
+% --- Executes on button press in cfr2b20.
+function cfr2b20_Callback(hObject, eventdata, handles)
+% hObject    handle to cfr2b20 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of cfr2b20
+
+
+% --- Executes on button press in cfr2b19.
+function cfr2b19_Callback(hObject, eventdata, handles)
+% hObject    handle to cfr2b19 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of cfr2b19
+
+
+% --- Executes on button press in cfr2b18.
+function cfr2b18_Callback(hObject, eventdata, handles)
+% hObject    handle to cfr2b18 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of cfr2b18
+
+
+% --- Executes on button press in cfr2b17.
+function cfr2b17_Callback(hObject, eventdata, handles)
+% hObject    handle to cfr2b17 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of cfr2b17
+
+
+% --- Executes on button press in cfr2b16.
+function cfr2b16_Callback(hObject, eventdata, handles)
+% hObject    handle to cfr2b16 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of cfr2b16
+
+
+% --- Executes on button press in cfr2b15.
+function cfr2b15_Callback(hObject, eventdata, handles)
+% hObject    handle to cfr2b15 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of cfr2b15
+
+
+% --- Executes on button press in cfr2b14.
+function cfr2b14_Callback(hObject, eventdata, handles)
+% hObject    handle to cfr2b14 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of cfr2b14
+
+
+% --- Executes on button press in cfr2b7.
+function cfr2b7_Callback(hObject, eventdata, handles)
+% hObject    handle to cfr2b7 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of cfr2b7
+
+
+% --- Executes on button press in cfr2b6.
+function cfr2b6_Callback(hObject, eventdata, handles)
+% hObject    handle to cfr2b6 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of cfr2b6
+
+
+% --- Executes on button press in cfr2b4.
+function cfr2b4_Callback(hObject, eventdata, handles)
+% hObject    handle to cfr2b4 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of cfr2b4
+
+
+% --- Executes on button press in cfr2b3.
+function cfr2b3_Callback(hObject, eventdata, handles)
+% hObject    handle to cfr2b3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of cfr2b3
+
+
+% --- Executes on button press in cfr2b2.
+function cfr2b2_Callback(hObject, eventdata, handles)
+% hObject    handle to cfr2b2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of cfr2b2
+
+
+% --- Executes on button press in cfr2b1.
+function cfr2b1_Callback(hObject, eventdata, handles)
+% hObject    handle to cfr2b1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of cfr2b1
+
+
+% --- Executes on button press in cfr2b0.
+function cfr2b0_Callback(hObject, eventdata, handles)
+% hObject    handle to cfr2b0 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of cfr2b0
+
+
+
+% --- Executes on selection change in cfr1RAMdest.
+function cfr1RAMdest_Callback(hObject, eventdata, handles)
+% hObject    handle to cfr1RAMdest (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns cfr1RAMdest contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from cfr1RAMdest
+
+
+% --- Executes on button press in cfr2b24.
+function cfr2b24_Callback(hObject, eventdata, handles)
+% hObject    handle to cfr2b24 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of cfr2b24
