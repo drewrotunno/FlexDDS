@@ -303,8 +303,7 @@ if strcmp(class(t{slot+1}), 'tcpip')
 else
     set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
 end
-update_FPA_values(hObject, eventdata, handles)
-update_CFR_values(hObject, eventdata, handles)
+slotupdate(hObject, eventdata, handles)
 function slot1_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
 [slot, thisslot] = getslot(hObject, eventdata, handles);
@@ -320,8 +319,7 @@ if strcmp(class(t{slot+1}), 'tcpip')
 else
     set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
 end
-update_FPA_values(hObject, eventdata, handles)
-update_CFR_values(hObject, eventdata, handles)
+slotupdate(hObject, eventdata, handles)
 function slot2_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
 [slot, thisslot] = getslot(hObject, eventdata, handles);
@@ -337,8 +335,7 @@ if strcmp(class(t{slot+1}), 'tcpip')
 else
     set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
 end
-update_FPA_values(hObject, eventdata, handles)
-update_CFR_values(hObject, eventdata, handles)
+slotupdate(hObject, eventdata, handles)
 function slot3_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
 [slot, thisslot] = getslot(hObject, eventdata, handles);
@@ -354,8 +351,7 @@ if strcmp(class(t{slot+1}), 'tcpip')
 else
     set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
 end
-update_FPA_values(hObject, eventdata, handles)
-update_CFR_values(hObject, eventdata, handles)
+slotupdate(hObject, eventdata, handles)
 function slot4_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
 [slot, thisslot] = getslot(hObject, eventdata, handles);
@@ -371,8 +367,7 @@ if strcmp(class(t{slot+1}), 'tcpip')
 else
     set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
 end
-update_FPA_values(hObject, eventdata, handles)
-update_CFR_values(hObject, eventdata, handles)
+slotupdate(hObject, eventdata, handles)
 function slot5_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
 [slot, thisslot] = getslot(hObject, eventdata, handles);
@@ -388,8 +383,13 @@ if strcmp(class(t{slot+1}), 'tcpip')
 else
     set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
 end
+slotupdate(hObject, eventdata, handles)
+
+function slotupdate(hObject, eventdata, handles)
 update_FPA_values(hObject, eventdata, handles)
 update_CFR_values(hObject, eventdata, handles)
+copyfromboxc0_Callback(hObject, eventdata, handles)
+copyfromboxc1_Callback(hObject, eventdata, handles)
 
 function freq0_Callback(hObject, eventdata, handles)
 [slot, thisslot] = getslot(hObject, eventdata, handles);
@@ -1000,25 +1000,35 @@ function CFR1c0_Callback(hObject, eventdata, handles)
 data = handles.CFR1c0.UserData;
 data{slot+1,prof0+1} = handles.CFR1c0.String;
 handles.CFR1c0.UserData  =  data;
+copyfromboxc0_Callback(hObject, eventdata, handles)
+copyfromboxc1_Callback(hObject, eventdata, handles)
+
 function CFR2c0_Callback(hObject, eventdata, handles)
 [slot, ~] = getslot(hObject, eventdata, handles);
 [prof0, ~] = getprof0(hObject, eventdata, handles);
 data = handles.CFR2c0.UserData;
 data{slot+1,prof0+1} = handles.CFR2c0.String;
 handles.CFR2c0.UserData  =  data;
+copyfromboxc0_Callback(hObject, eventdata, handles)
+copyfromboxc1_Callback(hObject, eventdata, handles)
+
 function CFR1c1_Callback(hObject, eventdata, handles)
 [slot, ~] = getslot(hObject, eventdata, handles);
 [prof1, ~] = getprof1(hObject, eventdata, handles);
 data = handles.CFR1c1.UserData;
 data{slot+1,prof1+1} = handles.CFR1c1.String;
 handles.CFR1c1.UserData  =  data;
+copyfromboxc0_Callback(hObject, eventdata, handles)
+copyfromboxc1_Callback(hObject, eventdata, handles)
+
 function CFR2c1_Callback(hObject, eventdata, handles)
 [slot, ~] = getslot(hObject, eventdata, handles);
 [prof1, ~] = getprof1(hObject, eventdata, handles);
 data = handles.CFR2c1.UserData;
 data{slot+1,prof1+1} = handles.CFR2c1.String;
 handles.CFR2c1.UserData  =  data;
-
+copyfromboxc0_Callback(hObject, eventdata, handles)
+copyfromboxc1_Callback(hObject, eventdata, handles)
 
 function setcfrc0_Callback(hObject, eventdata, handles)
 [CFR1c0, CFR2c0] = generate_CFR_c0(hObject, eventdata, handles)
@@ -1026,6 +1036,7 @@ handles.CFR1c0.String = CFR1c0;
 handles.CFR2c0.String = CFR2c0;
 CFR1c0_Callback(hObject, eventdata, handles)
 CFR2c0_Callback(hObject, eventdata, handles)
+
 
 function setcfrc1_Callback(hObject, eventdata, handles)
 [CFR1c1, CFR2c1] = generate_CFR_c1(hObject, eventdata, handles)
