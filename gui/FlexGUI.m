@@ -22,7 +22,7 @@ function varargout = FlexGUI(varargin)
 
 % Edit the above text to modify the response to help FlexGUI
 
-% Last Modified by GUIDE v2.5 13-Sep-2019 19:43:39
+% Last Modified by GUIDE v2.5 16-Sep-2019 19:24:13
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -438,6 +438,16 @@ fdata1 = handles.freq1.UserData;
 handles.freq0.String = fdata0{slot+1,prof0+1} ;
 handles.freq1.String = fdata1{slot+1,prof1+1};
 
+pdata0 = handles.phase0.UserData;
+pdata1 = handles.phase1.UserData;
+handles.phase0.String = pdata0{slot+1,prof0+1} ;
+handles.phase1.String = pdata1{slot+1,prof1+1};
+
+adata0 = handles.amp0.UserData;
+adata1 = handles.amp1.UserData;
+handles.amp0.String = adata0{slot+1,prof0+1} ;
+handles.amp1.String = adata1{slot+1,prof1+1};
+
 function update_CFR_values(hObject, eventdata, handles)
 [slot, thisslot] = getslot(hObject, eventdata, handles);
 
@@ -450,9 +460,6 @@ handles.CFR1c0.String = CFR1c0data{slot+1};
 handles.CFR2c0.String = CFR2c0data{slot+1};
 handles.CFR1c1.String = CFR1c1data{slot+1};
 handles.CFR2c1.String = CFR2c1data{slot+1};
-
-
-
 
 function unitfreq_Callback(hObject, eventdata, handles)
 unitname = {'Hz'; 'kHz'; 'MHz'; 'GHz' };
@@ -988,18 +995,49 @@ handles.CFR1c1.UserData = CFR1c1data;
 handles.CFR2c1.UserData = CFR2c1data;
 
 function CFR1c0_Callback(hObject, eventdata, handles)
+[slot, ~] = getslot(hObject, eventdata, handles);
+[prof0, ~] = getprof0(hObject, eventdata, handles);
+data = handles.CFR1c0.UserData;
+data{slot+1,prof0+1} = handles.CFR1c0.String;
+handles.CFR1c0.UserData  =  data;
 function CFR2c0_Callback(hObject, eventdata, handles)
+[slot, ~] = getslot(hObject, eventdata, handles);
+[prof0, ~] = getprof0(hObject, eventdata, handles);
+data = handles.CFR2c0.UserData;
+data{slot+1,prof0+1} = handles.CFR2c0.String;
+handles.CFR2c0.UserData  =  data;
 function CFR1c1_Callback(hObject, eventdata, handles)
+[slot, ~] = getslot(hObject, eventdata, handles);
+[prof1, ~] = getprof1(hObject, eventdata, handles);
+data = handles.CFR1c1.UserData;
+data{slot+1,prof1+1} = handles.CFR1c1.String;
+handles.CFR1c1.UserData  =  data;
 function CFR2c1_Callback(hObject, eventdata, handles)
+[slot, ~] = getslot(hObject, eventdata, handles);
+[prof1, ~] = getprof1(hObject, eventdata, handles);
+data = handles.CFR2c1.UserData;
+data{slot+1,prof1+1} = handles.CFR2c1.String;
+handles.CFR2c1.UserData  =  data;
 
 
 function setcfrc0_Callback(hObject, eventdata, handles)
+[CFR1c0, CFR2c0] = generate_CFR_c0(hObject, eventdata, handles)
+handles.CFR1c0.String = CFR1c0;
+handles.CFR2c0.String = CFR2c0;
+CFR1c0_Callback(hObject, eventdata, handles)
+CFR2c0_Callback(hObject, eventdata, handles)
+
 function setcfrc1_Callback(hObject, eventdata, handles)
+[CFR1c1, CFR2c1] = generate_CFR_c1(hObject, eventdata, handles)
+handles.CFR1c1.String = CFR1c1;
+handles.CFR2c1.String = CFR2c1;
+CFR1c1_Callback(hObject, eventdata, handles)
+CFR2c1_Callback(hObject, eventdata, handles)
 
 
 function openCFRpanel_Callback(hObject, eventdata, handles)
 thepos = handles.CFRpanel.OuterPosition;
-thepos(1) = 7;
+thepos(1) = 5;
 handles.CFRpanel.OuterPosition = thepos;
 
 function closeCFRpanel_Callback(hObject, eventdata, handles)
@@ -1008,37 +1046,404 @@ thepos(1) = 130;
 handles.CFRpanel.OuterPosition = thepos;
 
 
-function cfr1b31_Callback(hObject, eventdata, handles)
-function cfr1b30_Callback(hObject, eventdata, handles)
-function cfr1b29_Callback(hObject, eventdata, handles)
-function cfr1b23_Callback(hObject, eventdata, handles)
-function cfr1b22_Callback(hObject, eventdata, handles)
-function cfr1b20_Callback(hObject, eventdata, handles)
-function cfr1b19_Callback(hObject, eventdata, handles)
-function cfr1b18_Callback(hObject, eventdata, handles)
-function cfr1b17_Callback(hObject, eventdata, handles)
-function cfr1b16_Callback(hObject, eventdata, handles)
-function cfr1b12_Callback(hObject, eventdata, handles)
-function cfr1b14_Callback(hObject, eventdata, handles)
-function cfr1b13_Callback(hObject, eventdata, handles)
-function cfr1b11_Callback(hObject, eventdata, handles)
-function cfr1b10_Callback(hObject, eventdata, handles)
-function cfr1b9_Callback(hObject, eventdata, handles)
-function cfr1b8_Callback(hObject, eventdata, handles)
-function cfr2b21_Callback(hObject, eventdata, handles)
-function cfr2b20_Callback(hObject, eventdata, handles)
-function cfr2b19_Callback(hObject, eventdata, handles)
-function cfr2b18_Callback(hObject, eventdata, handles)
-function cfr2b17_Callback(hObject, eventdata, handles)
-function cfr2b16_Callback(hObject, eventdata, handles)
-function cfr2b15_Callback(hObject, eventdata, handles)
-function cfr2b14_Callback(hObject, eventdata, handles)
-function cfr2b7_Callback(hObject, eventdata, handles)
-function cfr2b6_Callback(hObject, eventdata, handles)
-function cfr2b4_Callback(hObject, eventdata, handles)
-function cfr2b3_Callback(hObject, eventdata, handles)
-function cfr2b2_Callback(hObject, eventdata, handles)
-function cfr2b1_Callback(hObject, eventdata, handles)
-function cfr2b0_Callback(hObject, eventdata, handles)
-function cfr1RAMdest_Callback(hObject, eventdata, handles)
-function cfr2b24_Callback(hObject, eventdata, handles)
+function [CFR1, CFR2] = generate_CFR_c0(hObject, eventdata, handles)
+
+switch handles.cfr1RAMdestc0.Value
+    case 1
+        RAM30 = 0;
+        RAM29 = 0;
+    case 2
+        RAM30 = 0;
+        RAM29 = 1;
+    case 3
+        RAM30 = 1;
+        RAM29 = 0;
+    case 4
+        RAM30 = 1;
+        RAM29 = 1;
+end
+switch handles.cfr2DRGdestc0.Value
+    case 1
+        DRG21 = 0;
+        DRG20 = 0;
+    case 2
+        DRG21 = 0;
+        DRG20 = 1;
+    case 3
+        DRG21 = 1;
+        DRG20 = 0;
+end
+
+rawCFR1 = [...
+handles.cfr1b31c0.Value == 1 ,...
+RAM30, RAM29, 0, 0, 0, 0, 0, ...    %RAMDEST, then open 28:24
+handles.cfr1b23c0.Value == 1 ,...
+handles.cfr1b22c0.Value == 1 ,...
+0,...                               % 21 is open 
+handles.cfr1b20c0.Value == 1 ,...
+handles.cfr1b19c0.Value == 1 ,...
+handles.cfr1b18c0.Value == 1 ,...
+handles.cfr1b17c0.Value == 1 ,...
+handles.cfr1b16c0.Value == 1 ,...
+handles.cfr1b15c0.Value == 1 ,...
+handles.cfr1b14c0.Value == 1 ,...
+handles.cfr1b13c0.Value == 1 ,...
+handles.cfr1b15c0.Value == 1 ,...
+handles.cfr1b11c0.Value == 1 ,...
+handles.cfr1b10c0.Value == 1 ,...
+handles.cfr1b9c0.Value  == 1 ,...
+handles.cfr1b8c0.Value  == 1 ,...
+0,0,0,0,0,0,1,0];                   % fixed 7:0
+CFR1 = binaryVectorToHex(rawCFR1);
+
+rawCFR2 = [...
+0,0,0,0,0,0,0,...
+handles.cfr2b24c0.Value == 1 ,...
+0, 1, DRG21 , DRG20 , ...               % Fixed, and Ramp Dest
+handles.cfr2b19c0.Value == 1 ,...
+handles.cfr2b18c0.Value == 1 ,...
+handles.cfr2b17c0.Value == 1 ,...
+handles.cfr2b16c0.Value == 1 ,...
+handles.cfr2b15c0.Value == 1 ,...
+handles.cfr2b14c0.Value == 1 ,...
+0,0,1,0,0,0,...                                 % open, fixed, open
+handles.cfr2b7c0.Value == 1 ,...
+handles.cfr2b6c0.Value == 1 ,...
+0,...
+handles.cfr2b4c0.Value == 1 ,...
+handles.cfr2b3c0.Value == 1 ,...
+handles.cfr2b2c0.Value == 1 ,...
+handles.cfr2b1c0.Value == 1 ,...
+handles.cfr2b0c0.Value == 1 ];
+CFR2 = binaryVectorToHex(rawCFR2);
+
+
+
+function [CFR1, CFR2] = generate_CFR_c1(hObject, eventdata, handles)
+
+switch handles.cfr1RAMdestc1.Value
+    case 1
+        RAM30 = 0;
+        RAM29 = 0;
+    case 2
+        RAM30 = 0;
+        RAM29 = 1;
+    case 3
+        RAM30 = 1;
+        RAM29 = 0;
+    case 4
+        RAM30 = 1;
+        RAM29 = 1;
+end
+switch handles.cfr2DRGdestc1.Value
+    case 1
+        DRG21 = 0;
+        DRG20 = 0;
+    case 2
+        DRG21 = 0;
+        DRG20 = 1;
+    case 3
+        DRG21 = 1;
+        DRG20 = 0;
+end
+
+rawCFR1 = [...
+handles.cfr1b31c1.Value == 1 ,...
+RAM30, RAM29, 0, 0, 0, 0, 0, ...    %RAMDEST, then open 28:24
+handles.cfr1b23c1.Value == 1 ,...
+handles.cfr1b22c1.Value == 1 ,...
+0,...                               % 21 is open 
+handles.cfr1b20c1.Value == 1 ,...
+handles.cfr1b19c1.Value == 1 ,...
+handles.cfr1b18c1.Value == 1 ,...
+handles.cfr1b17c1.Value == 1 ,...
+handles.cfr1b16c1.Value == 1 ,...
+handles.cfr1b15c1.Value == 1 ,...
+handles.cfr1b14c1.Value == 1 ,...
+handles.cfr1b13c1.Value == 1 ,...
+handles.cfr1b15c1.Value == 1 ,...
+handles.cfr1b11c1.Value == 1 ,...
+handles.cfr1b10c1.Value == 1 ,...
+handles.cfr1b9c1.Value  == 1 ,...
+handles.cfr1b8c1.Value  == 1 ,...
+0,0,0,0,0,0,1,0];                   % fixed 7:0
+CFR1 = binaryVectorToHex(rawCFR1);
+
+rawCFR2 = [...
+0,0,0,0,0,0,0,...
+handles.cfr2b24c1.Value == 1 ,...
+0, 1, DRG21 , DRG20 , ...               % Fixed, and Ramp Dest
+handles.cfr2b19c1.Value == 1 ,...
+handles.cfr2b18c1.Value == 1 ,...
+handles.cfr2b17c1.Value == 1 ,...
+handles.cfr2b16c1.Value == 1 ,...
+handles.cfr2b15c1.Value == 1 ,...
+handles.cfr2b14c1.Value == 1 ,...
+0,0,1,0,0,0,...                                 % open, fixed, open
+handles.cfr2b7c1.Value == 1 ,...
+handles.cfr2b6c1.Value == 1 ,...
+0,...
+handles.cfr2b4c1.Value == 1 ,...
+handles.cfr2b3c1.Value == 1 ,...
+handles.cfr2b2c1.Value == 1 ,...
+handles.cfr2b1c1.Value == 1 ,...
+handles.cfr2b0c1.Value == 1 ];
+CFR2 = binaryVectorToHex(rawCFR2);
+
+
+function cfr1RAMdestc0_Callback(hObject, eventdata, handles)
+function cfr1b31c0_Callback(hObject, eventdata, handles)
+function cfr1b23c0_Callback(hObject, eventdata, handles)
+function cfr1b22c0_Callback(hObject, eventdata, handles)
+function cfr1b20c0_Callback(hObject, eventdata, handles)
+function cfr1b19c0_Callback(hObject, eventdata, handles)
+function cfr1b18c0_Callback(hObject, eventdata, handles)
+function cfr1b17c0_Callback(hObject, eventdata, handles)
+function cfr1b16c0_Callback(hObject, eventdata, handles)
+function cfr1b15c0_Callback(hObject, eventdata, handles)
+function cfr1b14c0_Callback(hObject, eventdata, handles)
+function cfr1b13c0_Callback(hObject, eventdata, handles)
+function cfr1b11c0_Callback(hObject, eventdata, handles)
+function cfr1b10c0_Callback(hObject, eventdata, handles)
+function cfr1b9c0_Callback(hObject, eventdata, handles)
+function cfr1b8c0_Callback(hObject, eventdata, handles)
+function cfr2DRGdestc0_Callback(hObject, eventdata, handles)
+function cfr2b19c0_Callback(hObject, eventdata, handles)
+function cfr2b18c0_Callback(hObject, eventdata, handles)
+function cfr2b17c0_Callback(hObject, eventdata, handles)
+function cfr2b16c0_Callback(hObject, eventdata, handles)
+function cfr2b15c0_Callback(hObject, eventdata, handles)
+function cfr2b14c0_Callback(hObject, eventdata, handles)
+function cfr1b12c0_Callback(hObject, eventdata, handles)
+function cfr2b7c0_Callback(hObject, eventdata, handles)
+function cfr2b6c0_Callback(hObject, eventdata, handles)
+function cfr2b4c0_Callback(hObject, eventdata, handles)
+function cfr2b3c0_Callback(hObject, eventdata, handles)
+function cfr2b2c0_Callback(hObject, eventdata, handles)
+function cfr2b1c0_Callback(hObject, eventdata, handles)
+function cfr2b0c0_Callback(hObject, eventdata, handles)
+
+function cfr2b24c0_Callback(hObject, eventdata, handles)
+
+
+function cfr1b31c1_Callback(hObject, eventdata, handles)
+function cfr1b23c1_Callback(hObject, eventdata, handles)
+function cfr1b22c1_Callback(hObject, eventdata, handles)
+function cfr1b20c1_Callback(hObject, eventdata, handles)
+function cfr1b19c1_Callback(hObject, eventdata, handles)
+function cfr1b18c1_Callback(hObject, eventdata, handles)
+function cfr1b17c1_Callback(hObject, eventdata, handles)
+function cfr1b16c1_Callback(hObject, eventdata, handles)
+function cfr1b15c1_Callback(hObject, eventdata, handles)
+function cfr1b14c1_Callback(hObject, eventdata, handles)
+function cfr1b13c1_Callback(hObject, eventdata, handles)
+function cfr1b12c1_Callback(hObject, eventdata, handles)
+function cfr1b11c1_Callback(hObject, eventdata, handles)
+function cfr1b10c1_Callback(hObject, eventdata, handles)
+function cfr1b9c1_Callback(hObject, eventdata, handles)
+function cfr1b8c1_Callback(hObject, eventdata, handles)
+function cfr2b24c1_Callback(hObject, eventdata, handles)
+function cfr2b19c1_Callback(hObject, eventdata, handles)
+function cfr2b18c1_Callback(hObject, eventdata, handles)
+function cfr2b17c1_Callback(hObject, eventdata, handles)
+function cfr2b16c1_Callback(hObject, eventdata, handles)
+function cfr2b15c1_Callback(hObject, eventdata, handles)
+function cfr2b14c1_Callback(hObject, eventdata, handles)
+function cfr2b7c1_Callback(hObject, eventdata, handles)
+function cfr2b6c1_Callback(hObject, eventdata, handles)
+function cfr2b4c1_Callback(hObject, eventdata, handles)
+function cfr2b3c1_Callback(hObject, eventdata, handles)
+function cfr2b2c1_Callback(hObject, eventdata, handles)
+function cfr2b1c1_Callback(hObject, eventdata, handles)
+function cfr2b0c1_Callback(hObject, eventdata, handles)
+function cfr2DRGdestc1_Callback(hObject, eventdata, handles)
+function cfr1RAMdestc1_Callback(hObject, eventdata, handles)
+
+
+function copy1to0_Callback(hObject, eventdata, handles)
+
+handles.cfr1RAMdestc0.Value = handles.cfr1RAMdestc1.Value;
+handles.cfr2DRGdestc0.Value = handles.cfr2DRGdestc1.Value;
+handles.cfr1b31c0.Value = handles.cfr1b31c1.Value;
+handles.cfr1b23c0.Value = handles.cfr1b23c1.Value;
+handles.cfr1b22c0.Value = handles.cfr1b22c1.Value;
+handles.cfr1b20c0.Value = handles.cfr1b20c1.Value;
+handles.cfr1b19c0.Value = handles.cfr1b19c1.Value;
+handles.cfr1b18c0.Value = handles.cfr1b18c1.Value;
+handles.cfr1b17c0.Value = handles.cfr1b17c1.Value;
+handles.cfr1b16c0.Value = handles.cfr1b16c1.Value;
+handles.cfr1b15c0.Value = handles.cfr1b15c1.Value;
+handles.cfr1b14c0.Value = handles.cfr1b14c1.Value;
+handles.cfr1b13c0.Value = handles.cfr1b13c1.Value;
+handles.cfr1b15c0.Value = handles.cfr1b15c1.Value;
+handles.cfr1b11c0.Value = handles.cfr1b11c1.Value;
+handles.cfr1b10c0.Value = handles.cfr1b10c1.Value;
+handles.cfr1b9c0.Value = handles.cfr1b9c1.Value;
+handles.cfr1b8c0.Value = handles.cfr1b8c1.Value;
+
+handles.cfr2b24c0.Value = handles.cfr2b24c1.Value;
+handles.cfr2b19c0.Value = handles.cfr2b19c1.Value;
+handles.cfr2b18c0.Value = handles.cfr2b18c1.Value;
+handles.cfr2b17c0.Value = handles.cfr2b17c1.Value;
+handles.cfr2b16c0.Value = handles.cfr2b16c1.Value;
+handles.cfr2b15c0.Value = handles.cfr2b15c1.Value;
+handles.cfr2b14c0.Value = handles.cfr2b14c1.Value ;
+handles.cfr2b7c0.Value = handles.cfr2b7c1.Value;
+handles.cfr2b6c0.Value = handles.cfr2b6c1.Value;
+handles.cfr2b4c0.Value = handles.cfr2b4c1.Value;
+handles.cfr2b3c0.Value = handles.cfr2b3c1.Value;
+handles.cfr2b2c0.Value = handles.cfr2b2c1.Value;
+handles.cfr2b1c0.Value = handles.cfr2b1c1.Value;
+handles.cfr2b0c0.Value = handles.cfr2b0c1.Value;
+
+
+function copy0to1_Callback(hObject, eventdata, handles)
+handles.cfr1RAMdestc1.Value = handles.cfr1RAMdestc0.Value;
+handles.cfr2DRGdestc1.Value = handles.cfr2DRGdestc0.Value;
+handles.cfr1b31c1.Value = handles.cfr1b31c0.Value;
+handles.cfr1b23c1.Value = handles.cfr1b23c0.Value;
+handles.cfr1b22c1.Value = handles.cfr1b22c0.Value;
+handles.cfr1b20c1.Value = handles.cfr1b20c0.Value;
+handles.cfr1b19c1.Value = handles.cfr1b19c0.Value;
+handles.cfr1b18c1.Value = handles.cfr1b18c0.Value;
+handles.cfr1b17c1.Value = handles.cfr1b17c0.Value;
+handles.cfr1b16c1.Value = handles.cfr1b16c0.Value;
+handles.cfr1b15c1.Value = handles.cfr1b15c0.Value;
+handles.cfr1b14c1.Value = handles.cfr1b14c0.Value;
+handles.cfr1b13c1.Value = handles.cfr1b13c0.Value;
+handles.cfr1b15c1.Value = handles.cfr1b15c0.Value;
+handles.cfr1b11c1.Value = handles.cfr1b11c0.Value;
+handles.cfr1b10c1.Value = handles.cfr1b10c0.Value;
+handles.cfr1b9c1.Value = handles.cfr1b9c0.Value;
+handles.cfr1b8c1.Value = handles.cfr1b8c0.Value;
+
+handles.cfr2b24c1.Value = handles.cfr2b24c0.Value;
+handles.cfr2b19c1.Value = handles.cfr2b19c0.Value;
+handles.cfr2b18c1.Value = handles.cfr2b18c0.Value;
+handles.cfr2b17c1.Value = handles.cfr2b17c0.Value;
+handles.cfr2b16c1.Value = handles.cfr2b16c0.Value;
+handles.cfr2b15c1.Value = handles.cfr2b15c0.Value;
+handles.cfr2b14c1.Value = handles.cfr2b14c0.Value ;
+handles.cfr2b7c1.Value = handles.cfr2b7c0.Value;
+handles.cfr2b6c1.Value = handles.cfr2b6c0.Value;
+handles.cfr2b4c1.Value = handles.cfr2b4c0.Value;
+handles.cfr2b3c1.Value = handles.cfr2b3c0.Value;
+handles.cfr2b2c1.Value = handles.cfr2b2c0.Value;
+handles.cfr2b1c1.Value = handles.cfr2b1c0.Value;
+handles.cfr2b0c1.Value = handles.cfr2b0c0.Value;
+
+
+
+function copyfromboxc0_Callback(hObject, eventdata, handles)
+binCFR1 = hex2bin(handles.CFR1c0.String);
+binCFR2 = hex2bin(handles.CFR2c0.String);
+
+if ~binCFR1(32-30) && ~binCFR1(32-29)       %% 00 -> freq 
+    handles.cfr1RAMdestc0.Value = 1;
+elseif ~binCFR1(32-30) && binCFR1(32-29)    %% 01 -> phase 
+    handles.cfr1RAMdestc0.Value = 2;
+elseif binCFR1(32-30) && ~binCFR1(32-29)    %% 10 -> amp
+    handles.cfr1RAMdestc0.Value = 3;
+elseif binCFR1(32-30) && binCFR1(32-29)     %% 11 -> polar
+    handles.cfr1RAMdestc0.Value = 4;
+end
+
+if ~binCFR2(32-21) && ~binCFR2(32-20)       %% 00 -> freq 
+    handles.cfr2DRGdestc0.Value = 1;
+elseif ~binCFR2(32-21) && binCFR2(32-20)    %% 01 -> phase 
+    handles.cfr2DRGdestc0.Value = 2;
+elseif binCFR2(32-21) && ~binCFR2(32-20)    %% 10 -> amp
+    handles.cfr2DRGdestc0.Value = 3;
+elseif binCFR2(32-21) && binCFR2(32-20)     %% 11 -> amp
+    handles.cfr2DRGdestc0.Value = 3;
+end
+
+handles.cfr1b31c0.Value = binCFR1(32-31); 
+handles.cfr1b23c0.Value = binCFR1(32-23) ;
+handles.cfr1b22c0.Value = binCFR1(32-22) ;
+handles.cfr1b20c0.Value = binCFR1(32-20) ;
+handles.cfr1b19c0.Value = binCFR1(32-19) ;
+handles.cfr1b18c0.Value = binCFR1(32-18) ;
+handles.cfr1b17c0.Value = binCFR1(32-17) ;
+handles.cfr1b16c0.Value = binCFR1(32-16) ;
+handles.cfr1b15c0.Value = binCFR1(32-15) ;
+handles.cfr1b14c0.Value = binCFR1(32-14) ;
+handles.cfr1b13c0.Value = binCFR1(32-13) ;
+handles.cfr1b12c0.Value = binCFR1(32-12) ;
+handles.cfr1b11c0.Value = binCFR1(32-11) ;
+handles.cfr1b10c0.Value = binCFR1(32-10) ;
+handles.cfr1b9c0.Value  = binCFR1(32-9) ;
+handles.cfr1b8c0.Value  = binCFR1(32-8) ;
+
+handles.cfr2b24c0.Value = binCFR2(32-24) ;
+handles.cfr2b19c0.Value = binCFR2(32-19) ;
+handles.cfr2b18c0.Value = binCFR2(32-18) ;
+handles.cfr2b17c0.Value = binCFR2(32-17) ;
+handles.cfr2b16c0.Value = binCFR2(32-16) ;
+handles.cfr2b15c0.Value = binCFR2(32-15) ;
+handles.cfr2b14c0.Value = binCFR2(32-14) ;
+handles.cfr2b7c0.Value = binCFR2(32-7) ;
+handles.cfr2b6c0.Value = binCFR2(32-6) ;
+handles.cfr2b4c0.Value = binCFR2(32-4) ;
+handles.cfr2b3c0.Value = binCFR2(32-3) ;
+handles.cfr2b2c0.Value = binCFR2(32-2) ;
+handles.cfr2b1c0.Value = binCFR2(32-1) ;
+handles.cfr2b0c0.Value = binCFR2(32-0) ;
+
+
+
+function copyfromboxc1_Callback(hObject, eventdata, handles)
+binCFR1 = hex2bin(handles.CFR1c1.String);
+binCFR2 = hex2bin(handles.CFR2c1.String);
+
+if ~binCFR1(32-30) && ~binCFR1(32-29)       %% 00 -> freq 
+    handles.cfr1RAMdestc1.Value = 1;
+elseif ~binCFR1(32-30) && binCFR1(32-29)    %% 01 -> phase 
+    handles.cfr1RAMdestc1.Value = 2;
+elseif binCFR1(32-30) && ~binCFR1(32-29)    %% 10 -> amp
+    handles.cfr1RAMdestc1.Value = 3;
+elseif binCFR1(32-30) && binCFR1(32-29)     %% 11 -> polar
+    handles.cfr1RAMdestc1.Value = 4;
+end
+
+if ~binCFR2(32-21) && ~binCFR2(32-20)       %% 00 -> freq 
+    handles.cfr2DRGdestc1.Value = 1;
+elseif ~binCFR2(32-21) && binCFR2(32-20)    %% 01 -> phase 
+    handles.cfr2DRGdestc1.Value = 2;
+elseif binCFR2(32-21) && ~binCFR2(32-20)    %% 10 -> amp
+    handles.cfr2DRGdestc1.Value = 3;
+elseif binCFR2(32-21) && binCFR2(32-20)     %% 11 -> amp
+    handles.cfr2DRGdestc1.Value = 3;
+end
+
+handles.cfr1b31c1.Value = binCFR1(32-31); 
+handles.cfr1b23c1.Value = binCFR1(32-23) ;
+handles.cfr1b22c1.Value = binCFR1(32-22) ;
+handles.cfr1b20c1.Value = binCFR1(32-20) ;
+handles.cfr1b19c1.Value = binCFR1(32-19) ;
+handles.cfr1b18c1.Value = binCFR1(32-18) ;
+handles.cfr1b17c1.Value = binCFR1(32-17) ;
+handles.cfr1b16c1.Value = binCFR1(32-16) ;
+handles.cfr1b15c1.Value = binCFR1(32-15) ;
+handles.cfr1b14c1.Value = binCFR1(32-14) ;
+handles.cfr1b13c1.Value = binCFR1(32-13) ;
+handles.cfr1b12c1.Value = binCFR1(32-12) ;
+handles.cfr1b11c1.Value = binCFR1(32-11) ;
+handles.cfr1b10c1.Value = binCFR1(32-10) ;
+handles.cfr1b9c1.Value  = binCFR1(32-9) ;
+handles.cfr1b8c1.Value  = binCFR1(32-8) ;
+
+handles.cfr2b24c1.Value = binCFR2(32-24) ;
+handles.cfr2b19c1.Value = binCFR2(32-19) ;
+handles.cfr2b18c1.Value = binCFR2(32-18) ;
+handles.cfr2b17c1.Value = binCFR2(32-17) ;
+handles.cfr2b16c1.Value = binCFR2(32-16) ;
+handles.cfr2b15c1.Value = binCFR2(32-15) ;
+handles.cfr2b14c1.Value = binCFR2(32-14) ;
+handles.cfr2b7c1.Value = binCFR2(32-7) ;
+handles.cfr2b6c1.Value = binCFR2(32-6) ;
+handles.cfr2b4c1.Value = binCFR2(32-4) ;
+handles.cfr2b3c1.Value = binCFR2(32-3) ;
+handles.cfr2b2c1.Value = binCFR2(32-2) ;
+handles.cfr2b1c1.Value = binCFR2(32-1) ;
+handles.cfr2b0c1.Value = binCFR2(32-0) ;
