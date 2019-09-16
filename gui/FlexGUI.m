@@ -256,7 +256,38 @@ function [prof, thisprof] = getprof1(~, ~, handles)
         return
     end
     
-
+function [profc0, profc1] = getprofhfromnum(num, handles)
+    switch num
+        case 0
+            profc0 = handles.stp0c0;
+            profc1 = handles.stp0c1;
+        case 1
+            profc0 = handles.stp1c0;
+            profc1 = handles.stp1c1;
+        case 2
+            profc0 = handles.stp2c0;
+            profc1 = handles.stp3c1;
+        case 3
+            profc0 = handles.stp3c0;
+            profc1 = handles.stp3c1;
+        case 4
+            profc0 = handles.stp4c0;
+            profc1 = handles.stp4c1;
+        case 5
+            profc0 = handles.stp5c0;
+            profc1 = handles.stp5c1;
+        case 6
+            profc0 = handles.stp6c0;
+            profc1 = handles.stp6c1;
+        case 7
+            profc0 = handles.stp7c0;
+            profc1 = handles.stp7c1;
+        case 8
+            profc0 = handles.stp8c0;
+            profc1 = handles.stp8c1;
+    end
+    
+    
 function slot0_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
 [slot, thisslot] = getslot(hObject, eventdata, handles);
@@ -445,69 +476,85 @@ function nextprofc0_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
 [slot, thisslot] = getslot(hObject, eventdata, handles);
 [prof0, profhandle] = getprof0(hObject, eventdata, handles);
-nextprof(t{slot+1}, 0)
 
 switch prof0
     case 0
         handles.stp0c0.Value = 0;
         handles.stp1c0.Value = 1;
+        setprof(t{slot+1}, 0, 1);
     case 1
         handles.stp1c0.Value = 0;
-        handles.stp2c0.Value = 1;
+        handles.stp3c0.Value = 1;
+        setprof(t{slot+1}, 0, 3);
     case 2    
         handles.stp2c0.Value = 0;
-        handles.stp3c0.Value = 1;
+        handles.stp6c0.Value = 1;
+        setprof(t{slot+1}, 0, 6);
     case 3
         handles.stp3c0.Value = 0;
-        handles.stp4c0.Value = 1;
+        handles.stp2c0.Value = 1;
+        setprof(t{slot+1}, 0, 2);
     case 4
         handles.stp4c0.Value = 0;
-        handles.stp5c0.Value = 1;
+        handles.stp0c0.Value = 1;
+        setprof(t{slot+1}, 0, 0);
     case 5
         handles.stp5c0.Value = 0;
-        handles.stp6c0.Value = 1;
+        handles.stp4c0.Value = 1;
+        setprof(t{slot+1}, 0, 4);
     case 6
         handles.stp6c0.Value = 0;
         handles.stp7c0.Value = 1;
+        setprof(t{slot+1}, 0, 7);
     case 7 
         handles.stp7c0.Value = 0;
-        handles.stp0c0.Value = 1;
+        handles.stp5c0.Value = 1;
+        setprof(t{slot+1}, 0, 5);
 end
 update_FPA_values(hObject, eventdata, handles)
+update_allowed_profs(hObject, eventdata, handles)
+
 function lastprofc0_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
 [slot, thisslot] = getslot(hObject, eventdata, handles);
 [prof0, profhandle] = getprof0(hObject, eventdata, handles);
 
-lastprof(t{slot+1}, 0)
-
 switch prof0
     case 0
         handles.stp0c0.Value = 0;
-        handles.stp7c0.Value = 1;
-    case 7
-        handles.stp7c0.Value = 0;
-        handles.stp6c0.Value = 1;
-    case 6    
-        handles.stp6c0.Value = 0;
-        handles.stp5c0.Value = 1;
-    case 5
-        handles.stp5c0.Value = 0;
         handles.stp4c0.Value = 1;
-    case 4
-        handles.stp4c0.Value = 0;
-        handles.stp3c0.Value = 1;
-    case 3
-        handles.stp3c0.Value = 0;
-        handles.stp2c0.Value = 1;
-    case 2
-        handles.stp2c0.Value = 0;
-        handles.stp1c0.Value = 1;
-    case 1 
+        setprof(t{slot+1}, 0, 4);
+    case 1
         handles.stp1c0.Value = 0;
         handles.stp0c0.Value = 1;
+        setprof(t{slot+1}, 0, 0);
+    case 2    
+        handles.stp2c0.Value = 0;
+        handles.stp3c0.Value = 1;
+        setprof(t{slot+1}, 0, 3);
+    case 3
+        handles.stp3c0.Value = 0;
+        handles.stp1c0.Value = 1;
+        setprof(t{slot+1}, 0, 1);
+    case 4
+        handles.stp4c0.Value = 0;
+        handles.stp5c0.Value = 1;
+        setprof(t{slot+1}, 0, 5);
+    case 5
+        handles.stp5c0.Value = 0;
+        handles.stp7c0.Value = 1;
+        setprof(t{slot+1}, 0, 7);
+    case 6
+        handles.stp6c0.Value = 0;
+        handles.stp2c0.Value = 1;
+        setprof(t{slot+1}, 0, 2);
+    case 7 
+        handles.stp7c0.Value = 0;
+        handles.stp6c0.Value = 1;
+        setprof(t{slot+1}, 0, 6);
 end
 update_FPA_values(hObject, eventdata, handles)
+update_allowed_profs(hObject, eventdata, handles)
 function setprofc0_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
 [slot, thisslot] = getslot(hObject, eventdata, handles);
@@ -517,75 +564,98 @@ setprof(t{slot+1}, 0, prof)
 
 handles.lastprofc0.Enable = 'on';
 handles.nextprofc0.Enable = 'on';
+handles.bothlastprof.Enable = 'on';
+handles.bothnextprof.Enable = 'on';
 update_FPA_values(hObject, eventdata, handles)
+update_allowed_profs(hObject, eventdata, handles)
+
 function nextprofc1_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
 [slot, thisslot] = getslot(hObject, eventdata, handles);
 [prof1, profhandle] = getprof1(hObject, eventdata, handles);
 
-nextprof(t{slot+1}, 1);
 %change radios
 switch prof1
     case 0
         handles.stp0c1.Value = 0;
         handles.stp1c1.Value = 1;
+        setprof(t{slot+1}, 1, 1);
     case 1
         handles.stp1c1.Value = 0;
-        handles.stp2c1.Value = 1;
+        handles.stp3c1.Value = 1;
+        setprof(t{slot+1}, 1, 3);
     case 2    
         handles.stp2c1.Value = 0;
-        handles.stp3c1.Value = 1;
+        handles.stp6c1.Value = 1;
+        setprof(t{slot+1}, 1, 6);
     case 3
         handles.stp3c1.Value = 0;
-        handles.stp4c1.Value = 1;
+        handles.stp2c1.Value = 1;
+        setprof(t{slot+1}, 1, 2);
     case 4
         handles.stp4c1.Value = 0;
-        handles.stp5c1.Value = 1;
+        handles.stp0c1.Value = 1;
+        setprof(t{slot+1}, 1, 0);
     case 5
         handles.stp5c1.Value = 0;
-        handles.stp6c1.Value = 1;
+        handles.stp4c1.Value = 1;
+        setprof(t{slot+1}, 1, 4);
     case 6
         handles.stp6c1.Value = 0;
         handles.stp7c1.Value = 1;
+        setprof(t{slot+1}, 1, 7);
     case 7 
         handles.stp7c1.Value = 0;
-        handles.stp0c1.Value = 1;
+        handles.stp5c1.Value = 1;
+        setprof(t{slot+1}, 1, 5);
 end
 update_FPA_values(hObject, eventdata, handles)
+update_allowed_profs(hObject, eventdata, handles)
 function lastprofc1_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
 [slot, thisslot] = getslot(hObject, eventdata, handles);
 [prof1, profhandle] = getprof1(hObject, eventdata, handles);
 
-lastprof(t{slot+1}, 1)
-
 switch prof1
     case 0
         handles.stp0c1.Value = 0;
-        handles.stp7c1.Value = 1;
-    case 7
-        handles.stp7c1.Value = 0;
-        handles.stp6c1.Value = 1;
-    case 6    
-        handles.stp6c1.Value = 0;
-        handles.stp5c1.Value = 1;
-    case 5
-        handles.stp5c1.Value = 0;
         handles.stp4c1.Value = 1;
-    case 4
-        handles.stp4c1.Value = 0;
-        handles.stp3c1.Value = 1;
-    case 3
-        handles.stp3c1.Value = 0;
-        handles.stp2c1.Value = 1;
-    case 2
-        handles.stp2c1.Value = 0;
-        handles.stp1c1.Value = 1;
-    case 1 
+        setprof(t{slot+1}, 1, 4);
+    case 1
         handles.stp1c1.Value = 0;
         handles.stp0c1.Value = 1;
+        setprof(t{slot+1}, 1, 0);
+    case 2    
+        handles.stp2c1.Value = 0;
+        handles.stp3c1.Value = 1;
+        setprof(t{slot+1}, 1, 3);
+    case 3
+        handles.stp3c1.Value = 0;
+        handles.stp1c1.Value = 1;
+        setprof(t{slot+1}, 1, 1);
+    case 4
+        handles.stp4c1.Value = 0;
+        handles.stp5c1.Value = 1;
+        setprof(t{slot+1}, 1, 5);
+    case 5
+        handles.stp5c1.Value = 0;
+        handles.stp7c1.Value = 1;
+        setprof(t{slot+1}, 1, 7);
+    case 6
+        handles.stp6c1.Value = 0;
+        handles.stp2c1.Value = 1;
+        setprof(t{slot+1}, 1, 2);
+    case 7 
+        handles.stp7c1.Value = 0;
+        handles.stp6c1.Value = 1;
+        setprof(t{slot+1}, 1, 6);
 end
 update_FPA_values(hObject, eventdata, handles)
+update_allowed_profs(hObject, eventdata, handles)
+
+
+
+
 function setprofc1_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
 [slot, thisslot] = getslot(hObject, eventdata, handles);
@@ -597,7 +667,10 @@ setprof(t{slot+1}, 1, prof)
 
 handles.lastprofc1.Enable = 'on';
 handles.nextprofc1.Enable = 'on';
+handles.bothlastprof.Enable = 'on';
+handles.bothnextprof.Enable = 'on';
 update_FPA_values(hObject, eventdata, handles)
+update_allowed_profs(hObject, eventdata, handles)
 
 function bothnextprof_Callback(hObject, eventdata, handles)
 nextprofc0_Callback(hObject, eventdata, handles);
@@ -609,72 +682,267 @@ function bothsetprof_Callback(hObject, eventdata, handles)
 setprofc0_Callback(hObject, eventdata, handles)
 setprofc1_Callback(hObject, eventdata, handles)
 
+function update_allowed_profs(hObject, eventdata, handles)
+[prof0, profhandle] = getprof0(hObject, eventdata, handles);
+[prof1, profhandle] = getprof1(hObject, eventdata, handles);
+
+switch prof0
+    case 0
+        handles.stp0c0.Enable = 'on';
+        handles.stp1c0.Enable = 'on';
+        handles.stp2c0.Enable = 'on';
+        handles.stp3c0.Enable = 'on';
+        handles.stp4c0.Enable = 'on';
+        handles.stp5c0.Enable = 'on';
+        handles.stp6c0.Enable = 'on';
+        handles.stp7c0.Enable = 'on';
+    case 1
+        handles.stp0c0.Enable = 'on';
+        handles.stp1c0.Enable = 'on';
+        handles.stp2c0.Enable = 'off';
+        handles.stp3c0.Enable = 'on';
+        handles.stp4c0.Enable = 'off';
+        handles.stp5c0.Enable = 'on';
+        handles.stp6c0.Enable = 'off';
+        handles.stp7c0.Enable = 'on';
+    case 2
+        handles.stp0c0.Enable = 'on';
+        handles.stp1c0.Enable = 'off';
+        handles.stp2c0.Enable = 'on';
+        handles.stp3c0.Enable = 'on';
+        handles.stp4c0.Enable = 'off';
+        handles.stp5c0.Enable = 'off';
+        handles.stp6c0.Enable = 'on';
+        handles.stp7c0.Enable = 'on';        
+    case 3
+        handles.stp0c0.Enable = 'on';
+        handles.stp1c0.Enable = 'on';
+        handles.stp2c0.Enable = 'on';
+        handles.stp3c0.Enable = 'on';
+        handles.stp4c0.Enable = 'off';
+        handles.stp5c0.Enable = 'off';
+        handles.stp6c0.Enable = 'off';
+        handles.stp7c0.Enable = 'on';        
+    case 4
+        handles.stp0c0.Enable = 'on';
+        handles.stp1c0.Enable = 'off';
+        handles.stp2c0.Enable = 'off';
+        handles.stp3c0.Enable = 'off';
+        handles.stp4c0.Enable = 'on';
+        handles.stp5c0.Enable = 'on';
+        handles.stp6c0.Enable = 'on';
+        handles.stp7c0.Enable = 'on';        
+    case 5
+        handles.stp0c0.Enable = 'on';
+        handles.stp1c0.Enable = 'on';
+        handles.stp2c0.Enable = 'off';
+        handles.stp3c0.Enable = 'off';
+        handles.stp4c0.Enable = 'on';
+        handles.stp5c0.Enable = 'on';
+        handles.stp6c0.Enable = 'off';
+        handles.stp7c0.Enable = 'on';        
+    case 6
+        handles.stp0c0.Enable = 'on';
+        handles.stp1c0.Enable = 'off';
+        handles.stp2c0.Enable = 'on';
+        handles.stp3c0.Enable = 'off';
+        handles.stp4c0.Enable = 'on';
+        handles.stp5c0.Enable = 'off';
+        handles.stp6c0.Enable = 'on';
+        handles.stp7c0.Enable = 'on';        
+    case 7
+        handles.stp0c0.Enable = 'on';
+        handles.stp1c0.Enable = 'on';
+        handles.stp2c0.Enable = 'on';
+        handles.stp3c0.Enable = 'on';
+        handles.stp4c0.Enable = 'on';
+        handles.stp5c0.Enable = 'on';
+        handles.stp6c0.Enable = 'on';
+        handles.stp7c0.Enable = 'on';        
+end
+switch prof1
+    case 0
+        handles.stp0c1.Enable = 'on';
+        handles.stp1c1.Enable = 'on';
+        handles.stp2c1.Enable = 'on';
+        handles.stp3c1.Enable = 'on';
+        handles.stp4c1.Enable = 'on';
+        handles.stp5c1.Enable = 'on';
+        handles.stp6c1.Enable = 'on';
+        handles.stp7c1.Enable = 'on';
+    case 1
+        handles.stp0c1.Enable = 'on';
+        handles.stp1c1.Enable = 'on';
+        handles.stp2c1.Enable = 'off';
+        handles.stp3c1.Enable = 'on';
+        handles.stp4c1.Enable = 'off';
+        handles.stp5c1.Enable = 'on';
+        handles.stp6c1.Enable = 'off';
+        handles.stp7c1.Enable = 'on';
+    case 2
+        handles.stp0c1.Enable = 'on';
+        handles.stp1c1.Enable = 'off';
+        handles.stp2c1.Enable = 'on';
+        handles.stp3c1.Enable = 'on';
+        handles.stp4c1.Enable = 'off';
+        handles.stp5c1.Enable = 'off';
+        handles.stp6c1.Enable = 'on';
+        handles.stp7c1.Enable = 'on';        
+    case 3
+        handles.stp0c1.Enable = 'on';
+        handles.stp1c1.Enable = 'on';
+        handles.stp2c1.Enable = 'on';
+        handles.stp3c1.Enable = 'on';
+        handles.stp4c1.Enable = 'off';
+        handles.stp5c1.Enable = 'off';
+        handles.stp6c1.Enable = 'off';
+        handles.stp7c1.Enable = 'on';        
+    case 4
+        handles.stp0c1.Enable = 'on';
+        handles.stp1c1.Enable = 'off';
+        handles.stp2c1.Enable = 'off';
+        handles.stp3c1.Enable = 'off';
+        handles.stp4c1.Enable = 'on';
+        handles.stp5c1.Enable = 'on';
+        handles.stp6c1.Enable = 'on';
+        handles.stp7c1.Enable = 'on';        
+    case 5
+        handles.stp0c1.Enable = 'on';
+        handles.stp1c1.Enable = 'on';
+        handles.stp2c1.Enable = 'off';
+        handles.stp3c1.Enable = 'off';
+        handles.stp4c1.Enable = 'on';
+        handles.stp5c1.Enable = 'on';
+        handles.stp6c1.Enable = 'off';
+        handles.stp7c1.Enable = 'on';        
+    case 6
+        handles.stp0c1.Enable = 'on';
+        handles.stp1c1.Enable = 'off';
+        handles.stp2c1.Enable = 'on';
+        handles.stp3c1.Enable = 'off';
+        handles.stp4c1.Enable = 'on';
+        handles.stp5c1.Enable = 'off';
+        handles.stp6c1.Enable = 'on';
+        handles.stp7c1.Enable = 'on';        
+    case 7
+        handles.stp0c1.Enable = 'on';
+        handles.stp1c1.Enable = 'on';
+        handles.stp2c1.Enable = 'on';
+        handles.stp3c1.Enable = 'on';
+        handles.stp4c1.Enable = 'on';
+        handles.stp5c1.Enable = 'on';
+        handles.stp6c1.Enable = 'on';
+        handles.stp7c1.Enable = 'on';        
+end
+
+
+
+
+
+
+
+
+
+
+
 
 function stp6c1_Callback(hObject, eventdata, handles)
 handles.lastprofc1.Enable = 'off';
 handles.nextprofc1.Enable = 'off';
+handles.bothlastprof.Enable = 'off';
+handles.bothnextprof.Enable = 'off';
 update_FPA_values(hObject, eventdata, handles)
 function stp5c1_Callback(hObject, eventdata, handles)
 handles.lastprofc1.Enable = 'off';
 handles.nextprofc1.Enable = 'off';
+handles.bothlastprof.Enable = 'off';
+handles.bothnextprof.Enable = 'off';
 update_FPA_values(hObject, eventdata, handles)
 function stp7c1_Callback(hObject, eventdata, handles)
 handles.lastprofc1.Enable = 'off';
 handles.nextprofc1.Enable = 'off';
+handles.bothlastprof.Enable = 'off';
+handles.bothnextprof.Enable = 'off';
 update_FPA_values(hObject, eventdata, handles)
 function stp3c1_Callback(hObject, eventdata, handles)
 handles.lastprofc1.Enable = 'off';
 handles.nextprofc1.Enable = 'off';
+handles.bothlastprof.Enable = 'off';
+handles.bothnextprof.Enable = 'off';
 update_FPA_values(hObject, eventdata, handles)
 function stp2c1_Callback(hObject, eventdata, handles)
 handles.lastprofc1.Enable = 'off';
 handles.nextprofc1.Enable = 'off';
+handles.bothlastprof.Enable = 'off';
+handles.bothnextprof.Enable = 'off';
 update_FPA_values(hObject, eventdata, handles)
 function stp1c1_Callback(hObject, eventdata, handles)
 handles.lastprofc1.Enable = 'off';
 handles.nextprofc1.Enable = 'off';
+handles.bothlastprof.Enable = 'off';
+handles.bothnextprof.Enable = 'off';
 update_FPA_values(hObject, eventdata, handles)
 function stp0c1_Callback(hObject, eventdata, handles)
 handles.lastprofc1.Enable = 'off';
 handles.nextprofc1.Enable = 'off';
+handles.bothlastprof.Enable = 'off';
+handles.bothnextprof.Enable = 'off';
 update_FPA_values(hObject, eventdata, handles)
 function stp4c1_Callback(hObject, eventdata, handles)
 handles.lastprofc1.Enable = 'off';
 handles.nextprofc1.Enable = 'off';
+handles.bothlastprof.Enable = 'off';
+handles.bothnextprof.Enable = 'off';
 update_FPA_values(hObject, eventdata, handles)
 
 
 function stp6c0_Callback(hObject, eventdata, handles)
 handles.lastprofc0.Enable = 'off';
 handles.nextprofc0.Enable = 'off';
+handles.bothlastprof.Enable = 'off';
+handles.bothnextprof.Enable = 'off';
 update_FPA_values(hObject, eventdata, handles)
 function stp5c0_Callback(hObject, eventdata, handles)
 handles.lastprofc0.Enable = 'off';
 handles.nextprofc0.Enable = 'off';
+handles.bothlastprof.Enable = 'off';
+handles.bothnextprof.Enable = 'off';
 update_FPA_values(hObject, eventdata, handles)
 function stp4c0_Callback(hObject, eventdata, handles)
 handles.lastprofc0.Enable = 'off';
 handles.nextprofc0.Enable = 'off';
+handles.bothlastprof.Enable = 'off';
+handles.bothnextprof.Enable = 'off';
 update_FPA_values(hObject, eventdata, handles)
 function stp7c0_Callback(hObject, eventdata, handles)
 handles.lastprofc0.Enable = 'off';
 handles.nextprofc0.Enable = 'off';
+handles.bothlastprof.Enable = 'off';
+handles.bothnextprof.Enable = 'off';
 update_FPA_values(hObject, eventdata, handles)
 function stp3c0_Callback(hObject, eventdata, handles)
 handles.lastprofc0.Enable = 'off';
 handles.nextprofc0.Enable = 'off';
+handles.bothlastprof.Enable = 'off';
+handles.bothnextprof.Enable = 'off';
 update_FPA_values(hObject, eventdata, handles)
 function stp2c0_Callback(hObject, eventdata, handles)
 handles.lastprofc0.Enable = 'off';
 handles.nextprofc0.Enable = 'off';
+handles.bothlastprof.Enable = 'off';
+handles.bothnextprof.Enable = 'off';
 update_FPA_values(hObject, eventdata, handles)
 function stp1c0_Callback(hObject, eventdata, handles)
 handles.lastprofc0.Enable = 'off';
 handles.nextprofc0.Enable = 'off';
+handles.bothlastprof.Enable = 'off';
+handles.bothnextprof.Enable = 'off';
 update_FPA_values(hObject, eventdata, handles)
 function stp0c0_Callback(hObject, eventdata, handles)
 handles.lastprofc0.Enable = 'off';
 handles.nextprofc0.Enable = 'off';
+handles.bothlastprof.Enable = 'off';
+handles.bothnextprof.Enable = 'off';
 update_FPA_values(hObject, eventdata, handles)
 
 
@@ -740,309 +1008,37 @@ thepos(1) = 130;
 handles.CFRpanel.OuterPosition = thepos;
 
 
-% --- Executes on button press in cfr1b31.
 function cfr1b31_Callback(hObject, eventdata, handles)
-% hObject    handle to cfr1b31 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of cfr1b31
-
-
-% --- Executes on button press in cfr1b30.
 function cfr1b30_Callback(hObject, eventdata, handles)
-% hObject    handle to cfr1b30 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of cfr1b30
-
-
-% --- Executes on button press in cfr1b29.
 function cfr1b29_Callback(hObject, eventdata, handles)
-% hObject    handle to cfr1b29 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of cfr1b29
-
-
-% --- Executes on button press in cfr1b23.
 function cfr1b23_Callback(hObject, eventdata, handles)
-% hObject    handle to cfr1b23 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of cfr1b23
-
-
-% --- Executes on button press in cfr1b22.
 function cfr1b22_Callback(hObject, eventdata, handles)
-% hObject    handle to cfr1b22 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of cfr1b22
-
-
-% --- Executes on button press in cfr1b20.
 function cfr1b20_Callback(hObject, eventdata, handles)
-% hObject    handle to cfr1b20 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of cfr1b20
-
-
-% --- Executes on button press in cfr1b19.
 function cfr1b19_Callback(hObject, eventdata, handles)
-% hObject    handle to cfr1b19 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of cfr1b19
-
-
-% --- Executes on button press in cfr1b18.
 function cfr1b18_Callback(hObject, eventdata, handles)
-% hObject    handle to cfr1b18 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of cfr1b18
-
-
-% --- Executes on button press in cfr1b17.
 function cfr1b17_Callback(hObject, eventdata, handles)
-% hObject    handle to cfr1b17 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of cfr1b17
-
-
-% --- Executes on button press in cfr1b16.
 function cfr1b16_Callback(hObject, eventdata, handles)
-% hObject    handle to cfr1b16 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of cfr1b16
-
-
-% --- Executes on button press in cfr1b12.
 function cfr1b12_Callback(hObject, eventdata, handles)
-% hObject    handle to cfr1b12 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of cfr1b12
-
-
-% --- Executes on button press in cfr1b14.
 function cfr1b14_Callback(hObject, eventdata, handles)
-% hObject    handle to cfr1b14 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of cfr1b14
-
-
-% --- Executes on button press in cfr1b13.
 function cfr1b13_Callback(hObject, eventdata, handles)
-% hObject    handle to cfr1b13 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of cfr1b13
-
-
-% --- Executes on button press in cfr1b11.
 function cfr1b11_Callback(hObject, eventdata, handles)
-% hObject    handle to cfr1b11 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of cfr1b11
-
-
-% --- Executes on button press in cfr1b10.
 function cfr1b10_Callback(hObject, eventdata, handles)
-% hObject    handle to cfr1b10 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of cfr1b10
-
-
-% --- Executes on button press in cfr1b9.
 function cfr1b9_Callback(hObject, eventdata, handles)
-% hObject    handle to cfr1b9 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of cfr1b9
-
-
-% --- Executes on button press in cfr1b8.
 function cfr1b8_Callback(hObject, eventdata, handles)
-% hObject    handle to cfr1b8 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of cfr1b8
-
-
-% --- Executes on button press in cfr2b21.
 function cfr2b21_Callback(hObject, eventdata, handles)
-% hObject    handle to cfr2b21 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of cfr2b21
-
-
-% --- Executes on button press in cfr2b20.
 function cfr2b20_Callback(hObject, eventdata, handles)
-% hObject    handle to cfr2b20 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of cfr2b20
-
-
-% --- Executes on button press in cfr2b19.
 function cfr2b19_Callback(hObject, eventdata, handles)
-% hObject    handle to cfr2b19 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of cfr2b19
-
-
-% --- Executes on button press in cfr2b18.
 function cfr2b18_Callback(hObject, eventdata, handles)
-% hObject    handle to cfr2b18 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of cfr2b18
-
-
-% --- Executes on button press in cfr2b17.
 function cfr2b17_Callback(hObject, eventdata, handles)
-% hObject    handle to cfr2b17 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of cfr2b17
-
-
-% --- Executes on button press in cfr2b16.
 function cfr2b16_Callback(hObject, eventdata, handles)
-% hObject    handle to cfr2b16 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of cfr2b16
-
-
-% --- Executes on button press in cfr2b15.
 function cfr2b15_Callback(hObject, eventdata, handles)
-% hObject    handle to cfr2b15 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of cfr2b15
-
-
-% --- Executes on button press in cfr2b14.
 function cfr2b14_Callback(hObject, eventdata, handles)
-% hObject    handle to cfr2b14 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of cfr2b14
-
-
-% --- Executes on button press in cfr2b7.
 function cfr2b7_Callback(hObject, eventdata, handles)
-% hObject    handle to cfr2b7 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of cfr2b7
-
-
-% --- Executes on button press in cfr2b6.
 function cfr2b6_Callback(hObject, eventdata, handles)
-% hObject    handle to cfr2b6 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of cfr2b6
-
-
-% --- Executes on button press in cfr2b4.
 function cfr2b4_Callback(hObject, eventdata, handles)
-% hObject    handle to cfr2b4 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of cfr2b4
-
-
-% --- Executes on button press in cfr2b3.
 function cfr2b3_Callback(hObject, eventdata, handles)
-% hObject    handle to cfr2b3 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of cfr2b3
-
-
-% --- Executes on button press in cfr2b2.
 function cfr2b2_Callback(hObject, eventdata, handles)
-% hObject    handle to cfr2b2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of cfr2b2
-
-
-% --- Executes on button press in cfr2b1.
 function cfr2b1_Callback(hObject, eventdata, handles)
-% hObject    handle to cfr2b1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of cfr2b1
-
-
-% --- Executes on button press in cfr2b0.
 function cfr2b0_Callback(hObject, eventdata, handles)
-% hObject    handle to cfr2b0 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of cfr2b0
-
-
-
-% --- Executes on selection change in cfr1RAMdest.
 function cfr1RAMdest_Callback(hObject, eventdata, handles)
-% hObject    handle to cfr1RAMdest (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: contents = cellstr(get(hObject,'String')) returns cfr1RAMdest contents as cell array
-%        contents{get(hObject,'Value')} returns selected item from cfr1RAMdest
-
-
-% --- Executes on button press in cfr2b24.
 function cfr2b24_Callback(hObject, eventdata, handles)
-% hObject    handle to cfr2b24 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of cfr2b24
