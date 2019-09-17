@@ -22,7 +22,7 @@ function varargout = FlexGUI(varargin)
 
 % Edit the above text to modify the response to help FlexGUI
 
-% Last Modified by GUIDE v2.5 17-Sep-2019 12:49:40
+% Last Modified by GUIDE v2.5 17-Sep-2019 13:12:18
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -99,18 +99,17 @@ t = get(handles.conn, 'UserData');
 [prof1, profhandle] = getprof1(hObject, eventdata, handles);
 [slot, thisslot] = getslot(hObject, eventdata, handles);
 
-amp0 = str2double(get(handles.amp0, 'String'));
-amp1 = str2double(get(handles.amp1, 'String'));
-phase0 = str2double(get(handles.phase0, 'String'));
-phase1 = str2double(get(handles.phase1, 'String'));
-freq0 = str2double(get(handles.freq0, 'String'))*freqmult(handles);
-freq1 = str2double(get(handles.freq1, 'String'))*freqmult(handles);
+amp0 = str2double(handles.amp0.String);
+amp1 = str2double(handles.amp1.String);
+phase0 = str2double(handles.phase0.String);
+phase1 = str2double(handles.phase1.String);
+freq0 =( str2double(handles.freq0.String) - str2double(handles.offset.String) ) *freqmult(handles);
+freq1 =( str2double(handles.freq1.String) - str2double(handles.offset.String) )*freqmult(handles);
 
 % twosingletones(t{slot+1}, prof0,amp0,phase0,freq0,amp1,phase1,freq1);
 onesingletone(t{slot+1}, 0, prof0, amp0,  phase0, freq0);
 onesingletone(t{slot+1}, 1, prof1, amp1,  phase1, freq1);
 flexupdateboth(t{slot+1});
-
 
 handles.lastprofc0.Enable = 'on';
 handles.nextprofc0.Enable = 'on';
@@ -122,9 +121,9 @@ t = get(handles.conn, 'UserData');
 [prof0, profhandle] = getprof0(hObject, eventdata, handles);
 [slot, thisslot] = getslot(hObject, eventdata, handles);
 
-amp0 = str2double(get(handles.amp0, 'String'));
-phase0 = str2double(get(handles.phase0, 'String'));
-freq0 = str2double(get(handles.freq0, 'String'))*freqmult(handles);
+amp0 = str2double(handles.amp0.String);
+phase0 = str2double(handles.phase0.String);
+freq0 = ( str2double(handles.freq0.String) - str2double(handles.offset.String) )*freqmult(handles);
 
 onesingletone(t{slot+1}, 0, prof0, amp0,  phase0, freq0);
 flexupdateone(t{slot+1}, 0);
@@ -137,9 +136,9 @@ t = get(handles.conn, 'UserData');
 [prof1, profhandle] = getprof1(hObject, eventdata, handles);
 [slot, thisslot] = getslot(hObject, eventdata, handles);
 
-amp1 = str2double(get(handles.amp1, 'String'));
-phase1 = str2double(get(handles.phase1, 'String'));
-freq1 = str2double(get(handles.freq1, 'String'))*freqmult(handles);
+amp1 = str2double(handles.amp1.String);
+phase1 = str2double(handles.phase1.String);
+freq1 = ( str2double(handles.freq1.String) - str2double(handles.offset.String) )*freqmult(handles);
 
 onesingletone(t{slot+1}, 1, prof1, amp1,  phase1, freq1);
 flexupdateone(t{slot+1}, 1);
@@ -260,6 +259,7 @@ function [profc0, profc1] = getprofhfromnum(num, handles)
     
 function slot0_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
+slotupdate(hObject, eventdata, handles)
 [slot, thisslot] = getslot(hObject, eventdata, handles);
 if strcmp(class(t{slot+1}), 'tcpip')
     if strcmp(t{slot+1}.status, 'open')
@@ -273,9 +273,10 @@ if strcmp(class(t{slot+1}), 'tcpip')
 else
     set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
 end
-slotupdate(hObject, eventdata, handles)
+
 function slot1_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
+slotupdate(hObject, eventdata, handles)
 [slot, thisslot] = getslot(hObject, eventdata, handles);
 if strcmp(class(t{slot+1}), 'tcpip')
     if strcmp(t{slot+1}.status, 'open')
@@ -289,9 +290,9 @@ if strcmp(class(t{slot+1}), 'tcpip')
 else
     set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
 end
-slotupdate(hObject, eventdata, handles)
 function slot2_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
+slotupdate(hObject, eventdata, handles)
 [slot, thisslot] = getslot(hObject, eventdata, handles);
 if strcmp(class(t{slot+1}), 'tcpip')
     if strcmp(t{slot+1}.status, 'open')
@@ -305,9 +306,9 @@ if strcmp(class(t{slot+1}), 'tcpip')
 else
     set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
 end
-slotupdate(hObject, eventdata, handles)
 function slot3_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
+slotupdate(hObject, eventdata, handles)
 [slot, thisslot] = getslot(hObject, eventdata, handles);
 if strcmp(class(t{slot+1}), 'tcpip')
     if strcmp(t{slot+1}.status, 'open')
@@ -321,9 +322,9 @@ if strcmp(class(t{slot+1}), 'tcpip')
 else
     set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
 end
-slotupdate(hObject, eventdata, handles)
 function slot4_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
+slotupdate(hObject, eventdata, handles)
 [slot, thisslot] = getslot(hObject, eventdata, handles);
 if strcmp(class(t{slot+1}), 'tcpip')
     if strcmp(t{slot+1}.status, 'open')
@@ -337,9 +338,9 @@ if strcmp(class(t{slot+1}), 'tcpip')
 else
     set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
 end
-slotupdate(hObject, eventdata, handles)
 function slot5_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
+slotupdate(hObject, eventdata, handles)
 [slot, thisslot] = getslot(hObject, eventdata, handles);
 if strcmp(class(t{slot+1}), 'tcpip')
     if strcmp(t{slot+1}.status, 'open')
@@ -353,13 +354,12 @@ if strcmp(class(t{slot+1}), 'tcpip')
 else
     set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
 end
-slotupdate(hObject, eventdata, handles)
 
 function slotupdate(hObject, eventdata, handles)
 update_FPA_values(hObject, eventdata, handles)
 update_CFR_values(hObject, eventdata, handles)
-copyfromboxc0_Callback(hObject, eventdata, handles)
-copyfromboxc1_Callback(hObject, eventdata, handles)
+% copyfromboxc0_Callback(hObject, eventdata, handles)
+% copyfromboxc1_Callback(hObject, eventdata, handles)
 
 function freq0_Callback(hObject, eventdata, handles)
 [slot, thisslot] = getslot(hObject, eventdata, handles);
@@ -443,11 +443,8 @@ outmult = multiplier*power;
 function timeunit = timemult(handles)
 timeunit = 10^(-3*(handles.unittime.Value-1));
 
-
-
 function unittime_Callback(hObject, eventdata, handles)
 %% change table headers
-
 
 function nextprofc0_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
@@ -848,7 +845,6 @@ handles.CFR2c1.UserData = CFR2c1data;
 function relockphasebutton_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
 [slot, ~] = getslot(hObject, eventdata, handles);
-[prof0, ~] = getprof0(hObject, eventdata, handles);
 
 handles.cfr1b11c0.Value = 1;
 handles.cfr1b11c1.Value = 1;
@@ -870,38 +866,34 @@ flexsnd(t{slot+1},['dcp 0 spi:CFR1=0x',CFR1c0]);
 flexsnd(t{slot+1},['dcp 0 spi:CFR2=0x',CFR2c0]);
 flexsnd(t{slot+1},['dcp 1 spi:CFR1=0x',CFR1c1]);
 flexsnd(t{slot+1},['dcp 1 spi:CFR2=0x',CFR2c1]);
-pause(.5)
+pause(1)
 flexupdateboth(t{slot+1});
 
 function CFR1c0_Callback(hObject, eventdata, handles)
 [slot, ~] = getslot(hObject, eventdata, handles);
-[prof0, ~] = getprof0(hObject, eventdata, handles);
 data = handles.CFR1c0.UserData;
-data{slot+1,prof0+1} = handles.CFR1c0.String;
+data{slot+1} = handles.CFR1c0.String;
 handles.CFR1c0.UserData  =  data;
 copyfromboxc0_Callback(hObject, eventdata, handles)
 % copyfromboxc1_Callback(hObject, eventdata, handles)
 function CFR2c0_Callback(hObject, eventdata, handles)
 [slot, ~] = getslot(hObject, eventdata, handles);
-[prof0, ~] = getprof0(hObject, eventdata, handles);
 data = handles.CFR2c0.UserData;
-data{slot+1,prof0+1} = handles.CFR2c0.String;
+data{slot+1} = handles.CFR2c0.String;
 handles.CFR2c0.UserData  =  data;
 copyfromboxc0_Callback(hObject, eventdata, handles)
 % copyfromboxc1_Callback(hObject, eventdata, handles)
 function CFR1c1_Callback(hObject, eventdata, handles)
 [slot, ~] = getslot(hObject, eventdata, handles);
-[prof1, ~] = getprof1(hObject, eventdata, handles);
 data = handles.CFR1c1.UserData;
-data{slot+1,prof1+1} = handles.CFR1c1.String;
+data{slot+1} = handles.CFR1c1.String;
 handles.CFR1c1.UserData  =  data;
 % copyfromboxc0_Callback(hObject, eventdata, handles)
 copyfromboxc1_Callback(hObject, eventdata, handles)
 function CFR2c1_Callback(hObject, eventdata, handles)
 [slot, ~] = getslot(hObject, eventdata, handles);
-[prof1, ~] = getprof1(hObject, eventdata, handles);
 data = handles.CFR2c1.UserData;
-data{slot+1,prof1+1} = handles.CFR2c1.String;
+data{slot+1} = handles.CFR2c1.String;
 handles.CFR2c1.UserData  =  data;
 % copyfromboxc0_Callback(hObject, eventdata, handles)
 copyfromboxc1_Callback(hObject, eventdata, handles)
@@ -921,21 +913,20 @@ handles.CFR2c1.String = CFR2c1;
 
 t = get(handles.conn, 'UserData');
 [slot, ~] = getslot(hObject, eventdata, handles);
-[prof0, ~] = getprof0(hObject, eventdata, handles);
 data1c0 = handles.CFR1c0.UserData;
-data1c0{slot+1,prof0+1} = handles.CFR1c0.String;
+data1c0{slot+1} = handles.CFR1c0.String;
 handles.CFR1c0.UserData  =  data1c0;
 
 data2c0 = handles.CFR2c0.UserData;
-data2c0{slot+1,prof0+1} = handles.CFR2c0.String;
+data2c0{slot+1} = handles.CFR2c0.String;
 handles.CFR2c0.UserData  =  data2c0;
 
 data1c1 = handles.CFR1c1.UserData;
-data1c1{slot+1,prof0+1} = handles.CFR1c1.String;
+data1c1{slot+1} = handles.CFR1c1.String;
 handles.CFR1c1.UserData  =  data1c1;
 
 data2c1 = handles.CFR2c1.UserData;
-data2c1{slot+1,prof0+1} = handles.CFR2c1.String;
+data2c1{slot+1} = handles.CFR2c1.String;
 handles.CFR2c1.UserData  =  data2c1;
 
 flexsnd(t{slot+1},['dcp 0 spi:CFR1=0x',CFR1c0]);
@@ -962,7 +953,14 @@ CFR1c0_Callback(hObject, eventdata, handles)
 CFR2c0_Callback(hObject, eventdata, handles)
 
 t = get(handles.conn, 'UserData');
-[slot, thisslot] = getslot(hObject, eventdata, handles);
+[slot, ~] = getslot(hObject, eventdata, handles);
+data1c0 = handles.CFR1c0.UserData;
+data1c0{slot+1} = CFR1c0;
+handles.CFR1c0.UserData  =  data1c0;
+data2c0 = handles.CFR2c0.UserData;
+data2c0{slot+1} = CFR2c0;
+handles.CFR2c0.UserData  =  data2c0;
+
 flexsnd(t{slot+1},['dcp 0 spi:CFR1=0x',CFR1c0]);
 flexsnd(t{slot+1},['dcp 0 spi:CFR2=0x',CFR2c0]);
 flexupdateone(t{slot+1},0);
@@ -974,7 +972,14 @@ CFR1c1_Callback(hObject, eventdata, handles)
 CFR2c1_Callback(hObject, eventdata, handles)
 
 t = get(handles.conn, 'UserData');
-[slot, thisslot] = getslot(hObject, eventdata, handles);
+[slot, ~] = getslot(hObject, eventdata, handles);
+data1c1 = handles.CFR1c1.UserData;
+data1c1{slot+1} = CFR1c1;
+handles.CFR1c1.UserData  =  data1c1;
+data2c1 = handles.CFR2c1.UserData;
+data2c1{slot+1} = CFR2c1;
+handles.CFR2c1.UserData  =  data2c1;
+
 flexsnd(t{slot+1},['dcp 1 spi:CFR1=0x',CFR1c1]);
 flexsnd(t{slot+1},['dcp 1 spi:CFR2=0x',CFR2c1]);
 flexupdateone(t{slot+1},1);

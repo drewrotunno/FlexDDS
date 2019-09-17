@@ -1,5 +1,7 @@
 function [DRL, DRSS, DRR] = onerampfreq(t,chan, freqstart, freqend, tstepns, freqstephz)
-%ONERAMP will calculate good freq and time steps for one DDS ramp.
+%Use this one if you know exactly what time step and freq steps you'll
+%need. Use rampfreqtime() if you know total freq/time and want it to
+%calcuate what step words you should use. 
 
 % sweep direction
 if(freqstart>freqend)
