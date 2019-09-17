@@ -22,7 +22,7 @@ function varargout = FlexGUI(varargin)
 
 % Edit the above text to modify the response to help FlexGUI
 
-% Last Modified by GUIDE v2.5 16-Sep-2019 19:24:13
+% Last Modified by GUIDE v2.5 17-Sep-2019 12:49:40
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -46,27 +46,7 @@ end
 
 % --- Executes just before FlexGUI is made visible.
 function FlexGUI_OpeningFcn(hObject, eventdata, handles, varargin)
-% This function has no output args, see OutputFcn.
-% hObject    handle to figure
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-% varargin   command line arguments to FlexGUI (see VARARGIN)
-
-% Choose default command line output for FlexGUI
 handles.output = hObject;
-% 
-% handles.tgroup = uitabgroup('Parent', handles.figure1,'TabLocation', 'top');
-% handles.tab1 = uitab('Parent', handles.tgroup, 'Title', 'My Tab Label 1');
-% handles.tab2 = uitab('Parent', handles.tgroup, 'Title', 'My Tab Label 2');
-% handles.tab3 = uitab('Parent', handles.tgroup, 'Title', 'My Tab Label 3');
-% %Place panels into each tab
-% set(handles.p1,'Parent',handles.tab1)
-% set(handles.p2,'Parent',handles.tab2)
-% set(handles.p3,'Parent',handles.tab3)
-% %Reposition each panel to same location as panel 1
-% set(handles.p2,'position',get(handles.p1,'position'));
-% set(handles.p3,'position',get(handles.p1,'position'));
-
 % set units
 unitfreq_Callback(hObject, eventdata, handles)
 %load saved data
@@ -75,13 +55,9 @@ update_CFR_values(hObject, eventdata, handles)
 % Update handles structure
 guidata(hObject, handles);
 
-% --- Outputs from this function are returned to the command line.
+
 function varargout = FlexGUI_OutputFcn(hObject, eventdata, handles) 
 varargout{1} = handles.output;
-
-
-
-function iptext_Callback(hObject, eventdata, handles)
 
 
 function connectbutton_Callback(hObject, eventdata, handles)
@@ -117,8 +93,6 @@ end
 
 end
 
-
-
 function setbothbutton_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
 [prof0, profhandle] = getprof0(hObject, eventdata, handles);
@@ -143,8 +117,6 @@ handles.nextprofc0.Enable = 'on';
 handles.lastprofc1.Enable = 'on';
 handles.nextprofc1.Enable = 'on';
 
-% flexlst(t{slot+1});
-
 function setchan0_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
 [prof0, profhandle] = getprof0(hObject, eventdata, handles);
@@ -160,7 +132,6 @@ flexupdateone(t{slot+1}, 0);
 handles.lastprofc0.Enable = 'on';
 handles.nextprofc0.Enable = 'on';
 
-
 function setchan1_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
 [prof1, profhandle] = getprof1(hObject, eventdata, handles);
@@ -175,7 +146,6 @@ flexupdateone(t{slot+1}, 1);
 
 handles.lastprofc1.Enable = 'on';
 handles.nextprofc1.Enable = 'on';
-
 
 function [slot, thisslot] = getslot(~, ~, handles)
     if get(handles.slot0, 'Value')
@@ -660,9 +630,6 @@ end
 update_FPA_values(hObject, eventdata, handles)
 update_allowed_profs(hObject, eventdata, handles)
 
-
-
-
 function setprofc1_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
 [slot, thisslot] = getslot(hObject, eventdata, handles);
@@ -842,120 +809,6 @@ switch prof1
         handles.stp7c1.Enable = 'on';        
 end
 
-
-
-
-
-
-
-
-
-
-
-
-function stp6c1_Callback(hObject, eventdata, handles)
-handles.lastprofc1.Enable = 'off';
-handles.nextprofc1.Enable = 'off';
-handles.bothlastprof.Enable = 'off';
-handles.bothnextprof.Enable = 'off';
-update_FPA_values(hObject, eventdata, handles)
-function stp5c1_Callback(hObject, eventdata, handles)
-handles.lastprofc1.Enable = 'off';
-handles.nextprofc1.Enable = 'off';
-handles.bothlastprof.Enable = 'off';
-handles.bothnextprof.Enable = 'off';
-update_FPA_values(hObject, eventdata, handles)
-function stp7c1_Callback(hObject, eventdata, handles)
-handles.lastprofc1.Enable = 'off';
-handles.nextprofc1.Enable = 'off';
-handles.bothlastprof.Enable = 'off';
-handles.bothnextprof.Enable = 'off';
-update_FPA_values(hObject, eventdata, handles)
-function stp3c1_Callback(hObject, eventdata, handles)
-handles.lastprofc1.Enable = 'off';
-handles.nextprofc1.Enable = 'off';
-handles.bothlastprof.Enable = 'off';
-handles.bothnextprof.Enable = 'off';
-update_FPA_values(hObject, eventdata, handles)
-function stp2c1_Callback(hObject, eventdata, handles)
-handles.lastprofc1.Enable = 'off';
-handles.nextprofc1.Enable = 'off';
-handles.bothlastprof.Enable = 'off';
-handles.bothnextprof.Enable = 'off';
-update_FPA_values(hObject, eventdata, handles)
-function stp1c1_Callback(hObject, eventdata, handles)
-handles.lastprofc1.Enable = 'off';
-handles.nextprofc1.Enable = 'off';
-handles.bothlastprof.Enable = 'off';
-handles.bothnextprof.Enable = 'off';
-update_FPA_values(hObject, eventdata, handles)
-function stp0c1_Callback(hObject, eventdata, handles)
-handles.lastprofc1.Enable = 'off';
-handles.nextprofc1.Enable = 'off';
-handles.bothlastprof.Enable = 'off';
-handles.bothnextprof.Enable = 'off';
-update_FPA_values(hObject, eventdata, handles)
-function stp4c1_Callback(hObject, eventdata, handles)
-handles.lastprofc1.Enable = 'off';
-handles.nextprofc1.Enable = 'off';
-handles.bothlastprof.Enable = 'off';
-handles.bothnextprof.Enable = 'off';
-update_FPA_values(hObject, eventdata, handles)
-
-
-function stp6c0_Callback(hObject, eventdata, handles)
-handles.lastprofc0.Enable = 'off';
-handles.nextprofc0.Enable = 'off';
-handles.bothlastprof.Enable = 'off';
-handles.bothnextprof.Enable = 'off';
-update_FPA_values(hObject, eventdata, handles)
-function stp5c0_Callback(hObject, eventdata, handles)
-handles.lastprofc0.Enable = 'off';
-handles.nextprofc0.Enable = 'off';
-handles.bothlastprof.Enable = 'off';
-handles.bothnextprof.Enable = 'off';
-update_FPA_values(hObject, eventdata, handles)
-function stp4c0_Callback(hObject, eventdata, handles)
-handles.lastprofc0.Enable = 'off';
-handles.nextprofc0.Enable = 'off';
-handles.bothlastprof.Enable = 'off';
-handles.bothnextprof.Enable = 'off';
-update_FPA_values(hObject, eventdata, handles)
-function stp7c0_Callback(hObject, eventdata, handles)
-handles.lastprofc0.Enable = 'off';
-handles.nextprofc0.Enable = 'off';
-handles.bothlastprof.Enable = 'off';
-handles.bothnextprof.Enable = 'off';
-update_FPA_values(hObject, eventdata, handles)
-function stp3c0_Callback(hObject, eventdata, handles)
-handles.lastprofc0.Enable = 'off';
-handles.nextprofc0.Enable = 'off';
-handles.bothlastprof.Enable = 'off';
-handles.bothnextprof.Enable = 'off';
-update_FPA_values(hObject, eventdata, handles)
-function stp2c0_Callback(hObject, eventdata, handles)
-handles.lastprofc0.Enable = 'off';
-handles.nextprofc0.Enable = 'off';
-handles.bothlastprof.Enable = 'off';
-handles.bothnextprof.Enable = 'off';
-update_FPA_values(hObject, eventdata, handles)
-function stp1c0_Callback(hObject, eventdata, handles)
-handles.lastprofc0.Enable = 'off';
-handles.nextprofc0.Enable = 'off';
-handles.bothlastprof.Enable = 'off';
-handles.bothnextprof.Enable = 'off';
-update_FPA_values(hObject, eventdata, handles)
-function stp0c0_Callback(hObject, eventdata, handles)
-handles.lastprofc0.Enable = 'off';
-handles.nextprofc0.Enable = 'off';
-handles.bothlastprof.Enable = 'off';
-handles.bothnextprof.Enable = 'off';
-update_FPA_values(hObject, eventdata, handles)
-
-
-function multiplier_Callback(hObject, eventdata, handles)
-
-
 function savevalues_Callback(hObject, eventdata, handles)
 %save the wokrspace for loading later
 assignin('base','FreqChan0',handles.freq0.UserData);
@@ -968,8 +821,6 @@ assignin('base','CFR1c0',handles.CFR1c0.UserData);
 assignin('base','CFR2c0',handles.CFR2c0.UserData);
 assignin('base','CFR1c1',handles.CFR1c1.UserData);
 assignin('base','CFR2c1',handles.CFR2c1.UserData);
-
-
 function loadvalues_Callback(hObject, eventdata, handles)
 % read from matlab's workspace
 f0data=evalin('base','FreqChan0');
@@ -994,6 +845,34 @@ handles.CFR2c0.UserData = CFR2c0data;
 handles.CFR1c1.UserData = CFR1c1data;
 handles.CFR2c1.UserData = CFR2c1data;
 
+function relockphasebutton_Callback(hObject, eventdata, handles)
+t = get(handles.conn, 'UserData');
+[slot, ~] = getslot(hObject, eventdata, handles);
+[prof0, ~] = getprof0(hObject, eventdata, handles);
+
+handles.cfr1b11c0.Value = 1;
+handles.cfr1b11c1.Value = 1;
+[CFR1c0, CFR2c0] = generate_CFR_c0(hObject, eventdata, handles);
+[CFR1c1, CFR2c1] = generate_CFR_c1(hObject, eventdata, handles);
+
+flexsnd(t{slot+1},['dcp 0 spi:CFR1=0x',CFR1c0]);
+flexsnd(t{slot+1},['dcp 0 spi:CFR2=0x',CFR2c0]);
+flexsnd(t{slot+1},['dcp 1 spi:CFR1=0x',CFR1c1]);
+flexsnd(t{slot+1},['dcp 1 spi:CFR2=0x',CFR2c1]);
+flexupdateboth(t{slot+1});
+
+handles.cfr1b11c0.Value = 0;
+handles.cfr1b11c1.Value = 0;
+[CFR1c0, CFR2c0] = generate_CFR_c0(hObject, eventdata, handles);
+[CFR1c1, CFR2c1] = generate_CFR_c1(hObject, eventdata, handles);
+
+flexsnd(t{slot+1},['dcp 0 spi:CFR1=0x',CFR1c0]);
+flexsnd(t{slot+1},['dcp 0 spi:CFR2=0x',CFR2c0]);
+flexsnd(t{slot+1},['dcp 1 spi:CFR1=0x',CFR1c1]);
+flexsnd(t{slot+1},['dcp 1 spi:CFR2=0x',CFR2c1]);
+pause(.5)
+flexupdateboth(t{slot+1});
+
 function CFR1c0_Callback(hObject, eventdata, handles)
 [slot, ~] = getslot(hObject, eventdata, handles);
 [prof0, ~] = getprof0(hObject, eventdata, handles);
@@ -1001,8 +880,7 @@ data = handles.CFR1c0.UserData;
 data{slot+1,prof0+1} = handles.CFR1c0.String;
 handles.CFR1c0.UserData  =  data;
 copyfromboxc0_Callback(hObject, eventdata, handles)
-copyfromboxc1_Callback(hObject, eventdata, handles)
-
+% copyfromboxc1_Callback(hObject, eventdata, handles)
 function CFR2c0_Callback(hObject, eventdata, handles)
 [slot, ~] = getslot(hObject, eventdata, handles);
 [prof0, ~] = getprof0(hObject, eventdata, handles);
@@ -1010,55 +888,110 @@ data = handles.CFR2c0.UserData;
 data{slot+1,prof0+1} = handles.CFR2c0.String;
 handles.CFR2c0.UserData  =  data;
 copyfromboxc0_Callback(hObject, eventdata, handles)
-copyfromboxc1_Callback(hObject, eventdata, handles)
-
+% copyfromboxc1_Callback(hObject, eventdata, handles)
 function CFR1c1_Callback(hObject, eventdata, handles)
 [slot, ~] = getslot(hObject, eventdata, handles);
 [prof1, ~] = getprof1(hObject, eventdata, handles);
 data = handles.CFR1c1.UserData;
 data{slot+1,prof1+1} = handles.CFR1c1.String;
 handles.CFR1c1.UserData  =  data;
-copyfromboxc0_Callback(hObject, eventdata, handles)
+% copyfromboxc0_Callback(hObject, eventdata, handles)
 copyfromboxc1_Callback(hObject, eventdata, handles)
-
 function CFR2c1_Callback(hObject, eventdata, handles)
 [slot, ~] = getslot(hObject, eventdata, handles);
 [prof1, ~] = getprof1(hObject, eventdata, handles);
 data = handles.CFR2c1.UserData;
 data{slot+1,prof1+1} = handles.CFR2c1.String;
 handles.CFR2c1.UserData  =  data;
-copyfromboxc0_Callback(hObject, eventdata, handles)
+% copyfromboxc0_Callback(hObject, eventdata, handles)
 copyfromboxc1_Callback(hObject, eventdata, handles)
 
+function setboth0_Callback(hObject, eventdata, handles)
+setboth(hObject, eventdata, handles)
+function setboth1_Callback(hObject, eventdata, handles)
+setboth(hObject, eventdata, handles)
+
+function setboth(hObject, eventdata, handles)
+[CFR1c0, CFR2c0] = generate_CFR_c0(hObject, eventdata, handles);
+[CFR1c1, CFR2c1] = generate_CFR_c1(hObject, eventdata, handles);
+handles.CFR1c0.String = CFR1c0;
+handles.CFR2c0.String = CFR2c0;
+handles.CFR1c1.String = CFR1c1;
+handles.CFR2c1.String = CFR2c1;
+
+t = get(handles.conn, 'UserData');
+[slot, ~] = getslot(hObject, eventdata, handles);
+[prof0, ~] = getprof0(hObject, eventdata, handles);
+data1c0 = handles.CFR1c0.UserData;
+data1c0{slot+1,prof0+1} = handles.CFR1c0.String;
+handles.CFR1c0.UserData  =  data1c0;
+
+data2c0 = handles.CFR2c0.UserData;
+data2c0{slot+1,prof0+1} = handles.CFR2c0.String;
+handles.CFR2c0.UserData  =  data2c0;
+
+data1c1 = handles.CFR1c1.UserData;
+data1c1{slot+1,prof0+1} = handles.CFR1c1.String;
+handles.CFR1c1.UserData  =  data1c1;
+
+data2c1 = handles.CFR2c1.UserData;
+data2c1{slot+1,prof0+1} = handles.CFR2c1.String;
+handles.CFR2c1.UserData  =  data2c1;
+
+flexsnd(t{slot+1},['dcp 0 spi:CFR1=0x',CFR1c0]);
+flexsnd(t{slot+1},['dcp 0 spi:CFR2=0x',CFR2c0]);
+flexsnd(t{slot+1},['dcp 1 spi:CFR1=0x',CFR1c1]);
+flexsnd(t{slot+1},['dcp 1 spi:CFR2=0x',CFR2c1]);
+flexupdateboth(t{slot+1});
+
+
+function staticsetcfr0_Callback(hObject, eventdata, handles)
+setcfrc0_Callback(hObject, eventdata, handles)
+function staticsetcfr1_Callback(hObject, eventdata, handles)
+setcfrc1_Callback(hObject, eventdata, handles)
+function staticsetbothcfr_Callback(hObject, eventdata, handles)
+setboth(hObject, eventdata, handles)
+
+
+
 function setcfrc0_Callback(hObject, eventdata, handles)
-[CFR1c0, CFR2c0] = generate_CFR_c0(hObject, eventdata, handles)
+[CFR1c0, CFR2c0] = generate_CFR_c0(hObject, eventdata, handles);
 handles.CFR1c0.String = CFR1c0;
 handles.CFR2c0.String = CFR2c0;
 CFR1c0_Callback(hObject, eventdata, handles)
 CFR2c0_Callback(hObject, eventdata, handles)
 
-
+t = get(handles.conn, 'UserData');
+[slot, thisslot] = getslot(hObject, eventdata, handles);
+flexsnd(t{slot+1},['dcp 0 spi:CFR1=0x',CFR1c0]);
+flexsnd(t{slot+1},['dcp 0 spi:CFR2=0x',CFR2c0]);
+flexupdateone(t{slot+1},0);
 function setcfrc1_Callback(hObject, eventdata, handles)
-[CFR1c1, CFR2c1] = generate_CFR_c1(hObject, eventdata, handles)
+[CFR1c1, CFR2c1] = generate_CFR_c1(hObject, eventdata, handles);
 handles.CFR1c1.String = CFR1c1;
 handles.CFR2c1.String = CFR2c1;
 CFR1c1_Callback(hObject, eventdata, handles)
 CFR2c1_Callback(hObject, eventdata, handles)
 
+t = get(handles.conn, 'UserData');
+[slot, thisslot] = getslot(hObject, eventdata, handles);
+flexsnd(t{slot+1},['dcp 1 spi:CFR1=0x',CFR1c1]);
+flexsnd(t{slot+1},['dcp 1 spi:CFR2=0x',CFR2c1]);
+flexupdateone(t{slot+1},1);
 
 function openCFRpanel_Callback(hObject, eventdata, handles)
 thepos = handles.CFRpanel.OuterPosition;
-thepos(1) = 5;
-handles.CFRpanel.OuterPosition = thepos;
-
-function closeCFRpanel_Callback(hObject, eventdata, handles)
-thepos = handles.CFRpanel.OuterPosition;
-thepos(1) = 130;
-handles.CFRpanel.OuterPosition = thepos;
-
+if thepos(1) > 0
+    thepos(1) = 0;
+    handles.CFRpanel.OuterPosition = thepos;
+    handles.openCFRpanel.String = 'Hide CFR''s';
+elseif thepos(1) ==0
+    thepos(1) = 130;
+    handles.CFRpanel.OuterPosition = thepos;
+    handles.openCFRpanel.String = 'Edit CFR''s';
+end
 
 function [CFR1, CFR2] = generate_CFR_c0(hObject, eventdata, handles)
-
 switch handles.cfr1RAMdestc0.Value
     case 1
         RAM30 = 0;
@@ -1099,7 +1032,7 @@ handles.cfr1b16c0.Value == 1 ,...
 handles.cfr1b15c0.Value == 1 ,...
 handles.cfr1b14c0.Value == 1 ,...
 handles.cfr1b13c0.Value == 1 ,...
-handles.cfr1b15c0.Value == 1 ,...
+handles.cfr1b12c0.Value == 1 ,...
 handles.cfr1b11c0.Value == 1 ,...
 handles.cfr1b10c0.Value == 1 ,...
 handles.cfr1b9c0.Value  == 1 ,...
@@ -1127,11 +1060,7 @@ handles.cfr2b2c0.Value == 1 ,...
 handles.cfr2b1c0.Value == 1 ,...
 handles.cfr2b0c0.Value == 1 ];
 CFR2 = binaryVectorToHex(rawCFR2);
-
-
-
 function [CFR1, CFR2] = generate_CFR_c1(hObject, eventdata, handles)
-
 switch handles.cfr1RAMdestc1.Value
     case 1
         RAM30 = 0;
@@ -1172,7 +1101,7 @@ handles.cfr1b16c1.Value == 1 ,...
 handles.cfr1b15c1.Value == 1 ,...
 handles.cfr1b14c1.Value == 1 ,...
 handles.cfr1b13c1.Value == 1 ,...
-handles.cfr1b15c1.Value == 1 ,...
+handles.cfr1b12c1.Value == 1 ,...
 handles.cfr1b11c1.Value == 1 ,...
 handles.cfr1b10c1.Value == 1 ,...
 handles.cfr1b9c1.Value  == 1 ,...
@@ -1200,76 +1129,6 @@ handles.cfr2b2c1.Value == 1 ,...
 handles.cfr2b1c1.Value == 1 ,...
 handles.cfr2b0c1.Value == 1 ];
 CFR2 = binaryVectorToHex(rawCFR2);
-
-
-function cfr1RAMdestc0_Callback(hObject, eventdata, handles)
-function cfr1b31c0_Callback(hObject, eventdata, handles)
-function cfr1b23c0_Callback(hObject, eventdata, handles)
-function cfr1b22c0_Callback(hObject, eventdata, handles)
-function cfr1b20c0_Callback(hObject, eventdata, handles)
-function cfr1b19c0_Callback(hObject, eventdata, handles)
-function cfr1b18c0_Callback(hObject, eventdata, handles)
-function cfr1b17c0_Callback(hObject, eventdata, handles)
-function cfr1b16c0_Callback(hObject, eventdata, handles)
-function cfr1b15c0_Callback(hObject, eventdata, handles)
-function cfr1b14c0_Callback(hObject, eventdata, handles)
-function cfr1b13c0_Callback(hObject, eventdata, handles)
-function cfr1b11c0_Callback(hObject, eventdata, handles)
-function cfr1b10c0_Callback(hObject, eventdata, handles)
-function cfr1b9c0_Callback(hObject, eventdata, handles)
-function cfr1b8c0_Callback(hObject, eventdata, handles)
-function cfr2DRGdestc0_Callback(hObject, eventdata, handles)
-function cfr2b19c0_Callback(hObject, eventdata, handles)
-function cfr2b18c0_Callback(hObject, eventdata, handles)
-function cfr2b17c0_Callback(hObject, eventdata, handles)
-function cfr2b16c0_Callback(hObject, eventdata, handles)
-function cfr2b15c0_Callback(hObject, eventdata, handles)
-function cfr2b14c0_Callback(hObject, eventdata, handles)
-function cfr1b12c0_Callback(hObject, eventdata, handles)
-function cfr2b7c0_Callback(hObject, eventdata, handles)
-function cfr2b6c0_Callback(hObject, eventdata, handles)
-function cfr2b4c0_Callback(hObject, eventdata, handles)
-function cfr2b3c0_Callback(hObject, eventdata, handles)
-function cfr2b2c0_Callback(hObject, eventdata, handles)
-function cfr2b1c0_Callback(hObject, eventdata, handles)
-function cfr2b0c0_Callback(hObject, eventdata, handles)
-
-function cfr2b24c0_Callback(hObject, eventdata, handles)
-
-
-function cfr1b31c1_Callback(hObject, eventdata, handles)
-function cfr1b23c1_Callback(hObject, eventdata, handles)
-function cfr1b22c1_Callback(hObject, eventdata, handles)
-function cfr1b20c1_Callback(hObject, eventdata, handles)
-function cfr1b19c1_Callback(hObject, eventdata, handles)
-function cfr1b18c1_Callback(hObject, eventdata, handles)
-function cfr1b17c1_Callback(hObject, eventdata, handles)
-function cfr1b16c1_Callback(hObject, eventdata, handles)
-function cfr1b15c1_Callback(hObject, eventdata, handles)
-function cfr1b14c1_Callback(hObject, eventdata, handles)
-function cfr1b13c1_Callback(hObject, eventdata, handles)
-function cfr1b12c1_Callback(hObject, eventdata, handles)
-function cfr1b11c1_Callback(hObject, eventdata, handles)
-function cfr1b10c1_Callback(hObject, eventdata, handles)
-function cfr1b9c1_Callback(hObject, eventdata, handles)
-function cfr1b8c1_Callback(hObject, eventdata, handles)
-function cfr2b24c1_Callback(hObject, eventdata, handles)
-function cfr2b19c1_Callback(hObject, eventdata, handles)
-function cfr2b18c1_Callback(hObject, eventdata, handles)
-function cfr2b17c1_Callback(hObject, eventdata, handles)
-function cfr2b16c1_Callback(hObject, eventdata, handles)
-function cfr2b15c1_Callback(hObject, eventdata, handles)
-function cfr2b14c1_Callback(hObject, eventdata, handles)
-function cfr2b7c1_Callback(hObject, eventdata, handles)
-function cfr2b6c1_Callback(hObject, eventdata, handles)
-function cfr2b4c1_Callback(hObject, eventdata, handles)
-function cfr2b3c1_Callback(hObject, eventdata, handles)
-function cfr2b2c1_Callback(hObject, eventdata, handles)
-function cfr2b1c1_Callback(hObject, eventdata, handles)
-function cfr2b0c1_Callback(hObject, eventdata, handles)
-function cfr2DRGdestc1_Callback(hObject, eventdata, handles)
-function cfr1RAMdestc1_Callback(hObject, eventdata, handles)
-
 
 function copy1to0_Callback(hObject, eventdata, handles)
 
@@ -1306,8 +1165,6 @@ handles.cfr2b3c0.Value = handles.cfr2b3c1.Value;
 handles.cfr2b2c0.Value = handles.cfr2b2c1.Value;
 handles.cfr2b1c0.Value = handles.cfr2b1c1.Value;
 handles.cfr2b0c0.Value = handles.cfr2b0c1.Value;
-
-
 function copy0to1_Callback(hObject, eventdata, handles)
 handles.cfr1RAMdestc1.Value = handles.cfr1RAMdestc0.Value;
 handles.cfr2DRGdestc1.Value = handles.cfr2DRGdestc0.Value;
@@ -1342,8 +1199,6 @@ handles.cfr2b3c1.Value = handles.cfr2b3c0.Value;
 handles.cfr2b2c1.Value = handles.cfr2b2c0.Value;
 handles.cfr2b1c1.Value = handles.cfr2b1c0.Value;
 handles.cfr2b0c1.Value = handles.cfr2b0c0.Value;
-
-
 
 function copyfromboxc0_Callback(hObject, eventdata, handles)
 binCFR1 = hex2bin(handles.CFR1c0.String);
@@ -1400,9 +1255,6 @@ handles.cfr2b3c0.Value = binCFR2(32-3) ;
 handles.cfr2b2c0.Value = binCFR2(32-2) ;
 handles.cfr2b1c0.Value = binCFR2(32-1) ;
 handles.cfr2b0c0.Value = binCFR2(32-0) ;
-
-
-
 function copyfromboxc1_Callback(hObject, eventdata, handles)
 binCFR1 = hex2bin(handles.CFR1c1.String);
 binCFR2 = hex2bin(handles.CFR2c1.String);
@@ -1458,3 +1310,100 @@ handles.cfr2b3c1.Value = binCFR2(32-3) ;
 handles.cfr2b2c1.Value = binCFR2(32-2) ;
 handles.cfr2b1c1.Value = binCFR2(32-1) ;
 handles.cfr2b0c1.Value = binCFR2(32-0) ;
+
+function stp6c1_Callback(hObject, eventdata, handles)
+handles.lastprofc1.Enable = 'off';
+handles.nextprofc1.Enable = 'off';
+handles.bothlastprof.Enable = 'off';
+handles.bothnextprof.Enable = 'off';
+update_FPA_values(hObject, eventdata, handles)
+function stp5c1_Callback(hObject, eventdata, handles)
+handles.lastprofc1.Enable = 'off';
+handles.nextprofc1.Enable = 'off';
+handles.bothlastprof.Enable = 'off';
+handles.bothnextprof.Enable = 'off';
+update_FPA_values(hObject, eventdata, handles)
+function stp7c1_Callback(hObject, eventdata, handles)
+handles.lastprofc1.Enable = 'off';
+handles.nextprofc1.Enable = 'off';
+handles.bothlastprof.Enable = 'off';
+handles.bothnextprof.Enable = 'off';
+update_FPA_values(hObject, eventdata, handles)
+function stp3c1_Callback(hObject, eventdata, handles)
+handles.lastprofc1.Enable = 'off';
+handles.nextprofc1.Enable = 'off';
+handles.bothlastprof.Enable = 'off';
+handles.bothnextprof.Enable = 'off';
+update_FPA_values(hObject, eventdata, handles)
+function stp2c1_Callback(hObject, eventdata, handles)
+handles.lastprofc1.Enable = 'off';
+handles.nextprofc1.Enable = 'off';
+handles.bothlastprof.Enable = 'off';
+handles.bothnextprof.Enable = 'off';
+update_FPA_values(hObject, eventdata, handles)
+function stp1c1_Callback(hObject, eventdata, handles)
+handles.lastprofc1.Enable = 'off';
+handles.nextprofc1.Enable = 'off';
+handles.bothlastprof.Enable = 'off';
+handles.bothnextprof.Enable = 'off';
+update_FPA_values(hObject, eventdata, handles)
+function stp0c1_Callback(hObject, eventdata, handles)
+handles.lastprofc1.Enable = 'off';
+handles.nextprofc1.Enable = 'off';
+handles.bothlastprof.Enable = 'off';
+handles.bothnextprof.Enable = 'off';
+update_FPA_values(hObject, eventdata, handles)
+function stp4c1_Callback(hObject, eventdata, handles)
+handles.lastprofc1.Enable = 'off';
+handles.nextprofc1.Enable = 'off';
+handles.bothlastprof.Enable = 'off';
+handles.bothnextprof.Enable = 'off';
+update_FPA_values(hObject, eventdata, handles)
+function stp6c0_Callback(hObject, eventdata, handles)
+handles.lastprofc0.Enable = 'off';
+handles.nextprofc0.Enable = 'off';
+handles.bothlastprof.Enable = 'off';
+handles.bothnextprof.Enable = 'off';
+update_FPA_values(hObject, eventdata, handles)
+function stp5c0_Callback(hObject, eventdata, handles)
+handles.lastprofc0.Enable = 'off';
+handles.nextprofc0.Enable = 'off';
+handles.bothlastprof.Enable = 'off';
+handles.bothnextprof.Enable = 'off';
+update_FPA_values(hObject, eventdata, handles)
+function stp4c0_Callback(hObject, eventdata, handles)
+handles.lastprofc0.Enable = 'off';
+handles.nextprofc0.Enable = 'off';
+handles.bothlastprof.Enable = 'off';
+handles.bothnextprof.Enable = 'off';
+update_FPA_values(hObject, eventdata, handles)
+function stp7c0_Callback(hObject, eventdata, handles)
+handles.lastprofc0.Enable = 'off';
+handles.nextprofc0.Enable = 'off';
+handles.bothlastprof.Enable = 'off';
+handles.bothnextprof.Enable = 'off';
+update_FPA_values(hObject, eventdata, handles)
+function stp3c0_Callback(hObject, eventdata, handles)
+handles.lastprofc0.Enable = 'off';
+handles.nextprofc0.Enable = 'off';
+handles.bothlastprof.Enable = 'off';
+handles.bothnextprof.Enable = 'off';
+update_FPA_values(hObject, eventdata, handles)
+function stp2c0_Callback(hObject, eventdata, handles)
+handles.lastprofc0.Enable = 'off';
+handles.nextprofc0.Enable = 'off';
+handles.bothlastprof.Enable = 'off';
+handles.bothnextprof.Enable = 'off';
+update_FPA_values(hObject, eventdata, handles)
+function stp1c0_Callback(hObject, eventdata, handles)
+handles.lastprofc0.Enable = 'off';
+handles.nextprofc0.Enable = 'off';
+handles.bothlastprof.Enable = 'off';
+handles.bothnextprof.Enable = 'off';
+update_FPA_values(hObject, eventdata, handles)
+function stp0c0_Callback(hObject, eventdata, handles)
+handles.lastprofc0.Enable = 'off';
+handles.nextprofc0.Enable = 'off';
+handles.bothlastprof.Enable = 'off';
+handles.bothnextprof.Enable = 'off';
+update_FPA_values(hObject, eventdata, handles)
