@@ -358,8 +358,8 @@ end
 function slotupdate(hObject, eventdata, handles)
 update_FPA_values(hObject, eventdata, handles)
 update_CFR_values(hObject, eventdata, handles)
-% copyfromboxc0_Callback(hObject, eventdata, handles)
-% copyfromboxc1_Callback(hObject, eventdata, handles)
+copyfromboxc0_Callback(hObject, eventdata, handles)
+copyfromboxc1_Callback(hObject, eventdata, handles)
 
 function freq0_Callback(hObject, eventdata, handles)
 [slot, thisslot] = getslot(hObject, eventdata, handles);
