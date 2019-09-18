@@ -22,7 +22,7 @@ function varargout = FlexGUI(varargin)
 
 % Edit the above text to modify the response to help FlexGUI
 
-% Last Modified by GUIDE v2.5 17-Sep-2019 13:12:18
+% Last Modified by GUIDE v2.5 18-Sep-2019 12:13:52
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -1412,3 +1412,7 @@ handles.nextprofc0.Enable = 'off';
 handles.bothlastprof.Enable = 'off';
 handles.bothnextprof.Enable = 'off';
 update_FPA_values(hObject, eventdata, handles)
+
+
+function swtab_CellEditCallback(hObject, eventdata, handles)
+assignin('base', 'sweeptable', handles.swtab.Data)

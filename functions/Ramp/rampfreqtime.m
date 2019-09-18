@@ -1,4 +1,4 @@
-function [DRL, DRSS, DRR, freqstep, timestep] = rampfreqtime(freqstart, freqend, timesec)
+function [DRL, DRSS, DRR, freqstep, timestep] = rampfreqtime(t, chan, freqstart, freqend, timesec)
 %ONERAMP will calculate good freq and time steps for one DDS ramp.
 
 %        to int            ns   /clock @ 250 MHz
@@ -46,20 +46,39 @@ while diffq > error
 end
 
 if num > den
-    freqword = uint32( round( slope ) );
-    timeword = uint16( other );
-    freqstep = round(slope)*1e9/2^32;
+    freqword = uint32( round( other*num/den) )
+    timeword = uint16( other )
+    freqstep = round(other*num/den)*1e9/2^32;
     timestep = other*4e-9;
 else 
-    timeword = uint16( round( slope ) );
-    freqword = uint32( other );
-    freqstep = round(slope)*1e9/2^32;
+    timeword = uint16( round( other*num/den ) )
+    freqword = uint32( other )
+    freqstep = round(other*num/den)*1e9/2^32;
     timestep = other*4e-9;
 end
 
 DRL  = [highftw, lowftw];
 DRSS = [uint2hex( freqword ) , uint2hex( freqword ) ];
 DRR  = [uint2hex( timeword ) , uint2hex( timeword ) ];
+
+
+switch chan
+    case 0
+        flexsnd(t,['dcp 0 spi:DRL=0x',DRL]);
+        flexsnd(t,['dcp 0 spi:DRSS=0x',DRSS]);
+        flexsnd(t,['dcp 0 spi:DRR=0x',DRR]);
+        flexupdateone(t,0)
+    case 1
+        flexsnd(t,['dcp 1 spi:DRL=0x',DRL]);
+        flexsnd(t,['dcp 1 spi:DRSS=0x',DRSS]);
+        flexsnd(t,['dcp 1 spi:DRR=0x',DRR]);
+        flexupdateone(t,1)
+    case 2
+        flexsnd(t,['dcp spi:DRL=0x',DRL]);
+        flexsnd(t,['dcp spi:DRSS=0x',DRSS]);
+        flexsnd(t,['dcp spi:DRR=0x',DRR]);
+        flexupdateboth(t)
+end
 
 
 end
