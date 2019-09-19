@@ -22,7 +22,7 @@ function varargout = FlexGUI(varargin)
 
 % Edit the above text to modify the response to help FlexGUI
 
-% Last Modified by GUIDE v2.5 18-Sep-2019 12:13:52
+% Last Modified by GUIDE v2.5 18-Sep-2019 13:55:55
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -49,6 +49,7 @@ function FlexGUI_OpeningFcn(hObject, eventdata, handles, varargin)
 handles.output = hObject;
 % set units
 unitfreq_Callback(hObject, eventdata, handles)
+unittime_Callback(hObject, eventdata, handles)
 %load saved data
 update_FPA_values(hObject, eventdata, handles)
 update_CFR_values(hObject, eventdata, handles)
@@ -433,8 +434,23 @@ handles.CFR2c1.String = CFR2c1data{slot+1};
 
 function unitfreq_Callback(hObject, eventdata, handles)
 unitname = {'Hz'; 'kHz'; 'MHz'; 'GHz' };
-newunit = unitname(handles.unitfreq.Value);
-handles.freqtext.String = strcat('Frequency (',newunit,')');
+newunit = unitname{handles.unitfreq.Value};
+handles.freqtext.String = ['Frequency (',newunit,')'];
+tablenames = handles.swtabs0c0.ColumnName;
+tablenames{3} = ['St F/P (',newunit,'/°)'];
+tablenames{4} = ['Fn F/P (',newunit,'/°)'];
+handles.swtabs0c0.ColumnName = tablenames;
+
+
+function unittime_Callback(hObject, eventdata, handles)
+unitname = {'sec'; 'ms'; 'us'; 'ns' };
+newunit = unitname{handles.unittime.Value};
+tablenames = handles.swtabs0c0.ColumnName;
+tablenames{5} = ['Time (',newunit,')'];
+tablenames{9} = ['TimeDiff (',newunit,')'];
+handles.swtabs0c0.ColumnName = tablenames;
+
+
 
 function outmult = freqmult(handles)
 power = 10^(3*(handles.unitfreq.Value-1));
@@ -442,9 +458,6 @@ multiplier = str2double(handles.multiplier.String);
 outmult = multiplier*power;
 function timeunit = timemult(handles)
 timeunit = 10^(-3*(handles.unittime.Value-1));
-
-function unittime_Callback(hObject, eventdata, handles)
-%% change table headers
 
 function nextprofc0_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
@@ -818,6 +831,7 @@ assignin('base','CFR1c0',handles.CFR1c0.UserData);
 assignin('base','CFR2c0',handles.CFR2c0.UserData);
 assignin('base','CFR1c1',handles.CFR1c1.UserData);
 assignin('base','CFR2c1',handles.CFR2c1.UserData);
+assignin('base','SweepTableS0C0',handles.swtabs0c0.Data);
 function loadvalues_Callback(hObject, eventdata, handles)
 % read from matlab's workspace
 f0data=evalin('base','FreqChan0');
@@ -830,6 +844,7 @@ CFR1c0data = evalin('base','CFR1c0');
 CFR2c0data = evalin('base','CFR2c0');
 CFR1c1data = evalin('base','CFR1c1');
 CFR2c1data = evalin('base','CFR2c1');
+SweepTableS0C0 = evalin('base','SweepTableS0C0');
 
 handles.freq0.UserData = f0data;
 handles.freq1.UserData = f1data;
@@ -841,6 +856,7 @@ handles.CFR1c0.UserData = CFR1c0data;
 handles.CFR2c0.UserData = CFR2c0data;
 handles.CFR1c1.UserData = CFR1c1data;
 handles.CFR2c1.UserData = CFR2c1data;
+handles.swtabs0c0.Data = SweepTableS0C0 ;
 
 function relockphasebutton_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
@@ -942,8 +958,6 @@ function staticsetcfr1_Callback(hObject, eventdata, handles)
 setcfrc1_Callback(hObject, eventdata, handles)
 function staticsetbothcfr_Callback(hObject, eventdata, handles)
 setboth(hObject, eventdata, handles)
-
-
 
 function setcfrc0_Callback(hObject, eventdata, handles)
 [CFR1c0, CFR2c0] = generate_CFR_c0(hObject, eventdata, handles);
@@ -1414,5 +1428,6 @@ handles.bothnextprof.Enable = 'off';
 update_FPA_values(hObject, eventdata, handles)
 
 
-function swtab_CellEditCallback(hObject, eventdata, handles)
-assignin('base', 'sweeptable', handles.swtab.Data)
+function swtabs0c0_CellEditCallback(hObject, eventdata, handles)
+assignin('base', 'sweeptable', handles.swtabs0c0.Data)
+assignin('base', 'tablenames', handles.swtabs0c0.ColumnName)

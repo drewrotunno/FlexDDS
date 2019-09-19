@@ -1,4 +1,4 @@
-function [DRL, DRSS, DRR, freqstep, timestep] = rampfreqtime(t, chan, freqstart, freqend, timesec)
+function [DRL, DRSS, DRR, phasstep, timestep] = rampphasetime(t, chan, phasstart, phasend, timesec)
 %ONERAMP will calculate good freq and time steps for one DDS ramp.
 
 %        to int            ns   /clock @ 250 MHz
@@ -6,25 +6,25 @@ tsteptot = round((timesec.*1e9)./4);
 error    = 1e-3;   % or whatever
 maxword  = 100;      % 400 ns or 23 Hz
 
-if freqstart > freqend
-    highftw = freq2ftw(freqstart);     % use mirror freqs?? always start low and go up
-    lowftw  = freq2ftw(freqend);
-elseif freqstart < freqend
-    lowftw  = freq2ftw(freqstart);
-    highftw = freq2ftw(freqend);
+if(phasstart>phasend)
+    highpow = phase2powdeg32(phasstart);
+    lowpow = phase2powdeg32(phasend);
+elseif(phasstart<phasend)
+    lowpow = phase2powdeg32(phasstart);
+    highpow = phase2powdeg32(phasend);
 else
     disp('thats not a sweep');
     return
 end
-fsteptot = hex2uint32(highftw)-hex2uint32(lowftw);
+psteptot = hex2uint32(highpow)-hex2uint32(lowpow);
 
 % make num the larger value, proper fraction: num/den
-if fsteptot > tsteptot      % slope > 1, 
-    num = double(fsteptot);
+if psteptot > tsteptot      % slope > 1, 
+    num = double(psteptot);
     den = double(tsteptot);
-elseif fsteptot <= tsteptot  % slope < 1
+elseif psteptot <= tsteptot  % slope < 1
     num = double(tsteptot);
-    den = double(fsteptot);
+    den = double(psteptot);
 end
 
 slope = num/den;
@@ -46,19 +46,19 @@ while diffq > error
 end
 
 if num > den
-    freqword = uint32( round( other*num/den) );
+    phasword = uint32( round( other*num/den) );
     timeword = uint16( other );
-    freqstep = round(other*num/den)*1e9/2^32;
+    phasstep = round(other*num/den)*360/2^32;
     timestep = other*4e-9;
 else 
     timeword = uint16( round( other*num/den ) );
-    freqword = uint32( other );
-    freqstep = round(other*num/den)*1e9/2^32;
+    phasword = uint32( other );
+    phasstep = round(other*num/den)*360/2^32;
     timestep = other*4e-9;
 end
 
-DRL  = [highftw, lowftw];
-DRSS = [uint2hex( freqword ) , uint2hex( freqword ) ];
+DRL  = [highpow, lowpow];
+DRSS = [uint2hex( phasword ) , uint2hex( phasword ) ];
 DRR  = [uint2hex( timeword ) , uint2hex( timeword ) ];
 
 
