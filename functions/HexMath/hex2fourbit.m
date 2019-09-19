@@ -3,7 +3,7 @@ function [outarray] = hex2fourbit(inhex)
 
 if( size(inhex,2) == 1 ) %disp('size is right') 
 else disp('size is WRONG'); return; end
-if( ismember(inhex, '0123456789abcdef') ) % disp('digits are fine')
+if( ismember(inhex, '0123456789abcdefABCDEF') ) % disp('digits are fine')
 else disp('not a hex digit!'); return; end
 strrep(inhex, '0x', '');
 
@@ -52,7 +52,6 @@ elseif( inhex == '1' )
 elseif( inhex == '0' ) 
     outarray = [0,0,0,0];
 end
-
 
 end
 
