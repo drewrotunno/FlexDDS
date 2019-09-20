@@ -1,4 +1,4 @@
-function [DRL, DRSS, DRR] = onerampfreq(t,chan, freqstart, freqend, tstepns, freqstephz)
+function [stack] = onerampfreq(stack,chan, freqstart, freqend, tstepns, freqstephz)
 %Use this one if you know exactly what time step and freq steps you'll
 %need. Use rampfreqtime() if you know total freq/time and want it to
 %calcuate what step words you should use. 
@@ -25,20 +25,20 @@ DRR = [uint2hex(uint16(numsteps)) , uint2hex(uint16(numsteps))];
 
 switch chan
     case 0
-        flexsnd(t,['dcp 0 spi:DRL=0x',DRL]);
-        flexsnd(t,['dcp 0 spi:DRSS=0x',DRSS]);
-        flexsnd(t,['dcp 0 spi:DRR=0x',DRR]);
-        flexupdateone(t,0)
+        stack = flexstack(stack,['dcp 0 spi:DRL=0x',DRL]);
+        stack = flexstack(stack,['dcp 0 spi:DRSS=0x',DRSS]);
+        stack = flexstack(stack,['dcp 0 spi:DRR=0x',DRR]);
+        stack = flexupdateone(stack,0);
     case 1
-        flexsnd(t,['dcp 1 spi:DRL=0x',DRL]);
-        flexsnd(t,['dcp 1 spi:DRSS=0x',DRSS]);
-        flexsnd(t,['dcp 1 spi:DRR=0x',DRR]);
-        flexupdateone(t,1)
+        stack = flexstack(stack,['dcp 1 spi:DRL=0x',DRL]);
+        stack = flexstack(stack,['dcp 1 spi:DRSS=0x',DRSS]);
+        stack = flexstack(stack,['dcp 1 spi:DRR=0x',DRR]);
+        stack = flexupdateone(stack,1);
     case 2
-        flexsnd(t,['dcp spi:DRL=0x',DRL]);
-        flexsnd(t,['dcp spi:DRSS=0x',DRSS]);
-        flexsnd(t,['dcp spi:DRR=0x',DRR]);
-        flexupdateboth(t)
+        stack = flexstack(stack,['dcp spi:DRL=0x',DRL]);
+        stack = flexstack(stack,['dcp spi:DRSS=0x',DRSS]);
+        stack = flexstack(stack,['dcp spi:DRR=0x',DRR]);
+        stack = flexupdateboth(stack);
 end
 
 end

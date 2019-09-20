@@ -1,6 +1,6 @@
-function newCFR = setNoDwellLo(t, chan, bit, lastCFR)
+function [newCFR, stack] =  setNoDwellLo(stack, chan, bit, lastCFR)
 
-newCFR = setCFRbit(t, chan, 2, 17, bit, lastCFR);
+[newCFR, stack] = setCFRbit(stack, chan, 2, 17, bit, lastCFR);
         
 end
 

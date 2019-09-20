@@ -1,6 +1,6 @@
-function newCFR = setDDScos(t, chan, lastCFR)
+function [newCFR, stack] =  setDDScos(stack, chan, lastCFR)
 
-newCFR = setCFRbit(t,chan,1,16,0,lastCFR);
+[newCFR, stack] = setCFRbit(stack,chan,1,16,0,lastCFR);
         
 end
 

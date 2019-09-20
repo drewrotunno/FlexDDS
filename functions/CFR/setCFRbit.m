@@ -1,5 +1,5 @@
-function newknownCFR = setCFRbit(t, chan, cfrnum, bitnum, bitset, lastCFR)
-%  setCFRbit(t, chan, cfrnum, bitnum, bitset, lastCFR)
+function [newknownCFR, stack] = setCFRbit(stack, chan, cfrnum, bitnum, bitset, lastCFR)
+%  setCFRbit(stack, chan, cfrnum, bitnum, bitset, lastCFR)
 %  t = TCP connection
 % chan = 0/1 for DDS 0/1, 2 for both
 % cfrnum=  1 or 2, only ones we have access to
@@ -73,27 +73,17 @@ end
 
 switch chan
     case 0
-        flexsnd(t,['dcp 0 spi:CFR',num2str(cfrnum),'=0x',newhexCFR{1}]);
-        flexupdateone(t,0);
+        stack = flexstack(stack,['dcp 0 spi:CFR',num2str(cfrnum),'=0x',newhexCFR{1}]);
+        stack = flexupdateone(stack,0);
     case 1
-        flexsnd(t,['dcp 1 spi:CFR',num2str(cfrnum),'=0x',newhexCFR{2}]);
-        flexupdateone(t,1);
+        stack = flexstack(stack,['dcp 1 spi:CFR',num2str(cfrnum),'=0x',newhexCFR{2}]);
+        stack = flexupdateone(stack,1);
     case 2
-%         flexsnd(t,['dcp 1 spi:CFR',num2str(cfrnum),'=0x',newhexCFR{2}]);        
-        flexsnd(t,['dcp 0 spi:CFR',num2str(cfrnum),'=0x',newhexCFR{1}]);
-        flexsnd(t,['dcp 1 spi:CFR',num2str(cfrnum),'=0x',newhexCFR{2}]);
-        
-        pause(.25);      %% uncomment to fix
-%         flexlst(t);
-        flexupdateboth(t);
-%         flexsnd(t, 'dcp wait::48:u')
-%         flexsnd(t, 'dcp wait::2:u')         % wait for all FIFO
-%         flexsnd(t, 'dcp 0 wait::2:u')        
-%         flexsnd(t, 'dcp 1 wait::2:u')
-        %         flexupdateone(t,0)
-        %         flexupdateone(t,1)
+%         stack = flexstack(stack,['dcp 1 spi:CFR',num2str(cfrnum),'=0x',newhexCFR{2}]);        
+        stack = flexstack(stack,['dcp 0 spi:CFR',num2str(cfrnum),'=0x',newhexCFR{1}]);
+        stack = flexstack(stack,['dcp 1 spi:CFR',num2str(cfrnum),'=0x',newhexCFR{2}]);
+        stack = flexupdateboth(stack);
 end
 
-% flexlst(t);
 end
 

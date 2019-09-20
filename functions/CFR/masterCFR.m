@@ -1,4 +1,4 @@
-function newknownCFR = masterCFR(t, chan)
+function [newknownCFR, stack] = masterCFR(stack, chan)
 %% Set bits in this file to initialize all CFR's as you wish
 %  write entire CFR register with presettings
 
@@ -94,22 +94,21 @@ switch chan
     case 0
         newknownCFR{1} = defaultCFR{1};  %default value
         newknownCFR{2} = lastCFR{2};
-        flexsnd(t,['dcp 0 spi:CFR1=0x', defaultCFR{1}(1,:)]);
-        flexsnd(t,['dcp 0 spi:CFR2=0x', defaultCFR{1}(2,:)]);
-        flexupdateone(t,0);
+        stack = flexstack(stack,['dcp 0 spi:CFR1=0x', defaultCFR{1}(1,:)]);
+        stack = flexstack(stack,['dcp 0 spi:CFR2=0x', defaultCFR{1}(2,:)]);
+        stack = flexupdateone(stack,0);
     case 1
         newknownCFR{1} = lastCFR{1};
         newknownCFR{2} = defaultCFR{2};  %default value
-        flexsnd(t,['dcp 1 spi:CFR1=0x',defaultCFR{2}(1,:)]);
-        flexsnd(t,['dcp 1 spi:CFR2=0x',defaultCFR{2}(2,:)]);
-        flexupdateone(t,1);
+        stack = flexstack(stack,['dcp 1 spi:CFR1=0x',defaultCFR{2}(1,:)]);
+        stack = flexstack(stack,['dcp 1 spi:CFR2=0x',defaultCFR{2}(2,:)]);
+        stack = flexupdateone(stack,1);
     case 2
         newknownCFR{1} = defaultCFR{1};  %default value
         newknownCFR{2} = defaultCFR{2};  %default value
-        flexsnd(t,['dcp spi:CFR1=0x',defaultCFR{1}(1,:)]);
-        flexsnd(t,['dcp spi:CFR2=0x',defaultCFR{1}(2,:)]);
-%         flexsnd(t,'dcp update:u');
-        flexupdateboth(t);
+        stack = flexstack(stack,['dcp spi:CFR1=0x',defaultCFR{1}(1,:)]);
+        stack = flexstack(stack,['dcp spi:CFR2=0x',defaultCFR{1}(2,:)]);
+        stack = flexupdateboth(stack);
 end
 
 end

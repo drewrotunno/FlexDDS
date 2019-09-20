@@ -1,7 +1,6 @@
-function setSlotBNCBhigh(t)
-%ENABLESLOTBNCAOUT Summary of this function goes here
-%   Detailed explanation goes here
-flexsnd(t,'dcp 0 wr:CFG_BNC_B=0x300')
+function stack = setSlotBNCBhigh(stack)
+
+stack = flexstack(stack,'dcp 0 wr:CFG_BNC_B=0x300');
 
 end
 

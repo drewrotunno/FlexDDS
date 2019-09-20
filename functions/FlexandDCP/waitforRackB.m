@@ -1,17 +1,17 @@
-function waitforRackB(t, chan)
+function stack = waitforRackB(stack, chan)
 %WAITFORRACKA Wait for B trigger then update
 % 16 is rack trigger B. 
 
 switch chan
     case 0
-        flexsnd(t, 'dcp 0 wait::16');
-        flexsnd(t, 'dcp 0 update:u');
+        stack = flexstack(stack, 'dcp 0 wait::16');
+        stack = flexstack(stack, 'dcp 0 update:u');
     case 1 
-        flexsnd(t, 'dcp 1 wait::16');
-        flexsnd(t, 'dcp 1 update:u');
+        stack = flexstack(stack, 'dcp 1 wait::16');
+        stack = flexstack(stack, 'dcp 1 update:u');
     case 2
-        flexsnd(t, 'dcp wait::16');
-        flexsnd(t, 'dcp update:u');
+        stack = flexstack(stack, 'dcp wait::16');
+        stack = flexstack(stack, 'dcp update:u');
 end
 
 

@@ -1,16 +1,16 @@
-function waitForEvent(t, chan, eventno)
+function stack = waitForEvent(stack, chan, eventno)
 %WAITFORRACKA Wait for slot triggers - events from Wieser Manual
 
 switch chan
     case 0
-        flexsnd(t, ['dcp 0 wait::', num2str(eventno)]);
-        flexsnd(t, 'dcp 0 update:u');
+        stack = flexstack(stack, ['dcp 0 wait::', num2str(eventno)]);
+        stack = flexstack(stack, 'dcp 0 update:u');
     case 1 
-        flexsnd(t, ['dcp 1 wait::', num2str(eventno)]);
-        flexsnd(t, 'dcp 1 update:u');
+        stack = flexstack(stack, ['dcp 1 wait::', num2str(eventno)]);
+        stack = flexstack(stack, 'dcp 1 update:u');
     case 2
-        flexsnd(t, ['dcp wait::', num2str(eventno)]);
-        flexsnd(t, 'dcp update:u');
+        stack = flexstack(stack, ['dcp wait::', num2str(eventno)]);
+        stack = flexstack(stack, 'dcp update:u');
 end
 
 

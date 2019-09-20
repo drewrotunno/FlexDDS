@@ -1,6 +1,6 @@
-function newCFR = setDataAssHold(t, chan, bit, lastCFR)
+function [newCFR, stack] =  setDataAssHold(stack, chan, bit, lastCFR)
 
-newCFR = setCFRbit(t, chan, 2, 6, bit, lastCFR);
+[newCFR, stack] = setCFRbit(stack, chan, 2, 6, bit, lastCFR);
         
 end
 

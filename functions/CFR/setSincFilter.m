@@ -1,6 +1,6 @@
-function newCFR = setSincFilter(t, chan, bit, lastCFR)
+function [newCFR, stack] =  setSincFilter(stack, chan, bit, lastCFR)
 
-newCFR = setCFRbit(t,chan,1,22,bit,lastCFR);
+[newCFR, stack] = setCFRbit(stack,chan,1,22,bit,lastCFR);
         
 end
 

@@ -3,6 +3,5 @@ function disableOKs(t)
 
 flexsnd(t, 'set resp_suppress_ok=1')
 
-
 end
 

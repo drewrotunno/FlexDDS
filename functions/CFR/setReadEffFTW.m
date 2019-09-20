@@ -1,6 +1,6 @@
-function newCFR = setReadEffFTW(t, chan, bit, lastCFR)
+function [newCFR, stack] =  setReadEffFTW(stack, chan, bit, lastCFR)
 
-newCFR = setCFRbit(t, chan, 2, 16, bit, lastCFR);
+[newCFR, stack] = setCFRbit(stack, chan, 2, 16, bit, lastCFR);
         
 end
 

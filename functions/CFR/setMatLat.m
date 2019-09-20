@@ -1,6 +1,6 @@
-function newCFR = setMatLat(t, chan, bit, lastCFR)
+function [newCFR, stack] =  setMatLat(stack, chan, bit, lastCFR)
 
-newCFR = setCFRbit(t,chan,2,7,bit,lastCFR);
+[newCFR, stack] = setCFRbit(stack,chan,2,7,bit,lastCFR);
         
 end
 
