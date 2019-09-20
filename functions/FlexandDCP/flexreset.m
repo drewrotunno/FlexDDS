@@ -1,7 +1,7 @@
 function flexreset(t)
 % resets. 
 
-flexsnd(t,['reset']);
+flexsnd(t,'reset');
 
 end
 

@@ -1,4 +1,4 @@
-function flexflush(t, stack)
+function stack = flexflush(t, stack)
 
 str2send = '';
 for c = 1:1:size(stack,2)
@@ -8,6 +8,7 @@ end
 
 flexsnd(t,str2send);
 
+stack = {''};
 % flexlst(t);
 
 end
