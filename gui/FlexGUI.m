@@ -69,7 +69,7 @@ function connectbutton_Callback(hObject, eventdata, handles)
 [slot, thisslot] = getslot(hObject, eventdata, handles);
 % is it already open? 
 t = get(handles.conn, 'UserData');
-if strcmp(class(t{slot+1}), 'tcpip')
+if isa( t{slot+1}, 'tcpip')
     if strcmp(t{slot+1}.status, 'open')
         disp(['Slot ', num2str(slot), ' is already open'])
         set(thisslot, 'ForegroundColor', [0,.8,0]);
@@ -85,7 +85,7 @@ response = flexlst(t{slot+1});
 set(handles.conn, 'UserData', t);
 
 if strcmp(response, 'Auth OK')
-    disp(response);
+%     disp(response);
     if strcmp(t{slot+1}.status, 'open')
         set(thisslot, 'ForegroundColor', [0,.8,0]);
         set(handles.connectbutton, 'BackgroundColor', [.94,.94,.94]);
