@@ -22,7 +22,7 @@ function varargout = FlexGUI(varargin)
 
 % Edit the above text to modify the response to help FlexGUI
 
-% Last Modified by GUIDE v2.5 19-Sep-2019 17:37:26
+% Last Modified by GUIDE v2.5 20-Sep-2019 13:48:17
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -52,6 +52,7 @@ unitfreq_Callback(hObject, eventdata, handles)
 unittime_Callback(hObject, eventdata, handles)
 % set table numbers
 rownum_Callback(hObject, eventdata, handles)
+copydest_Callback(hObject, eventdata, handles)
 %load saved data
 update_FPA_values(hObject, eventdata, handles)
 update_CFR_values(hObject, eventdata, handles)
@@ -439,8 +440,8 @@ unitname = {'Hz'; 'kHz'; 'MHz'; 'GHz' };
 newunit = unitname{handles.unitfreq.Value};
 handles.freqtext.String = ['Frequency (',newunit,')'];
 tablenames = handles.swtabs0c0.ColumnName;
-tablenames{3} = ['St F/P (',newunit,'/°)'];
-tablenames{4} = ['Fn F/P (',newunit,'/°)'];
+tablenames{3} = ['Start (',newunit,'/°)'];
+tablenames{4} = ['Fin (',newunit,'/°)'];
 handles.swtabs0c0.ColumnName = tablenames;
 
 
@@ -1431,68 +1432,115 @@ update_FPA_values(hObject, eventdata, handles)
 
 
 function deletebutt_Callback(hObject, eventdata, handles)
-data = handles.swtabs0c0.Data;
+slot = handles.slotnum.Value-1;
+chan = handles.channum.Value-1;
+table = gettable(hObject, eventdata, handles, slot, chan);
+data = table.Data;
 numrows = size(data,1);
 if numrows == 1; return; end
 row = handles.rownum.Value;
 data(row,:) = [];
-handles.swtabs0c0.Data = data;
+table.Data = data;
 rownum_Callback(hObject, eventdata, handles)
 
 function blankabove_Callback(hObject, eventdata, handles)
-data = handles.swtabs0c0.Data;
+slot = handles.slotnum.Value-1;
+chan = handles.channum.Value-1;
+table = gettable(hObject, eventdata, handles, slot, chan);
+data = table.Data;
 row = handles.rownum.Value;
 data(row+1:end+1,:) = data(row:end,:);
 data(row,:) = {[]};
-handles.swtabs0c0.Data = data;
+table.Data = data;
 handles.rownum.Value = handles.rownum.Value + 1;
 rownum_Callback(hObject, eventdata, handles)
 function rampabove_Callback(hObject, eventdata, handles)
-data = handles.swtabs0c0.Data;
+slot = handles.slotnum.Value-1;
+chan = handles.channum.Value-1;
+table = gettable(hObject, eventdata, handles, slot, chan);
+data = table.Data;
 row = handles.rownum.Value;
 data(row+1:end+1,:) = data(row:end,:);
 data(row,:) = {'ramp';'freq';'';'';'';'';'';'';''};
-handles.swtabs0c0.Data = data;
+table.Data = data;
 handles.rownum.Value = handles.rownum.Value + 1;
 rownum_Callback(hObject, eventdata, handles)
 function trigabove_Callback(hObject, eventdata, handles)
-data = handles.swtabs0c0.Data;
+slot = handles.slotnum.Value-1;
+chan = handles.channum.Value-1;
+table = gettable(hObject, eventdata, handles, slot, chan);
+data = table.Data;
 row = handles.rownum.Value;
 data(row+1:end+1,:) = data(row:end,:);
 data(row,:) = {'wait';'rackA';'';'';'';'';'';'';''};
-handles.swtabs0c0.Data = data;
+table.Data = data;
 handles.rownum.Value = handles.rownum.Value + 1;
 rownum_Callback(hObject, eventdata, handles)
 
 
 function blankbelow_Callback(hObject, eventdata, handles)
-data = handles.swtabs0c0.Data;
+slot = handles.slotnum.Value-1;
+chan = handles.channum.Value-1;
+table = gettable(hObject, eventdata, handles, slot, chan);
+data = table.Data;
 row = handles.rownum.Value;
 data(row+2:end+1,:) = data(row+1:end,:);
 data(row+1,:) = {[]};
-handles.swtabs0c0.Data = data;
+table.Data = data;
 rownum_Callback(hObject, eventdata, handles)
 function rampbelow_Callback(hObject, eventdata, handles)
-data = handles.swtabs0c0.Data;
+slot = handles.slotnum.Value-1;
+chan = handles.channum.Value-1;
+table = gettable(hObject, eventdata, handles, slot, chan);
+data = table.Data;
 row = handles.rownum.Value;
 data(row+2:end+1,:) = data(row+1:end,:);
 data(row+1,:) = {'ramp';'freq';'';'';'';'';'';'';''};
-handles.swtabs0c0.Data = data;
+table.Data = data;
 rownum_Callback(hObject, eventdata, handles)
 function trigbelow_Callback(hObject, eventdata, handles)
-data = handles.swtabs0c0.Data;
+slot = handles.slotnum.Value-1;
+chan = handles.channum.Value-1;
+table = gettable(hObject, eventdata, handles, slot, chan);
+data = table.Data;
 row = handles.rownum.Value;
 data(row+2:end+1,:) = data(row+1:end,:);
 data(row+1,:) = {'wait';'rackA';'';'';'';'';'';'';''};
-handles.swtabs0c0.Data = data;
+table.Data = data;
 rownum_Callback(hObject, eventdata, handles)
 
 
+function copyto_Callback(hObject, eventdata, handles)
+fromslot = handles.slotnum.Value-1;
+fromchan = handles.channum.Value-1;
+fromline = handles.rownum.Value;
+fromtable = gettable(hObject, eventdata, handles, fromslot, fromchan);
+toslot = handles.slotnumto.Value-1;
+tochan = handles.channumto.Value-1;
+toline = handles.copydest.Value;
+totable = gettable(hObject, eventdata, handles, toslot, tochan);
 
+fromdata = fromtable.Data;
+todata = totable.Data;
+todata(toline,:) = fromdata(fromline,:);
+totable.Data = todata;
+
+function copytable_Callback(hObject, eventdata, handles)
+fromslot = handles.slotnum.Value-1;
+fromchan = handles.channum.Value-1;
+fromtable = gettable(hObject, eventdata, handles, fromslot, fromchan);
+toslot = handles.slotnumto.Value-1;
+tochan = handles.channumto.Value-1;
+totable = gettable(hObject, eventdata, handles, toslot, tochan);
+
+totable.Data = fromtable.Data;
 
 function rownum_Callback(hObject, eventdata, handles)
-datas0c0 = handles.swtabs0c0.Data;
-numrows = size(datas0c0,1);
+slot = handles.slotnum.Value-1;
+chan = handles.channum.Value-1;
+table = gettable(hObject, eventdata, handles, slot, chan);
+data = table.Data;
+numrows = size(data,1);
 if handles.rownum.Value == numrows && handles.rownum.Value ~= 1
     handles.rownum.Value = handles.rownum.Value - 1;
 end
@@ -1507,7 +1555,29 @@ for r = 1:1:numrows
     end     % call me if it's >1k
 end
 handles.rownum.String = rowlist;
-% handles.rownum.Value = currentval;
+
+function copydest_Callback(hObject, eventdata, handles)
+slot = handles.slotnumto.Value-1;
+chan = handles.channumto.Value-1;
+table = gettable(hObject, eventdata, handles, slot, chan);
+data = table.Data;
+numrows = size(data,1);
+if handles.copydest.Value == numrows && handles.copydest.Value ~= 1
+    handles.copydest.Value = handles.copydest.Value - 1;
+end
+
+for r = 1:1:numrows
+    if r < 10
+        rowlist(r,:) = ['  ',num2str(r)];
+    elseif r < 100
+        rowlist(r,:) = [' ',num2str(r)];
+    else
+        rowlist(r,:) = num2str(r);
+    end     % call me if it's >1k
+end
+handles.copydest.String = rowlist;
+
+function sendramps_Callback(hObject, eventdata, handles)
 
 function swtabs0c0_CellEditCallback(hObject, eventdata, handles)
 rownum_Callback(hObject, eventdata, handles);
@@ -1515,3 +1585,73 @@ rownum_Callback(hObject, eventdata, handles);
 
 assignin('base', 'sweeptable', handles.swtabs0c0.Data)
 assignin('base', 'tablenames', handles.swtabs0c0.ColumnName)
+
+function edittable_Callback(hObject, eventdata, handles)
+thepos = handles.tableeditpanel.Position;
+if thepos(1) > 100
+    thepos(1) = 20;
+    handles.tableeditpanel.Position = thepos;
+    handles.edittable.String = 'Hide Table Edits';
+else
+    thepos(1) = 130;
+    handles.tableeditpanel.Position = thepos;
+    handles.edittable.String = 'Edit Tables';
+end
+
+function slotnum_Callback(hObject, eventdata, handles)
+rownum_Callback(hObject, eventdata, handles)
+function channum_Callback(hObject, eventdata, handles)
+rownum_Callback(hObject, eventdata, handles)
+function slotnumto_Callback(hObject, eventdata, handles)
+copydest_Callback(hObject, eventdata, handles)
+function channumto_Callback(hObject, eventdata, handles)
+copydest_Callback(hObject, eventdata, handles)
+
+function tableeditpanel_CreateFcn(hObject, eventdata, handles)
+
+
+function thetable = gettable(hObject, eventdata, handles, slot, chan)
+switch slot
+    case 0 
+        switch chan
+            case 0
+                thetable = handles.swtabs0c0;
+            case 1
+                thetable = handles.swtabs0c1;
+        end
+    case 1
+        switch chan
+            case 0
+                thetable = handles.swtabs1c0;
+            case 1
+                thetable = handles.swtabs1c1;
+        end
+    case 2
+        switch chan
+            case 0
+                thetable = handles.swtabs2c0;
+            case 1
+                thetable = handles.swtabs2c1;
+        end
+    case 3
+        switch chan
+            case 0
+                thetable = handles.swtabs3c0;
+            case 1
+                thetable = handles.swtabs3c1;
+        end
+    case 4
+        switch chan
+            case 0
+                thetable = handles.swtabs4c0;
+            case 1
+                thetable = handles.swtabs4c1;
+        end
+    case 5
+        switch chan
+            case 0
+                thetable = handles.swtabs5c0;
+            case 1
+                thetable = handles.swtabs5c1;
+        end
+end
