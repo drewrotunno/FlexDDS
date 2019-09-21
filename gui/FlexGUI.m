@@ -22,7 +22,7 @@ function varargout = FlexGUI(varargin)
 
 % Edit the above text to modify the response to help FlexGUI
 
-% Last Modified by GUIDE v2.5 20-Sep-2019 13:48:17
+% Last Modified by GUIDE v2.5 20-Sep-2019 17:37:26
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -63,6 +63,8 @@ guidata(hObject, handles);
 function varargout = FlexGUI_OutputFcn(hObject, eventdata, handles) 
 varargout{1} = handles.output;
 
+
+function flush_Callback(hObject, eventdata, handles)
 
 function connectbutton_Callback(hObject, eventdata, handles)
 
@@ -1655,3 +1657,6 @@ switch slot
                 thetable = handles.swtabs5c1;
         end
 end
+
+
+
