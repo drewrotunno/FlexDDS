@@ -22,7 +22,7 @@ function varargout = FlexGUI(varargin)
 
 % Edit the above text to modify the response to help FlexGUI
 
-% Last Modified by GUIDE v2.5 20-Sep-2019 17:37:26
+% Last Modified by GUIDE v2.5 23-Sep-2019 11:51:49
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -65,6 +65,62 @@ varargout{1} = handles.output;
 
 
 function flush_Callback(hObject, eventdata, handles)
+[slot, thisslot] = getslot(hObject, eventdata, handles);
+% is it already open? 
+t = get(handles.conn, 'UserData');
+if isa( t{slot+1}, 'tcpip') && strcmp(t{slot+1}.status, 'open')
+    thisslot.UserData = flexflush(t{slot+1}, thisslot.UserData);
+else
+    handles.flush.BackgroundColor = [1 1 0];
+end
+
+function flushall_Callback(hObject, eventdata, handles)
+t = get(handles.conn, 'UserData');
+
+% slot 0
+if isa( t{1}, 'tcpip') && strcmp(t{1}.status, 'open')
+    slot0.UserData = flexflush(t{1}, slot0.UserData);
+else
+    handles.flush.BackgroundColor = [1 1 0];
+end
+
+% slot 1
+if isa( t{2}, 'tcpip') && strcmp(t{1}.status, 'open')
+    slot1.UserData = flexflush(t{2}, slot1.UserData);
+else
+    handles.flush.BackgroundColor = [1 1 0];
+end
+
+% slot 2
+if isa( t{3}, 'tcpip') && strcmp(t{3}.status, 'open')
+    slot2.UserData = flexflush(t{3}, slot2.UserData);
+else
+    handles.flush.BackgroundColor = [1 1 0];
+end
+
+% slot 3
+if isa( t{4}, 'tcpip') && strcmp(t{4}.status, 'open')
+    slot3.UserData = flexflush(t{4}, slot3.UserData);
+else
+    handles.flush.BackgroundColor = [1 1 0];
+end
+
+% slot 4
+if isa( t{5}, 'tcpip') && strcmp(t{5}.status, 'open')
+    slot4.UserData = flexflush(t{5}, slot4.UserData);
+else
+    handles.flush.BackgroundColor = [1 1 0];
+end
+
+% slot 5
+if isa( t{6}, 'tcpip') && strcmp(t{6}.status, 'open')
+    slot5.UserData = flexflush(t{6}, slot5.UserData);
+else
+    handles.flush.BackgroundColor = [1 1 0];
+end
+
+
+
 
 function connectbutton_Callback(hObject, eventdata, handles)
 
@@ -100,7 +156,7 @@ end
 end
 
 function setbothbutton_Callback(hObject, eventdata, handles)
-t = get(handles.conn, 'UserData');
+% t = get(handles.conn, 'UserData');
 [prof0, profhandle] = getprof0(hObject, eventdata, handles);
 [prof1, profhandle] = getprof1(hObject, eventdata, handles);
 [slot, thisslot] = getslot(hObject, eventdata, handles);
@@ -113,9 +169,9 @@ freq0 =( str2double(handles.freq0.String) - str2double(handles.offset.String) ) 
 freq1 =( str2double(handles.freq1.String) - str2double(handles.offset.String) )*freqmult(handles);
 
 % twosingletones(t{slot+1}, prof0,amp0,phase0,freq0,amp1,phase1,freq1);
-onesingletone(t{slot+1}, 0, prof0, amp0,  phase0, freq0);
-onesingletone(t{slot+1}, 1, prof1, amp1,  phase1, freq1);
-flexupdateboth(t{slot+1});
+thisslot.UserData = onesingletone(thisslot.UserData, 0, prof0, amp0,  phase0, freq0);
+thisslot.UserData = onesingletone(thisslot.UserData, 1, prof1, amp1,  phase1, freq1);
+thisslot.UserData = flexupdateboth(thisslot.UserData);
 
 handles.lastprofc0.Enable = 'on';
 handles.nextprofc0.Enable = 'on';
@@ -123,7 +179,7 @@ handles.lastprofc1.Enable = 'on';
 handles.nextprofc1.Enable = 'on';
 
 function setchan0_Callback(hObject, eventdata, handles)
-t = get(handles.conn, 'UserData');
+% t = get(handles.conn, 'UserData');
 [prof0, profhandle] = getprof0(hObject, eventdata, handles);
 [slot, thisslot] = getslot(hObject, eventdata, handles);
 
@@ -131,14 +187,14 @@ amp0 = str2double(handles.amp0.String);
 phase0 = str2double(handles.phase0.String);
 freq0 = ( str2double(handles.freq0.String) - str2double(handles.offset.String) )*freqmult(handles);
 
-onesingletone(t{slot+1}, 0, prof0, amp0,  phase0, freq0);
-flexupdateone(t{slot+1}, 0);
+thisslot.UserData = onesingletone(thisslot.UserData, 0, prof0, amp0,  phase0, freq0);
+thisslot.UserData = flexupdateone(thisslot.UserData, 0);
 
 handles.lastprofc0.Enable = 'on';
 handles.nextprofc0.Enable = 'on';
 
 function setchan1_Callback(hObject, eventdata, handles)
-t = get(handles.conn, 'UserData');
+% t = get(handles.conn, 'UserData');
 [prof1, profhandle] = getprof1(hObject, eventdata, handles);
 [slot, thisslot] = getslot(hObject, eventdata, handles);
 
@@ -146,8 +202,8 @@ amp1 = str2double(handles.amp1.String);
 phase1 = str2double(handles.phase1.String);
 freq1 = ( str2double(handles.freq1.String) - str2double(handles.offset.String) )*freqmult(handles);
 
-onesingletone(t{slot+1}, 1, prof1, amp1,  phase1, freq1);
-flexupdateone(t{slot+1}, 1);
+thisslot.UserData = onesingletone(thisslot.UserData, 1, prof1, amp1,  phase1, freq1);
+thisslot.UserData = flexupdateone(thisslot.UserData, 1);
 
 handles.lastprofc1.Enable = 'on';
 handles.nextprofc1.Enable = 'on';
@@ -279,7 +335,6 @@ if strcmp(class(t{slot+1}), 'tcpip')
 else
     set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
 end
-
 function slot1_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
 slotupdate(hObject, eventdata, handles)
@@ -423,7 +478,6 @@ adata0 = handles.amp0.UserData;
 adata1 = handles.amp1.UserData;
 handles.amp0.String = adata0{slot+1,prof0+1} ;
 handles.amp1.String = adata1{slot+1,prof1+1};
-
 function update_CFR_values(hObject, eventdata, handles)
 [slot, thisslot] = getslot(hObject, eventdata, handles);
 
@@ -445,8 +499,6 @@ tablenames = handles.swtabs0c0.ColumnName;
 tablenames{3} = ['Start (',newunit,'/°)'];
 tablenames{4} = ['Fin (',newunit,'/°)'];
 handles.swtabs0c0.ColumnName = tablenames;
-
-
 function unittime_Callback(hObject, eventdata, handles)
 unitname = {'sec'; 'ms'; 'us'; 'ns' };
 newunit = unitname{handles.unittime.Value};
@@ -454,8 +506,6 @@ tablenames = handles.swtabs0c0.ColumnName;
 tablenames{5} = ['Time (',newunit,')'];
 tablenames{9} = ['TimeDiff (',newunit,')'];
 handles.swtabs0c0.ColumnName = tablenames;
-
-
 
 function outmult = freqmult(handles)
 power = 10^(3*(handles.unitfreq.Value-1));
@@ -465,7 +515,7 @@ function timeunit = timemult(handles)
 timeunit = 10^(-3*(handles.unittime.Value-1));
 
 function nextprofc0_Callback(hObject, eventdata, handles)
-t = get(handles.conn, 'UserData');
+% t = get(handles.conn, 'UserData');
 [slot, thisslot] = getslot(hObject, eventdata, handles);
 [prof0, profhandle] = getprof0(hObject, eventdata, handles);
 
@@ -473,41 +523,41 @@ switch prof0
     case 0
         handles.stp0c0.Value = 0;
         handles.stp1c0.Value = 1;
-        setprof(t{slot+1}, 0, 1);
+        thisslot.UserData = setprof(thisslot.UserData, 0, 1);
     case 1
         handles.stp1c0.Value = 0;
         handles.stp3c0.Value = 1;
-        setprof(t{slot+1}, 0, 3);
+        thisslot.UserData = setprof(thisslot.UserData, 0, 3);
     case 2    
         handles.stp2c0.Value = 0;
         handles.stp6c0.Value = 1;
-        setprof(t{slot+1}, 0, 6);
+        thisslot.UserData = setprof(thisslot.UserData, 0, 6);
     case 3
         handles.stp3c0.Value = 0;
         handles.stp2c0.Value = 1;
-        setprof(t{slot+1}, 0, 2);
+        thisslot.UserData = setprof(thisslot.UserData, 0, 2);
     case 4
         handles.stp4c0.Value = 0;
         handles.stp0c0.Value = 1;
-        setprof(t{slot+1}, 0, 0);
+        thisslot.UserData = setprof(thisslot.UserData, 0, 0);
     case 5
         handles.stp5c0.Value = 0;
         handles.stp4c0.Value = 1;
-        setprof(t{slot+1}, 0, 4);
+        thisslot.UserData = setprof(thisslot.UserData, 0, 4);
     case 6
         handles.stp6c0.Value = 0;
         handles.stp7c0.Value = 1;
-        setprof(t{slot+1}, 0, 7);
+        thisslot.UserData = setprof(thisslot.UserData, 0, 7);
     case 7 
         handles.stp7c0.Value = 0;
         handles.stp5c0.Value = 1;
-        setprof(t{slot+1}, 0, 5);
+        thisslot.UserData = setprof(thisslot.UserData, 0, 5);
 end
 update_FPA_values(hObject, eventdata, handles)
 update_allowed_profs(hObject, eventdata, handles)
 
 function lastprofc0_Callback(hObject, eventdata, handles)
-t = get(handles.conn, 'UserData');
+% t = get(handles.conn, 'UserData');
 [slot, thisslot] = getslot(hObject, eventdata, handles);
 [prof0, profhandle] = getprof0(hObject, eventdata, handles);
 
@@ -515,35 +565,35 @@ switch prof0
     case 0
         handles.stp0c0.Value = 0;
         handles.stp4c0.Value = 1;
-        setprof(t{slot+1}, 0, 4);
+        thisslot.UserData = setprof(thisslot.UserData, 0, 4);
     case 1
         handles.stp1c0.Value = 0;
         handles.stp0c0.Value = 1;
-        setprof(t{slot+1}, 0, 0);
+        thisslot.UserData = setprof(thisslot.UserData, 0, 0);
     case 2    
         handles.stp2c0.Value = 0;
         handles.stp3c0.Value = 1;
-        setprof(t{slot+1}, 0, 3);
+        thisslot.UserData = setprof(thisslot.UserData, 0, 3);
     case 3
         handles.stp3c0.Value = 0;
         handles.stp1c0.Value = 1;
-        setprof(t{slot+1}, 0, 1);
+        thisslot.UserData = setprof(thisslot.UserData, 0, 1);
     case 4
         handles.stp4c0.Value = 0;
         handles.stp5c0.Value = 1;
-        setprof(t{slot+1}, 0, 5);
+        thisslot.UserData = setprof(thisslot.UserData, 0, 5);
     case 5
         handles.stp5c0.Value = 0;
         handles.stp7c0.Value = 1;
-        setprof(t{slot+1}, 0, 7);
+        thisslot.UserData = setprof(thisslot.UserData, 0, 7);
     case 6
         handles.stp6c0.Value = 0;
         handles.stp2c0.Value = 1;
-        setprof(t{slot+1}, 0, 2);
+        thisslot.UserData = setprof(thisslot.UserData, 0, 2);
     case 7 
         handles.stp7c0.Value = 0;
         handles.stp6c0.Value = 1;
-        setprof(t{slot+1}, 0, 6);
+        thisslot.UserData = setprof(thisslot.UserData, 0, 6);
 end
 update_FPA_values(hObject, eventdata, handles)
 update_allowed_profs(hObject, eventdata, handles)
@@ -552,7 +602,7 @@ t = get(handles.conn, 'UserData');
 [slot, thisslot] = getslot(hObject, eventdata, handles);
 [prof, profhandle] = getprof0(hObject, eventdata, handles);
 
-setprof(t{slot+1}, 0, prof)
+thisslot.UserData = setprof(thisslot.UserData, 0, prof)
 
 handles.lastprofc0.Enable = 'on';
 handles.nextprofc0.Enable = 'on';
@@ -562,7 +612,7 @@ update_FPA_values(hObject, eventdata, handles)
 update_allowed_profs(hObject, eventdata, handles)
 
 function nextprofc1_Callback(hObject, eventdata, handles)
-t = get(handles.conn, 'UserData');
+% t = get(handles.conn, 'UserData');
 [slot, thisslot] = getslot(hObject, eventdata, handles);
 [prof1, profhandle] = getprof1(hObject, eventdata, handles);
 
@@ -571,35 +621,35 @@ switch prof1
     case 0
         handles.stp0c1.Value = 0;
         handles.stp1c1.Value = 1;
-        setprof(t{slot+1}, 1, 1);
+        thisslot.UserData = setprof(thisslot.UserData, 1, 1);
     case 1
         handles.stp1c1.Value = 0;
         handles.stp3c1.Value = 1;
-        setprof(t{slot+1}, 1, 3);
+        thisslot.UserData = setprof(thisslot.UserData, 1, 3);
     case 2    
         handles.stp2c1.Value = 0;
         handles.stp6c1.Value = 1;
-        setprof(t{slot+1}, 1, 6);
+        thisslot.UserData = setprof(thisslot.UserData, 1, 6);
     case 3
         handles.stp3c1.Value = 0;
         handles.stp2c1.Value = 1;
-        setprof(t{slot+1}, 1, 2);
+        thisslot.UserData = setprof(thisslot.UserData, 1, 2);
     case 4
         handles.stp4c1.Value = 0;
         handles.stp0c1.Value = 1;
-        setprof(t{slot+1}, 1, 0);
+        thisslot.UserData = setprof(thisslot.UserData, 1, 0);
     case 5
         handles.stp5c1.Value = 0;
         handles.stp4c1.Value = 1;
-        setprof(t{slot+1}, 1, 4);
+        thisslot.UserData = setprof(thisslot.UserData, 1, 4);
     case 6
         handles.stp6c1.Value = 0;
         handles.stp7c1.Value = 1;
-        setprof(t{slot+1}, 1, 7);
+        thisslot.UserData = setprof(thisslot.UserData, 1, 7);
     case 7 
         handles.stp7c1.Value = 0;
         handles.stp5c1.Value = 1;
-        setprof(t{slot+1}, 1, 5);
+        thisslot.UserData = setprof(thisslot.UserData, 1, 5);
 end
 update_FPA_values(hObject, eventdata, handles)
 update_allowed_profs(hObject, eventdata, handles)
@@ -612,45 +662,45 @@ switch prof1
     case 0
         handles.stp0c1.Value = 0;
         handles.stp4c1.Value = 1;
-        setprof(t{slot+1}, 1, 4);
+        thisslot.UserData = setprof(thisslot.UserData, 1, 4);
     case 1
         handles.stp1c1.Value = 0;
         handles.stp0c1.Value = 1;
-        setprof(t{slot+1}, 1, 0);
+        thisslot.UserData = setprof(thisslot.UserData, 1, 0);
     case 2    
         handles.stp2c1.Value = 0;
         handles.stp3c1.Value = 1;
-        setprof(t{slot+1}, 1, 3);
+        thisslot.UserData = setprof(thisslot.UserData, 1, 3);
     case 3
         handles.stp3c1.Value = 0;
         handles.stp1c1.Value = 1;
-        setprof(t{slot+1}, 1, 1);
+        thisslot.UserData = setprof(thisslot.UserData, 1, 1);
     case 4
         handles.stp4c1.Value = 0;
         handles.stp5c1.Value = 1;
-        setprof(t{slot+1}, 1, 5);
+        thisslot.UserData = setprof(thisslot.UserData, 1, 5);
     case 5
         handles.stp5c1.Value = 0;
         handles.stp7c1.Value = 1;
-        setprof(t{slot+1}, 1, 7);
+        thisslot.UserData = setprof(thisslot.UserData, 1, 7);
     case 6
         handles.stp6c1.Value = 0;
         handles.stp2c1.Value = 1;
-        setprof(t{slot+1}, 1, 2);
+        thisslot.UserData = setprof(thisslot.UserData, 1, 2);
     case 7 
         handles.stp7c1.Value = 0;
         handles.stp6c1.Value = 1;
-        setprof(t{slot+1}, 1, 6);
+        thisslot.UserData = setprof(thisslot.UserData, 1, 6);
 end
 update_FPA_values(hObject, eventdata, handles)
 update_allowed_profs(hObject, eventdata, handles)
 
 function setprofc1_Callback(hObject, eventdata, handles)
-t = get(handles.conn, 'UserData');
+% t = get(handles.conn, 'UserData');
 [slot, thisslot] = getslot(hObject, eventdata, handles);
 [prof, profhandle] = getprof1(hObject, eventdata, handles);
 
-setprof(t{slot+1}, 1, prof)
+thisslot.UserData = setprof(thisslot.UserData, 1, prof)
 % current prof should already be Radio-filled
 % no need to set
 
@@ -864,31 +914,30 @@ handles.CFR2c1.UserData = CFR2c1data;
 handles.swtabs0c0.Data = SweepTableS0C0 ;
 
 function relockphasebutton_Callback(hObject, eventdata, handles)
-t = get(handles.conn, 'UserData');
-[slot, ~] = getslot(hObject, eventdata, handles);
+% t = get(handles.conn, 'UserData');
+[slot, thisslot] = getslot(hObject, eventdata, handles);
 
 handles.cfr1b11c0.Value = 1;
 handles.cfr1b11c1.Value = 1;
 [CFR1c0, CFR2c0] = generate_CFR_c0(hObject, eventdata, handles);
 [CFR1c1, CFR2c1] = generate_CFR_c1(hObject, eventdata, handles);
 
-flexsnd(t{slot+1},['dcp 0 spi:CFR1=0x',CFR1c0]);
-flexsnd(t{slot+1},['dcp 0 spi:CFR2=0x',CFR2c0]);
-flexsnd(t{slot+1},['dcp 1 spi:CFR1=0x',CFR1c1]);
-flexsnd(t{slot+1},['dcp 1 spi:CFR2=0x',CFR2c1]);
-flexupdateboth(t{slot+1});
+thisslot.UserData = setCFRreg(thisslot.UserData,0,1,CFR1c0);
+thisslot.UserData = setCFRreg(thisslot.UserData,0,2,CFR2c0);
+thisslot.UserData = setCFRreg(thisslot.UserData,1,1,CFR1c1);
+thisslot.UserData = setCFRreg(thisslot.UserData,1,2,CFR2c1);
+thisslot.UserData = flexupdateboth(thisslot.UserData);
 
 handles.cfr1b11c0.Value = 0;
 handles.cfr1b11c1.Value = 0;
 [CFR1c0, CFR2c0] = generate_CFR_c0(hObject, eventdata, handles);
 [CFR1c1, CFR2c1] = generate_CFR_c1(hObject, eventdata, handles);
 
-flexsnd(t{slot+1},['dcp 0 spi:CFR1=0x',CFR1c0]);
-flexsnd(t{slot+1},['dcp 0 spi:CFR2=0x',CFR2c0]);
-flexsnd(t{slot+1},['dcp 1 spi:CFR1=0x',CFR1c1]);
-flexsnd(t{slot+1},['dcp 1 spi:CFR2=0x',CFR2c1]);
-pause(1)
-flexupdateboth(t{slot+1});
+thisslot.UserData = setCFRreg(thisslot.UserData,0,1,CFR1c0);
+thisslot.UserData = setCFRreg(thisslot.UserData,0,2,CFR2c0);
+thisslot.UserData = setCFRreg(thisslot.UserData,1,1,CFR1c1);
+thisslot.UserData = setCFRreg(thisslot.UserData,1,2,CFR2c1);
+thisslot.UserData = flexupdateboth(thisslot.UserData);
 
 function CFR1c0_Callback(hObject, eventdata, handles)
 [slot, ~] = getslot(hObject, eventdata, handles);
@@ -896,27 +945,23 @@ data = handles.CFR1c0.UserData;
 data{slot+1} = handles.CFR1c0.String;
 handles.CFR1c0.UserData  =  data;
 copyfromboxc0_Callback(hObject, eventdata, handles)
-% copyfromboxc1_Callback(hObject, eventdata, handles)
 function CFR2c0_Callback(hObject, eventdata, handles)
 [slot, ~] = getslot(hObject, eventdata, handles);
 data = handles.CFR2c0.UserData;
 data{slot+1} = handles.CFR2c0.String;
 handles.CFR2c0.UserData  =  data;
 copyfromboxc0_Callback(hObject, eventdata, handles)
-% copyfromboxc1_Callback(hObject, eventdata, handles)
 function CFR1c1_Callback(hObject, eventdata, handles)
 [slot, ~] = getslot(hObject, eventdata, handles);
 data = handles.CFR1c1.UserData;
 data{slot+1} = handles.CFR1c1.String;
 handles.CFR1c1.UserData  =  data;
-% copyfromboxc0_Callback(hObject, eventdata, handles)
 copyfromboxc1_Callback(hObject, eventdata, handles)
 function CFR2c1_Callback(hObject, eventdata, handles)
 [slot, ~] = getslot(hObject, eventdata, handles);
 data = handles.CFR2c1.UserData;
 data{slot+1} = handles.CFR2c1.String;
 handles.CFR2c1.UserData  =  data;
-% copyfromboxc0_Callback(hObject, eventdata, handles)
 copyfromboxc1_Callback(hObject, eventdata, handles)
 
 function setboth0_Callback(hObject, eventdata, handles)
@@ -932,8 +977,8 @@ handles.CFR2c0.String = CFR2c0;
 handles.CFR1c1.String = CFR1c1;
 handles.CFR2c1.String = CFR2c1;
 
-t = get(handles.conn, 'UserData');
-[slot, ~] = getslot(hObject, eventdata, handles);
+% t = get(handles.conn, 'UserData');
+[slot, thisslot] = getslot(hObject, eventdata, handles);
 data1c0 = handles.CFR1c0.UserData;
 data1c0{slot+1} = handles.CFR1c0.String;
 handles.CFR1c0.UserData  =  data1c0;
@@ -950,12 +995,11 @@ data2c1 = handles.CFR2c1.UserData;
 data2c1{slot+1} = handles.CFR2c1.String;
 handles.CFR2c1.UserData  =  data2c1;
 
-flexsnd(t{slot+1},['dcp 0 spi:CFR1=0x',CFR1c0]);
-flexsnd(t{slot+1},['dcp 0 spi:CFR2=0x',CFR2c0]);
-flexsnd(t{slot+1},['dcp 1 spi:CFR1=0x',CFR1c1]);
-flexsnd(t{slot+1},['dcp 1 spi:CFR2=0x',CFR2c1]);
-flexupdateboth(t{slot+1});
-
+thisslot.UserData = setCFRreg(thisslot.UserData,0,1,CFR1c0);
+thisslot.UserData = setCFRreg(thisslot.UserData,0,2,CFR2c0);
+thisslot.UserData = setCFRreg(thisslot.UserData,1,1,CFR1c1);
+thisslot.UserData = setCFRreg(thisslot.UserData,1,2,CFR2c1);
+thisslot.UserData = flexupdateboth(thisslot.UserData);
 
 function staticsetcfr0_Callback(hObject, eventdata, handles)
 setcfrc0_Callback(hObject, eventdata, handles)
@@ -971,8 +1015,8 @@ handles.CFR2c0.String = CFR2c0;
 CFR1c0_Callback(hObject, eventdata, handles)
 CFR2c0_Callback(hObject, eventdata, handles)
 
-t = get(handles.conn, 'UserData');
-[slot, ~] = getslot(hObject, eventdata, handles);
+% t = get(handles.conn, 'UserData');
+[slot, thisslot] = getslot(hObject, eventdata, handles);
 data1c0 = handles.CFR1c0.UserData;
 data1c0{slot+1} = CFR1c0;
 handles.CFR1c0.UserData  =  data1c0;
@@ -980,9 +1024,10 @@ data2c0 = handles.CFR2c0.UserData;
 data2c0{slot+1} = CFR2c0;
 handles.CFR2c0.UserData  =  data2c0;
 
-flexsnd(t{slot+1},['dcp 0 spi:CFR1=0x',CFR1c0]);
-flexsnd(t{slot+1},['dcp 0 spi:CFR2=0x',CFR2c0]);
-flexupdateone(t{slot+1},0);
+thisslot.UserData = setCFRreg(thisslot.UserData,0,1,CFR1c0);
+thisslot.UserData = setCFRreg(thisslot.UserData,0,2,CFR2c0);
+thisslot.UserData = flexupdateboth(thisslot.UserData);
+
 function setcfrc1_Callback(hObject, eventdata, handles)
 [CFR1c1, CFR2c1] = generate_CFR_c1(hObject, eventdata, handles);
 handles.CFR1c1.String = CFR1c1;
@@ -990,8 +1035,8 @@ handles.CFR2c1.String = CFR2c1;
 CFR1c1_Callback(hObject, eventdata, handles)
 CFR2c1_Callback(hObject, eventdata, handles)
 
-t = get(handles.conn, 'UserData');
-[slot, ~] = getslot(hObject, eventdata, handles);
+% t = get(handles.conn, 'UserData');
+[slot, thisslot] = getslot(hObject, eventdata, handles);
 data1c1 = handles.CFR1c1.UserData;
 data1c1{slot+1} = CFR1c1;
 handles.CFR1c1.UserData  =  data1c1;
@@ -999,9 +1044,9 @@ data2c1 = handles.CFR2c1.UserData;
 data2c1{slot+1} = CFR2c1;
 handles.CFR2c1.UserData  =  data2c1;
 
-flexsnd(t{slot+1},['dcp 1 spi:CFR1=0x',CFR1c1]);
-flexsnd(t{slot+1},['dcp 1 spi:CFR2=0x',CFR2c1]);
-flexupdateone(t{slot+1},1);
+thisslot.UserData = setCFRreg(thisslot.UserData,1,1,CFR1c1);
+thisslot.UserData = setCFRreg(thisslot.UserData,1,2,CFR2c1);
+thisslot.UserData = flexupdateboth(thisslot.UserData);
 
 function openCFRpanel_Callback(hObject, eventdata, handles)
 thepos = handles.CFRpanel.OuterPosition;
@@ -1432,7 +1477,6 @@ handles.bothlastprof.Enable = 'off';
 handles.bothnextprof.Enable = 'off';
 update_FPA_values(hObject, eventdata, handles)
 
-
 function deletebutt_Callback(hObject, eventdata, handles)
 slot = handles.slotnum.Value-1;
 chan = handles.channum.Value-1;
@@ -1657,6 +1701,5 @@ switch slot
                 thetable = handles.swtabs5c1;
         end
 end
-
 
 
