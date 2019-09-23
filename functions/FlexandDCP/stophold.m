@@ -1,12 +1,12 @@
-function stophold(t, chan)
+function stack = stophold(stack, chan)
 
 switch chan
     case 0 
-        flexsnd(t, 'dcp 0 update:-h');
+        stack = flexstack(stack, 'dcp 0 update:-h');
     case 1
-        flexsnd(t, 'dcp 1 update:-h');
+        stack = flexstack(stack, 'dcp 1 update:-h');
     case 2
-        flexsnd(t, 'dcp update:-h');
+        stack = flexstack(stack, 'dcp update:-h');
 end
 
 

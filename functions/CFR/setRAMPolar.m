@@ -1,7 +1,7 @@
-function newCFR = setRAMPolar(t, chan, lastCFR)
+function [newCFR, stack] =  setRAMPolar(stack, chan, lastCFR)
 
-newCFR = setCFRbit(t, chan, 1, 30, 1, lastCFR);
-newCFR = setCFRbit(t, chan, 1, 29, 1, newCFR);
+[newCFR, stack] = setCFRbit(stack, chan, 1, 30, 1, lastCFR);
+[newCFR, stack] = setCFRbit(stack, chan, 1, 29, 1, newCFR);
         
 end
 

@@ -1,6 +1,6 @@
-function newCFR = setParDataEnable(t, chan, bit, lastCFR)
+function [newCFR, stack] =  setParDataEnable(stack, chan, bit, lastCFR)
 
-newCFR = setCFRbit(t, chan, 2, 4, bit, lastCFR);
+[newCFR, stack] = setCFRbit(stack, chan, 2, 4, bit, lastCFR);
         
 end
 

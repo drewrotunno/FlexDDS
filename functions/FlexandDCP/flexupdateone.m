@@ -1,8 +1,6 @@
-function [] = flexupdateone(t, num)
+function stack = flexupdateone(stack, num)
 
-flexsnd(t,['dcp ',num2str(num),' update:u']);
+stack = flexstack(stack,['dcp ',num2str(num),' update:u']);
 
-% pause(.1);
-% flexlst(t);
 end
 

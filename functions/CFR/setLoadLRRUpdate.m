@@ -1,6 +1,6 @@
-function newCFR = setLoadLRRUpdate(t, chan, bit, lastCFR)
+function [newCFR, stack] =  setLoadLRRUpdate(stack, chan, bit, lastCFR)
 
-newCFR = setCFRbit(t, chan, 1, 15, bit, lastCFR);
+[newCFR, stack] = setCFRbit(stack, chan, 1, 15, bit, lastCFR);
         
 end
 

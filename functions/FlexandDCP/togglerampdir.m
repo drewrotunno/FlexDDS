@@ -1,12 +1,12 @@
-function togglerampdir(t, chan)
+function stack =  togglerampdir(stack, chan)
 
 switch chan
     case 0 
-        flexsnd(t, 'dcp 0 update:^d');
+        stack = flexstack(stack, 'dcp 0 update:^d');
     case 1
-        flexsnd(t, 'dcp 1 update:^d');
+        stack = flexstack(stack, 'dcp 1 update:^d');
     case 2
-        flexsnd(t, 'dcp update:^d');
+        stack = flexstack(stack, 'dcp update:^d');
 end
 
 

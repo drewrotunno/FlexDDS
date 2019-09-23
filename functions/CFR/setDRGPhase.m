@@ -1,7 +1,7 @@
-function newCFR = setDRGPhase(t, chan, lastCFR)
+function [newCFR, stack] =  setDRGPhase(stack, chan, lastCFR)
 
-newCFR = setCFRbit(t,chan,2,21,0,lastCFR);
-newCFR = setCFRbit(t,chan,2,20,1,newCFR);
+[newCFR, stack] = setCFRbit(stack,chan,2,21,0,lastCFR);
+[newCFR, stack] = setCFRbit(stack,chan,2,20,1,newCFR);
         
 end
 

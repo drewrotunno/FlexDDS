@@ -1,6 +1,6 @@
-function newCFR = setAutoClearPhaseAccum(t, chan, bit, lastCFR)
+function [newCFR, stack] =  setAutoClearPhaseAccum(stack, chan, bit, lastCFR)
 
-newCFR = setCFRbit(t, chan, 1, 13, bit, lastCFR);
+[newCFR, stack] = setCFRbit(stack, chan, 1, 13, bit, lastCFR);
         
 end
 

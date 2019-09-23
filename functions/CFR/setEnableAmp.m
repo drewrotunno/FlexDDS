@@ -1,6 +1,6 @@
-function setEnableAmp(t, chan, bit, lastCFR)
+function [newCFR, stack] =  setEnableAmp(stack, chan, bit, lastCFR)
 
-setCFRbit(t,chan,2,24,bit,lastCFR);
+[newCFR, stack] = setCFRbit(stack,chan,2,24,bit,lastCFR);
 
 end
 

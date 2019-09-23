@@ -1,21 +1,14 @@
-function lastprof(t, chan)
+function stack = lastprof(stack, chan)
 % increment single tone profile number
 
 switch chan
     case 2
-        flexsnd(t,'dcp update:-p');
+        stack = flexstack(stack,'dcp update:-p');
     case 1
-        flexsnd(t,'dcp 1 update:-p');
+        stack = flexstack(stack,'dcp 1 update:-p');
     case 0
-        flexsnd(t,'dcp 0 update:-p');
+        stack = flexstack(stack,'dcp 0 update:-p');
 end
-% 
-% while(~t.BytesAvailable)    
-%     % wait for ok's
-% end
-% 
-% % get those OK's
-% flexlst(t);
 
 end
 

@@ -1,9 +1,9 @@
-function pulseB(t, time)
+function stack = pulseB(stack, time)
 %PULSEA Summary of this function goes here
 
-setSlotBNCBhigh(t)
-waitns(t,0,time)
-setSlotBNCBlow(t)
+stack = setSlotBNCBhigh(stack);
+stack = waitns(stack,0,time);
+stack = setSlotBNCBlow(stack)
 
 end
 

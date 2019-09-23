@@ -1,6 +1,6 @@
-function newCFR = setClearDRGAccum(t, chan, bit, lastCFR)
+function [newCFR, stack] =  setClearDRGAccum(stack, chan, bit, lastCFR)
 
-newCFR = setCFRbit(t, chan, 1, 12, bit, lastCFR);
+[newCFR, stack] = setCFRbit(stack, chan, 1, 12, bit, lastCFR);
         
 end
 

@@ -1,6 +1,6 @@
-function newCFR = setManOSK(t, chan, bit, lastCFR)
+function [newCFR, stack] =  setManOSK(stack, chan, bit, lastCFR)
 
-newCFR = setCFRbit(t, chan, 1, 23, bit, lastCFR);
+[newCFR, stack] = setCFRbit(stack, chan, 1, 23, bit, lastCFR);
         
 end
 

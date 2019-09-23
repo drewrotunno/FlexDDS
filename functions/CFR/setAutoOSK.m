@@ -1,6 +1,6 @@
-function newCFR = setAutoOSK(t, chan, bit, lastCFR)
+function [newCFR, stack] =  setAutoOSK(stack, chan, bit, lastCFR)
 
-newCFR = setCFRbit(t, chan, 1, 8, bit, lastCFR);
+[newCFR, stack] = setCFRbit(stack, chan, 1, 8, bit, lastCFR);
         
 end
 

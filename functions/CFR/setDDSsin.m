@@ -1,6 +1,6 @@
-function newCFR = setDDSsin(t, chan, lastCFR)
+function [newCFR, stack] =  setDDSsin(stack, chan, lastCFR)
 
-newCFR = setCFRbit(t,chan,1,16,1,lastCFR);
+[newCFR, stack] = setCFRbit(stack,chan,1,16,1,lastCFR);
         
 end
 
