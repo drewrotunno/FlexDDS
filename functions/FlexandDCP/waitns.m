@@ -1,5 +1,5 @@
 function stack = waitns(stack, chan, time)
-%WAITFORRACKA Wait for slot triggers - events from Wieser Manual
+% wait in multiples of 8 ns
 
 timestr = num2str(min(16777215,round(time/8)));
 
@@ -11,7 +11,6 @@ switch chan
     case 2
         stack = flexstack(stack, ['dcp wait:',timestr,'h:']);
 end
-
 
 end
 
