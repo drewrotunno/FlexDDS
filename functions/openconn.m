@@ -1,9 +1,9 @@
-function [t] = openconn(ip,slot)
+function [t, stack] = openconn(ip,slot)
 
 % test script for talking to the Flex DDS
-
 % knownCFR = [['00410002'];['004008c0']];
 
+if nargout >= 1  
 % ip = '192.168.0.45';
 port = 26000+slot;
 
@@ -13,13 +13,12 @@ t = tcpip(ip,port, 'OutputBufferSize', uint32(2^30));
 fopen(t);
 
 fprintf(t,password);
+end
 
-% if(t.BytesAvailable)
-% fscanf(t)
-% end
-% pause(.1);
-% response = flexlst(t);
-% disp(response);
+if nargout > 1
+    stack = {''};
+end
+    
 
 end
 

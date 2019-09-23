@@ -1,5 +1,5 @@
 function stack = waitforRackA(stack, chan)
-%WAITFORRACKA Wait for A trigger then update
+% Wait for A trigger then update
 % 15 is rack trigger A. 
 
 switch chan

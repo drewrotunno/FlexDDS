@@ -74,14 +74,14 @@ end
 switch chan
     case 0
         stack = flexstack(stack,['dcp 0 spi:CFR',num2str(cfrnum),'=0x',newhexCFR{1}]);
-        stack = flexupdateone(stack,0);
+%         stack = flexupdateone(stack,0);
     case 1
         stack = flexstack(stack,['dcp 1 spi:CFR',num2str(cfrnum),'=0x',newhexCFR{2}]);
-        stack = flexupdateone(stack,1);
+%         stack = flexupdateone(stack,1);
     case 2
         stack = flexstack(stack,['dcp 0 spi:CFR',num2str(cfrnum),'=0x',newhexCFR{1}]);
         stack = flexstack(stack,['dcp 1 spi:CFR',num2str(cfrnum),'=0x',newhexCFR{2}]);
-        stack = flexupdateboth(stack);
+%         stack = flexupdateboth(stack);
 end
 
 end

@@ -70,57 +70,62 @@ function flush_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
 if isa( t{slot+1}, 'tcpip') && strcmp(t{slot+1}.status, 'open')
     thisslot.UserData = flexflush(t{slot+1}, thisslot.UserData);
+    handles.flush.BackgroundColor = [0 1 0];
 else
-    handles.flush.BackgroundColor = [1 1 0];
+    handles.flush.BackgroundColor = [1 0 0];
 end
 
 function flushall_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
+todo = [];
 
 % slot 0
 if isa( t{1}, 'tcpip') && strcmp(t{1}.status, 'open')
-    slot0.UserData = flexflush(t{1}, slot0.UserData);
+    handles.slot0.UserData = flexflush(t{1}, handles.slot0.UserData);
+    handles.flushall.BackgroundColor = [0 1 0];
 else
-    handles.flush.BackgroundColor = [1 1 0];
+%     handles.flushall.BackgroundColor = [1 0 0];
 end
 
 % slot 1
 if isa( t{2}, 'tcpip') && strcmp(t{1}.status, 'open')
-    slot1.UserData = flexflush(t{2}, slot1.UserData);
+    handles.slot1.UserData = flexflush(t{2}, slot1.UserData);
+    handles.flushall.BackgroundColor = [0 1 0];
 else
-    handles.flush.BackgroundColor = [1 1 0];
+%     handles.flushall.BackgroundColor = [1 0 0];
 end
 
 % slot 2
 if isa( t{3}, 'tcpip') && strcmp(t{3}.status, 'open')
-    slot2.UserData = flexflush(t{3}, slot2.UserData);
+    slot2.UserData = flexflush(t{3}, handles.slot2.UserData);
+    handles.flushall.BackgroundColor = [0 1 0];
 else
-    handles.flush.BackgroundColor = [1 1 0];
+%     handles.flushall.BackgroundColor = [1 0 0];
 end
 
 % slot 3
 if isa( t{4}, 'tcpip') && strcmp(t{4}.status, 'open')
-    slot3.UserData = flexflush(t{4}, slot3.UserData);
+    handles.slot3.UserData = flexflush(t{4}, handles.slot3.UserData);
+    handles.flushall.BackgroundColor = [0 1 0];
 else
-    handles.flush.BackgroundColor = [1 1 0];
+%     handles.flushall.BackgroundColor = [1 0 0];
 end
 
 % slot 4
 if isa( t{5}, 'tcpip') && strcmp(t{5}.status, 'open')
-    slot4.UserData = flexflush(t{5}, slot4.UserData);
+    handles.slot4.UserData = flexflush(t{5}, handles.slot4.UserData);
+    handles.flushall.BackgroundColor = [0 1 0];
 else
-    handles.flush.BackgroundColor = [1 1 0];
+%     handles.flushall.BackgroundColor = [1 0 0];
 end
 
 % slot 5
 if isa( t{6}, 'tcpip') && strcmp(t{6}.status, 'open')
-    slot5.UserData = flexflush(t{6}, slot5.UserData);
+    handles.slot5.UserData = flexflush(t{6}, handles.slot5.UserData);
+    handles.flushall.BackgroundColor = [0 1 0];
 else
-    handles.flush.BackgroundColor = [1 1 0];
+%     handles.flushall.BackgroundColor = [1 0 0];
 end
-
-
-
 
 function connectbutton_Callback(hObject, eventdata, handles)
 
@@ -165,8 +170,8 @@ amp0 = str2double(handles.amp0.String);
 amp1 = str2double(handles.amp1.String);
 phase0 = str2double(handles.phase0.String);
 phase1 = str2double(handles.phase1.String);
-freq0 =( str2double(handles.freq0.String) - str2double(handles.offset.String) ) *freqmult(handles);
-freq1 =( str2double(handles.freq1.String) - str2double(handles.offset.String) )*freqmult(handles);
+freq0 =( str2double(handles.freq0.String) + str2double(handles.offset.String) ) *freqmult(handles);
+freq1 =( str2double(handles.freq1.String) + str2double(handles.offset.String) )*freqmult(handles);
 
 % twosingletones(t{slot+1}, prof0,amp0,phase0,freq0,amp1,phase1,freq1);
 thisslot.UserData = onesingletone(thisslot.UserData, 0, prof0, amp0,  phase0, freq0);
@@ -185,7 +190,7 @@ function setchan0_Callback(hObject, eventdata, handles)
 
 amp0 = str2double(handles.amp0.String);
 phase0 = str2double(handles.phase0.String);
-freq0 = ( str2double(handles.freq0.String) - str2double(handles.offset.String) )*freqmult(handles);
+freq0 = ( str2double(handles.freq0.String) + str2double(handles.offset.String) )*freqmult(handles);
 
 thisslot.UserData = onesingletone(thisslot.UserData, 0, prof0, amp0,  phase0, freq0);
 thisslot.UserData = flexupdateone(thisslot.UserData, 0);
@@ -200,7 +205,7 @@ function setchan1_Callback(hObject, eventdata, handles)
 
 amp1 = str2double(handles.amp1.String);
 phase1 = str2double(handles.phase1.String);
-freq1 = ( str2double(handles.freq1.String) - str2double(handles.offset.String) )*freqmult(handles);
+freq1 = ( str2double(handles.freq1.String) + str2double(handles.offset.String) )*freqmult(handles);
 
 thisslot.UserData = onesingletone(thisslot.UserData, 1, prof1, amp1,  phase1, freq1);
 thisslot.UserData = flexupdateone(thisslot.UserData, 1);
@@ -937,6 +942,12 @@ thisslot.UserData = setCFRreg(thisslot.UserData,0,1,CFR1c0);
 thisslot.UserData = setCFRreg(thisslot.UserData,0,2,CFR2c0);
 thisslot.UserData = setCFRreg(thisslot.UserData,1,1,CFR1c1);
 thisslot.UserData = setCFRreg(thisslot.UserData,1,2,CFR2c1);
+
+thisslot.UserData = waitForEvent(thisslot.UserData,2,2);
+% thisslot.UserData = waitns(thisslot.UserData,0,500);
+% thisslot.UserData = waitns(thisslot.UserData,1,500);
+thisslot.UserData = waitforRackB(thisslot.UserData,2);
+
 thisslot.UserData = flexupdateboth(thisslot.UserData);
 
 function CFR1c0_Callback(hObject, eventdata, handles)
