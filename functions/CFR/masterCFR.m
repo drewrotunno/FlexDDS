@@ -96,19 +96,19 @@ switch chan
         newknownCFR{2} = lastCFR{2};
         stack = flexstack(stack,['dcp 0 spi:CFR1=0x', defaultCFR{1}(1,:)]);
         stack = flexstack(stack,['dcp 0 spi:CFR2=0x', defaultCFR{1}(2,:)]);
-        stack = flexupdateone(stack,0);
+%         stack = flexupdateone(stack,0);
     case 1
         newknownCFR{1} = lastCFR{1};
         newknownCFR{2} = defaultCFR{2};  %default value
         stack = flexstack(stack,['dcp 1 spi:CFR1=0x',defaultCFR{2}(1,:)]);
         stack = flexstack(stack,['dcp 1 spi:CFR2=0x',defaultCFR{2}(2,:)]);
-        stack = flexupdateone(stack,1);
+%         stack = flexupdateone(stack,1);
     case 2
         newknownCFR{1} = defaultCFR{1};  %default value
         newknownCFR{2} = defaultCFR{2};  %default value
         stack = flexstack(stack,['dcp spi:CFR1=0x',defaultCFR{1}(1,:)]);
         stack = flexstack(stack,['dcp spi:CFR2=0x',defaultCFR{1}(2,:)]);
-        stack = flexupdateboth(stack);
+%         stack = flexupdateboth(stack);
 end
 
 end

@@ -67,17 +67,17 @@ switch chan
         stack = flexstack(stack,['dcp 0 spi:DRL=0x',DRL]);
         stack = flexstack(stack,['dcp 0 spi:DRSS=0x',DRSS]);
         stack = flexstack(stack,['dcp 0 spi:DRR=0x',DRR]);
-        stack = flexupdateone(stack,0);
+%         stack = flexupdateone(stack,0);
     case 1
         stack = flexstack(stack,['dcp 1 spi:DRL=0x',DRL]);
         stack = flexstack(stack,['dcp 1 spi:DRSS=0x',DRSS]);
         stack = flexstack(stack,['dcp 1 spi:DRR=0x',DRR]);
-        stack = flexupdateone(stack,1);
+%         stack = flexupdateone(stack,1);
     case 2
         stack = flexstack(stack,['dcp spi:DRL=0x',DRL]);
         stack = flexstack(stack,['dcp spi:DRSS=0x',DRSS]);
         stack = flexstack(stack,['dcp spi:DRR=0x',DRR]);
-        stack = flexupdateboth(stack);
+%         stack = flexupdateboth(stack);
 end
 
 
