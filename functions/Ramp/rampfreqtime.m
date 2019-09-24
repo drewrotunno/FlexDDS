@@ -1,4 +1,4 @@
-function [stack, freqstep, timestep] = rampfreqtime(stack, chan, freqstart, freqend, timesec)
+function [stack, freqstep, timestep, timediff] = rampfreqtime(stack, chan, freqstart, freqend, timesec)
 %ONERAMP will calculate good freq and time steps for one DDS ramp.
 
 %        to int            ns   /clock @ 250 MHz
@@ -56,28 +56,29 @@ else
     freqstep = round(other*num/den)*1e9/2^32;
     timestep = other*4e-9;
 end
+timediff = timestep * ( double(fsteptot) / double(freqword)) - timesec ;
+
 
 DRL  = [highftw, lowftw];
 DRSS = [uint2hex( freqword ) , uint2hex( freqword ) ];
 DRR  = [uint2hex( timeword ) , uint2hex( timeword ) ];
-
 
 switch chan
     case 0
         stack = flexstack(stack,['dcp 0 spi:DRL=0x',DRL]);
         stack = flexstack(stack,['dcp 0 spi:DRSS=0x',DRSS]);
         stack = flexstack(stack,['dcp 0 spi:DRR=0x',DRR]);
-        stack = flexupdateone(stack,0);
+%         stack = flexupdateone(stack,0);
     case 1
         stack = flexstack(stack,['dcp 1 spi:DRL=0x',DRL]);
         stack = flexstack(stack,['dcp 1 spi:DRSS=0x',DRSS]);
         stack = flexstack(stack,['dcp 1 spi:DRR=0x',DRR]);
-        stack = flexupdateone(stack,1);
+%         stack = flexupdateone(stack,1);
     case 2
         stack = flexstack(stack,['dcp spi:DRL=0x',DRL]);
         stack = flexstack(stack,['dcp spi:DRSS=0x',DRSS]);
         stack = flexstack(stack,['dcp spi:DRR=0x',DRR]);
-        stack = flexupdateboth(stack);
+%         stack = flexupdateboth(stack);
 end
 
 
