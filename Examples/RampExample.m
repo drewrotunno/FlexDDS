@@ -21,10 +21,12 @@ endFreq     = 120e6;
 time        =   3  ;        % in seconds
 
 % Convert to Words, and Send the Ramp parameters
-[stack, FW, TW] = rampfreqtime(stack, 2, startFreq, endFreq, time);
+[stack, FW, TW, timediff] = rampfreqtime(stack, 2, startFreq, endFreq, time);
 
 % If you already know what words to use: 
 % [stack] = onerampfreq(stack,chan, freqstart, freqend, tstepns, freqstephz)
+
+stack = flexupdateboth(stack);
 
 % Are you guys silly? I'm still gonna send it 
 % https://www.youtube.com/watch?v=WIrWyr3HgXI
