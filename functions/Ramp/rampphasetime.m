@@ -1,4 +1,4 @@
-function [stack, phasstep, timestep] = rampphasetime(stack, chan, phasstart, phasend, timesec)
+function [stack, phasstep, timestep, timediff] = rampphasetime(stack, chan, phasestart, phaseend, timesec)
 %ONERAMP will calculate good freq and time steps for one DDS ramp.
 
 %        to int            ns   /clock @ 250 MHz
@@ -6,12 +6,12 @@ tsteptot = round((timesec.*1e9)./4);
 error    = 1e-3;   % or whatever
 maxword  = 100;      % 400 ns or 23 Hz
 
-if(phasstart>phasend)
-    highpow = phase2powdeg32(phasstart);
-    lowpow = phase2powdeg32(phasend);
-elseif(phasstart<phasend)
-    lowpow = phase2powdeg32(phasstart);
-    highpow = phase2powdeg32(phasend);
+if(phasestart>phaseend)
+    highpow = phase2powdeg32(phasestart);
+    lowpow = phase2powdeg32(phaseend);
+elseif(phasestart<phaseend)
+    lowpow = phase2powdeg32(phasestart);
+    highpow = phase2powdeg32(phaseend);
 else
     disp('thats not a sweep');
     return
@@ -56,6 +56,9 @@ else
     phasstep = round(other*num/den)*360/2^32;
     timestep = other*4e-9;
 end
+timediff = timestep * ( double(psteptot) / double(phasword)) - timesec ;
+
+
 
 DRL  = [highpow, lowpow];
 DRSS = [uint2hex( phasword ) , uint2hex( phasword ) ];
