@@ -4,7 +4,7 @@ function [stack, freqstep, timestep, timediff] = rampfreqtime(stack, chan, freqs
 %        to int            ns   /clock @ 250 MHz
 tsteptot = round((timesec.*1e9)./4);
 error    = 1e-3;   % or whatever
-maxword  = 100;      % 400 ns or 23 Hz
+maxword  = 400;      % 400 ns or 23 Hz
 
 if freqstart > freqend
     lowftw = freq2ftwM(freqstart);     % use mirror freqs?? always start low and go up
@@ -45,7 +45,7 @@ while diffq > error
     diffq = abs( (slope - round(slope)) / slope) ;
 end
 
-if num > den
+if fsteptot > tsteptot
     freqword = uint32( round( other*num/den) );
     timeword = uint16( other );
     freqstep = round(other*num/den)*1e9/2^32;
@@ -53,8 +53,8 @@ if num > den
 else 
     timeword = uint16( round( other*num/den ) );
     freqword = uint32( other );
-    freqstep = round(other*num/den)*1e9/2^32;
-    timestep = other*4e-9;
+    freqstep = other*1e9/2^32;
+    timestep = round(other*num/den)*4e-9;
 end
 timediff = timestep * ( double(fsteptot) / double(freqword)) - timesec ;
 
