@@ -1,5 +1,5 @@
 % I hope this is a good guide for sample session. 
-
+clear all;
 
 % Establish a connection to the FlexDDS via IP + slot#
 [t, stack] =openconn('192.168.0.45', 0);
