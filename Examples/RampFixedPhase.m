@@ -1,12 +1,12 @@
 % Another Ramp Example
-
+clear all;
 % Ramp 2 Chans with the same frequencies, but a 
 % constant phase difference between channels
 
 % Variables
 startFreq       = 120e6;        % in Hz
 endFreq         =  20e6;
-phasediff       = 180;         % degrees
+phasediff       = 60;         % degrees
 time            = 2.5;        % in seconds
 repeat_up_down  = 3;
 
@@ -27,8 +27,13 @@ stack = rampdown(stack, 2);
 
 % Establish a phase diffrence between channels
 %stack =onesingletone(stack, chan, prof, amp1,     phase,    freqHz)
-stack = onesingletone(stack,    0,    0,    1,         0, startFreq);
-stack = onesingletone(stack,    1,    0,    1, phasediff, startFreq);
+if startFreq < endFreq
+    stack = onesingletone( stack,    0,    0,    1,         0, startFreq);
+    stack = onesingletone( stack,    1,    0,    1,phasediff, startFreq);
+else    % need to use mirror freqs, mirror phase too
+    stack = onesingletoneM(stack,    0,    0,    1,         0, startFreq);
+    stack = onesingletoneM(stack,    1,    0,    1, 360-phasediff, startFreq);
+end
 stack = flexupdateboth(stack);
 
 % Phase lock on Rack A
