@@ -7,8 +7,8 @@ error    = 1e-3;   % or whatever
 maxword  = 100;      % 400 ns or 23 Hz
 
 if freqstart > freqend
-    highftw = freq2ftw(freqstart);     % use mirror freqs?? always start low and go up
-    lowftw  = freq2ftw(freqend);
+    lowftw = freq2ftwM(freqstart);     % use mirror freqs?? always start low and go up
+    highftw  = freq2ftwM(freqend);
 elseif freqstart < freqend
     lowftw  = freq2ftw(freqstart);
     highftw = freq2ftw(freqend);
