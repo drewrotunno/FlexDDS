@@ -23,7 +23,7 @@ stack = flexupdateboth(stack);
 % set two outputs on        profile 7
 % stack = twosingletonesNOUP(stack, 7, 1.0, 0, 3.14159e6,     1.0, 0, 22/7*1e6 );
 % set these individually : 
-stack = onesingletone(stack, 1, 7, 1.0,  0, 3.14159e6);
+stack = onesingletone(stack, 0, 7, 1.0,  0, 3.14159e6);
 stack = onesingletone(stack, 1, 7, 1.0,  0, 22/7 *1e6);
 stack = flexupdateboth(stack);
 
