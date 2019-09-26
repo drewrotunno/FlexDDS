@@ -45,7 +45,7 @@ while diffq > error
     diffq = abs( (slope - round(slope)) / slope) ;
 end
 
-if num > den
+if psteptot > tsteptot
     phasword = uint32( round( other*num/den) );
     timeword = uint16( other );
     phasstep = round(other*num/den)*360/2^32;
@@ -53,8 +53,8 @@ if num > den
 else 
     timeword = uint16( round( other*num/den ) );
     phasword = uint32( other );
-    phasstep = round(other*num/den)*360/2^32;
-    timestep = other*4e-9;
+    phasstep = other*360/2^32;
+    timestep = round(other*num/den)*4e-9;
 end
 timediff = timestep * ( double(psteptot) / double(phasword)) - timesec ;
 
