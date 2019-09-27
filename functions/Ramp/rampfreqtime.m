@@ -1,10 +1,18 @@
 function [stack, freqstep, timestep, timediff] = rampfreqtime(stack, chan, freqstart, freqend, timesec)
 %ONERAMP will calculate good freq and time steps for one DDS ramp.
+% This method allows for total times close to desired lengths when the
+% ratio of words is near one. 
+% Summary: Determine the slope desired in FTW / Clock cycles
+%  Find distance of this value to an integer diff = (slope - round(slope))
+%  Multiply by this reciprocal (1/ diff) to get numbers closer to integers
+%  Repeat until desired errors is achieved. 
+%  rough Ex: 5/6 -- > diff = 1/6 --> mult = 6
+%   Words are 5 and 6, instead of rounding to one and one
 
 %        to int            ns   /clock @ 250 MHz
 tsteptot = round((timesec.*1e9)./4);
 error    = 1e-3;   % or whatever
-maxword  = 400;      % 400 ns or 23 Hz
+maxword  = 100;      % 400 ns or 23 Hz
 
 if freqstart > freqend
     lowftw = freq2ftwM(freqstart);     % use mirror freqs?? always start low and go up
