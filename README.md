@@ -1,7 +1,7 @@
 # FlexDDS
  Control via MATLAB for the WieserLabs FlexDDS
  
-* In the MATLAB directory, right-click the top folder FlexDDS, Add to Path >> Selected Folders and Subfolders to access all functions. Will need to similarly remove and re-add if any subsequent folder management happens. 
+* In the MATLAB directory, right-click the top folder FlexDDS, Add to Path >> Selected Folders and Subfolders to access all functions. Or, Home >> Set Path >> Add with Subfolders ...
 
 * This depends on the tcpip() function in the Instrument Control Toolbox add-on for MATLAB
 
