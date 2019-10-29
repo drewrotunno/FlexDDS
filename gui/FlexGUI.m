@@ -22,7 +22,7 @@ function varargout = FlexGUI(varargin)
 
 % Edit the above text to modify the response to help FlexGUI
 
-% Last Modified by GUIDE v2.5 23-Sep-2019 11:51:49
+% Last Modified by GUIDE v2.5 24-Sep-2019 15:36:01
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -43,10 +43,42 @@ else
 end
 % End initialization code - DO NOT EDIT
 
-
-% --- Executes just before FlexGUI is made visible.
 function FlexGUI_OpeningFcn(hObject, eventdata, handles, varargin)
 handles.output = hObject;
+
+% make tabs
+handles.tgroup = uitabgroup('Parent', handles.sweepholder,'TabLocation', 'top');
+handles.tab0 = uitab('Parent', handles.tgroup, 'Title', 'Slot 0');
+handles.tab1 = uitab('Parent', handles.tgroup, 'Title', 'Slot 1');
+handles.tab2 = uitab('Parent', handles.tgroup, 'Title', 'Slot 2');
+handles.tab3 = uitab('Parent', handles.tgroup, 'Title', 'Slot 3');
+handles.tab4 = uitab('Parent', handles.tgroup, 'Title', 'Slot 4');
+handles.tab5 = uitab('Parent', handles.tgroup, 'Title', 'Slot 5');
+%Place panels into each tab
+set(handles.slot0pan,'Parent',handles.tab0);
+set(handles.slot1pan,'Parent',handles.tab1);
+set(handles.slot2pan,'Parent',handles.tab2);
+set(handles.slot3pan,'Parent',handles.tab3);
+set(handles.slot4pan,'Parent',handles.tab4);
+set(handles.slot5pan,'Parent',handles.tab5);
+%Reposition each panel to same location as panel 1
+set(handles.slot1pan,'position',get(handles.slot0pan,'position'));
+set(handles.slot2pan,'position',get(handles.slot0pan,'position'));
+set(handles.slot3pan,'position',get(handles.slot0pan,'position'));
+set(handles.slot4pan,'position',get(handles.slot0pan,'position'));
+set(handles.slot5pan,'position',get(handles.slot0pan,'position'));
+
+handles.sweepholder.UserData = {...
+    handles.swtabs0c0, handles.swtabs0c1;
+    handles.swtabs1c0, handles.swtabs1c1;
+    handles.swtabs2c0, handles.swtabs2c1;
+    handles.swtabs3c0, handles.swtabs3c1;
+    handles.swtabs4c0, handles.swtabs4c1;
+    handles.swtabs5c0, handles.swtabs5c1    };
+
+% handles.tgroup
+
+
 % set units
 unitfreq_Callback(hObject, eventdata, handles)
 unittime_Callback(hObject, eventdata, handles)
@@ -58,11 +90,8 @@ update_FPA_values(hObject, eventdata, handles)
 update_CFR_values(hObject, eventdata, handles)
 % Update handles structure
 guidata(hObject, handles);
-
-
 function varargout = FlexGUI_OutputFcn(hObject, eventdata, handles) 
 varargout{1} = handles.output;
-
 
 function flush_Callback(hObject, eventdata, handles)
 [slot, thisslot] = getslot(hObject, eventdata, handles);
@@ -74,57 +103,65 @@ if isa( t{slot+1}, 'tcpip') && strcmp(t{slot+1}.status, 'open')
 else
     handles.flush.BackgroundColor = [1 0 0];
 end
-
 function flushall_Callback(hObject, eventdata, handles)
 t = get(handles.conn, 'UserData');
-todo = [];
+success = [];
 
 % slot 0
 if isa( t{1}, 'tcpip') && strcmp(t{1}.status, 'open')
     handles.slot0.UserData = flexflush(t{1}, handles.slot0.UserData);
     handles.flushall.BackgroundColor = [0 1 0];
-else
-%     handles.flushall.BackgroundColor = [1 0 0];
+    success(1) = true;
+elseif isa( t{1}, 'tcpip') && ~(strcmp(t{1}.status, 'open'))
+     handles.flushall.BackgroundColor = [1 0 0];
+     success(1) = false;
 end
 
 % slot 1
-if isa( t{2}, 'tcpip') && strcmp(t{1}.status, 'open')
+if isa( t{2}, 'tcpip') && strcmp(t{2}.status, 'open')
     handles.slot1.UserData = flexflush(t{2}, slot1.UserData);
     handles.flushall.BackgroundColor = [0 1 0];
-else
-%     handles.flushall.BackgroundColor = [1 0 0];
+    success(2) = true;
+elseif isa( t{2}, 'tcpip') && ~(strcmp(t{2}.status, 'open'))
+     handles.flushall.BackgroundColor = [1 0 0];
+     success(2) = false;
 end
 
 % slot 2
 if isa( t{3}, 'tcpip') && strcmp(t{3}.status, 'open')
     slot2.UserData = flexflush(t{3}, handles.slot2.UserData);
     handles.flushall.BackgroundColor = [0 1 0];
-else
-%     handles.flushall.BackgroundColor = [1 0 0];
+    success(3) = true;
+elseif isa( t{3}, 'tcpip') && ~(strcmp(t{3}.status, 'open'))
+     handles.flushall.BackgroundColor = [1 0 0];
+     success(3) = false;
 end
-
 % slot 3
 if isa( t{4}, 'tcpip') && strcmp(t{4}.status, 'open')
     handles.slot3.UserData = flexflush(t{4}, handles.slot3.UserData);
     handles.flushall.BackgroundColor = [0 1 0];
-else
-%     handles.flushall.BackgroundColor = [1 0 0];
+    success(4) = true;
+elseif isa( t{4}, 'tcpip') && ~(strcmp(t{4}.status, 'open'))
+     handles.flushall.BackgroundColor = [1 0 0];
+     success(4) = false;
 end
-
 % slot 4
 if isa( t{5}, 'tcpip') && strcmp(t{5}.status, 'open')
     handles.slot4.UserData = flexflush(t{5}, handles.slot4.UserData);
     handles.flushall.BackgroundColor = [0 1 0];
-else
-%     handles.flushall.BackgroundColor = [1 0 0];
+    success(5) = true;
+elseif isa( t{5}, 'tcpip') && ~(strcmp(t{5}.status, 'open'))
+     handles.flushall.BackgroundColor = [1 0 0];
+     success(5) = false;
 end
-
 % slot 5
 if isa( t{6}, 'tcpip') && strcmp(t{6}.status, 'open')
     handles.slot5.UserData = flexflush(t{6}, handles.slot5.UserData);
     handles.flushall.BackgroundColor = [0 1 0];
-else
-%     handles.flushall.BackgroundColor = [1 0 0];
+    success(6) = true;
+elseif isa( t{6}, 'tcpip') && ~(strcmp(t{6}.status, 'open'))
+     handles.flushall.BackgroundColor = [1 0 0];
+     success(6) = false;
 end
 
 function connectbutton_Callback(hObject, eventdata, handles)
@@ -160,29 +197,6 @@ end
 
 end
 
-function setbothbutton_Callback(hObject, eventdata, handles)
-[prof0, profhandle] = getprof0(hObject, eventdata, handles);
-[prof1, profhandle] = getprof1(hObject, eventdata, handles);
-[slot, thisslot] = getslot(hObject, eventdata, handles);
-
-amp0 = str2double(handles.amp0.String);
-amp1 = str2double(handles.amp1.String);
-phase0 = str2double(handles.phase0.String);
-phase1 = str2double(handles.phase1.String);
-freq0 =( str2double(handles.freq0.String) + str2double(handles.offset.String) ) *freqmult(handles);
-freq1 =( str2double(handles.freq1.String) + str2double(handles.offset.String) )*freqmult(handles);
-
-% twosingletones(t{slot+1}, prof0,amp0,phase0,freq0,amp1,phase1,freq1);
-thisslot.UserData = onesingletone(thisslot.UserData, 0, prof0, amp0,  phase0, freq0);
-thisslot.UserData = onesingletone(thisslot.UserData, 1, prof1, amp1,  phase1, freq1);
-thisslot.UserData = flexupdateboth(thisslot.UserData);
-
-newstack(hObject, eventdata, handles);
-handles.lastprofc0.Enable = 'on';
-handles.nextprofc0.Enable = 'on';
-handles.lastprofc1.Enable = 'on';
-handles.nextprofc1.Enable = 'on';
-
 function setchan0_Callback(hObject, eventdata, handles)
 [prof0, profhandle] = getprof0(hObject, eventdata, handles);
 [slot, thisslot] = getslot(hObject, eventdata, handles);
@@ -197,7 +211,6 @@ thisslot.UserData = flexupdateone(thisslot.UserData, 0);
 newstack(hObject, eventdata, handles);
 handles.lastprofc0.Enable = 'on';
 handles.nextprofc0.Enable = 'on';
-
 function setchan1_Callback(hObject, eventdata, handles)
 [prof1, profhandle] = getprof1(hObject, eventdata, handles);
 [slot, thisslot] = getslot(hObject, eventdata, handles);
@@ -212,220 +225,178 @@ thisslot.UserData = flexupdateone(thisslot.UserData, 1);
 newstack(hObject, eventdata, handles);
 handles.lastprofc1.Enable = 'on';
 handles.nextprofc1.Enable = 'on';
+function setbothbutton_Callback(hObject, eventdata, handles)
+[prof0, profhandle] = getprof0(hObject, eventdata, handles);
+[prof1, profhandle] = getprof1(hObject, eventdata, handles);
+[slot, thisslot] = getslot(hObject, eventdata, handles);
 
-function [slot, thisslot] = getslot(~, ~, handles)
-    if get(handles.slot0, 'Value')
-        slot=0;
-        thisslot = handles.slot0;
-    elseif(get(handles.slot1, 'Value'))
-        slot=1;
-        thisslot = handles.slot1;
-    elseif(get(handles.slot2, 'Value'))
-        slot=2;
-        thisslot = handles.slot2;
-    elseif(get(handles.slot3, 'Value'))
-        slot=3;
-        thisslot = handles.slot3;
-    elseif(get(handles.slot4, 'Value'))
-        slot=4;
-        thisslot = handles.slot4;
-    elseif(get(handles.slot5, 'Value'))
-        slot=5;
-        thisslot = handles.slot5;
-    else
-        return
-    end
-function [prof, thisprof] = getprof0(~, ~, handles)
-    if get(handles.stp0c0, 'Value')
-        prof=0;
-        thisprof = handles.stp0c0;
-    elseif(get(handles.stp1c0, 'Value'))
-        prof=1;
-        thisprof = handles.stp1c0;
-    elseif(get(handles.stp2c0, 'Value'))
-        prof=2;
-        thisprof = handles.stp2c0;
-    elseif(get(handles.stp3c0, 'Value'))
-        prof=3;
-        thisprof = handles.stp3c0;
-    elseif(get(handles.stp4c0, 'Value'))
-        prof=4;
-        thisprof = handles.stp4c0;
-    elseif(get(handles.stp5c0, 'Value'))
-        prof=5;
-        thisprof = handles.stp5c0;
-    elseif(get(handles.stp6c0, 'Value'))
-        prof=6;
-        thisprof = handles.stp6c0;
-    elseif(get(handles.stp7c0, 'Value'))
-        prof=7;
-        thisprof = handles.stp7c0;
-    else
-        return
-    end
-function [prof, thisprof] = getprof1(~, ~, handles)
-    if get(handles.stp0c1, 'Value')
-        prof=0;
-        thisprof = handles.stp0c1;
-    elseif(get(handles.stp1c1, 'Value'))
-        prof=1;
-        thisprof = handles.stp1c1;
-    elseif(get(handles.stp2c1, 'Value'))
-        prof=2;
-        thisprof = handles.stp2c1;
-    elseif(get(handles.stp3c1, 'Value'))
-        prof=3;
-        thisprof = handles.stp3c1;
-    elseif(get(handles.stp4c1, 'Value'))
-        prof=4;
-        thisprof = handles.stp4c1;
-    elseif(get(handles.stp5c1, 'Value'))
-        prof=5;
-        thisprof = handles.stp5c1;
-    elseif(get(handles.stp6c1, 'Value'))
-        prof=6;
-        thisprof = handles.stp6c1;
-    elseif(get(handles.stp7c1, 'Value'))
-        prof=7;
-        thisprof = handles.stp7c1;
-    else
-        return
-    end
-    
-function [profc0, profc1] = getprofhfromnum(num, handles)
-    switch num
-        case 0
-            profc0 = handles.stp0c0;
-            profc1 = handles.stp0c1;
-        case 1
-            profc0 = handles.stp1c0;
-            profc1 = handles.stp1c1;
-        case 2
-            profc0 = handles.stp2c0;
-            profc1 = handles.stp3c1;
-        case 3
-            profc0 = handles.stp3c0;
-            profc1 = handles.stp3c1;
-        case 4
-            profc0 = handles.stp4c0;
-            profc1 = handles.stp4c1;
-        case 5
-            profc0 = handles.stp5c0;
-            profc1 = handles.stp5c1;
-        case 6
-            profc0 = handles.stp6c0;
-            profc1 = handles.stp6c1;
-        case 7
-            profc0 = handles.stp7c0;
-            profc1 = handles.stp7c1;
-        case 8
-            profc0 = handles.stp8c0;
-            profc1 = handles.stp8c1;
-    end
-    
-    
-function slot0_Callback(hObject, eventdata, handles)
-t = get(handles.conn, 'UserData');
-slotupdate(hObject, eventdata, handles)
+amp0 = str2double(handles.amp0.String);
+amp1 = str2double(handles.amp1.String);
+phase0 = str2double(handles.phase0.String);
+phase1 = str2double(handles.phase1.String);
+freq0 =( str2double(handles.freq0.String) + str2double(handles.offset.String) ) *freqmult(handles);
+freq1 =( str2double(handles.freq1.String) + str2double(handles.offset.String) ) *freqmult(handles);
+
+% twosingletones(t{slot+1}, prof0,amp0,phase0,freq0,amp1,phase1,freq1);
+thisslot.UserData = onesingletone(thisslot.UserData, 0, prof0, amp0,  phase0, freq0);
+thisslot.UserData = onesingletone(thisslot.UserData, 1, prof1, amp1,  phase1, freq1);
+thisslot.UserData = flexupdateboth(thisslot.UserData);
+
+newstack(hObject, eventdata, handles);
+handles.lastprofc0.Enable = 'on';
+handles.nextprofc0.Enable = 'on';
+handles.lastprofc1.Enable = 'on';
+handles.nextprofc1.Enable = 'on';
+
+function sendramps0_Callback(hObject, eventdata, handles)
+[prof0, prof0handle] = getprof0(hObject, eventdata, handles);
 [slot, thisslot] = getslot(hObject, eventdata, handles);
-if strcmp(class(t{slot+1}), 'tcpip')
-    if strcmp(t{slot+1}.status, 'open')
-%         disp(['Slot ', num2str(slot), ' is already open'])
-        set(thisslot, 'ForegroundColor', [0,.8,0]);
-        set(handles.connectbutton, 'BackgroundColor', [.94,.94,.94]);
-        return
-    else
-        set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
+
+ch0 = handles.sweepholder.UserData{slot+1,1}.Data;
+ch0lines = size(ch0,1);
+
+% quick parse: all same type of sweep? 
+numfreq=0;numphase=0;numamp=0;mix=0;first=0;startfreq=0;
+for row = 1:1:ch0lines
+%         ch0{row,2}
+    if strcmpi(ch0{row,1}, 'ramp')
+        if strcmpi(ch0{row,2}, 'freq')
+            if ~logical(first); first='freq';startfreq=ch0{row,3}; end
+            numfreq = numfreq +1;
+        elseif strcmpi(ch0{row,2}, 'phase')
+            if ~logical(first); first='phase';end
+            numphase = numphase +1;
+        elseif strcmpi(ch0{row,2}, 'amp')
+            if ~logical(first); first='amp';end
+            numamp = numamp +1;        
+        end
     end
-else
-    set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
 end
-function slot1_Callback(hObject, eventdata, handles)
-t = get(handles.conn, 'UserData');
-slotupdate(hObject, eventdata, handles)
-[slot, thisslot] = getslot(hObject, eventdata, handles);
-if strcmp(class(t{slot+1}), 'tcpip')
-    if strcmp(t{slot+1}.status, 'open')
-%         disp(['Slot ', num2str(slot), ' is already open'])
-        set(thisslot, 'ForegroundColor', [0,.8,0]);
-        set(handles.connectbutton, 'BackgroundColor', [.94,.94,.94]);
-        return
-    else
-        set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
-    end
+if numfreq && ~numphase && ~ numamp
+%     disp('freq only');
+    handles.cfr2DRGdestc0.Value = 1;
+    handles.cfr2b19c0.Value = 1;
+    setcfrc0_Callback(hObject, eventdata, handles)
+elseif ~numfreq && numphase && ~numamp
+%     disp('phase only');
+    handles.cfr2DRGdestc0.Value = 2;
+    handles.cfr2b19c0.Value = 1;
+    setcfrc0_Callback(hObject, eventdata, handles)
+elseif ~numfreq && ~numphase && numamp
+%     disp('amp only');
+    handles.cfr2DRGdestc0.Value = 3;
+    handles.cfr2b19c0.Value = 1;
+    setcfrc0_Callback(hObject, eventdata, handles)
 else
-    set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
-end
-function slot2_Callback(hObject, eventdata, handles)
-t = get(handles.conn, 'UserData');
-slotupdate(hObject, eventdata, handles)
-[slot, thisslot] = getslot(hObject, eventdata, handles);
-if strcmp(class(t{slot+1}), 'tcpip')
-    if strcmp(t{slot+1}.status, 'open')
-%         disp(['Slot ', num2str(slot), ' is already open'])
-        set(thisslot, 'ForegroundColor', [0,.8,0]);
-        set(handles.connectbutton, 'BackgroundColor', [.94,.94,.94]);
-        return
-    else
-        set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
+%     disp('mix');
+    mix = 1;
+    if strcmpi(first, 'freq')
+        handles.cfr2DRGdestc0.Value = 1;
+    elseif strcmpi(first, 'phase')
+        handles.cfr2DRGdestc0.Value = 2;
+    elseif strcmpi(first, 'amp')
+        handles.cfr2DRGdestc0.Value = 3;
     end
-else
-    set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
-end
-function slot3_Callback(hObject, eventdata, handles)
-t = get(handles.conn, 'UserData');
-slotupdate(hObject, eventdata, handles)
-[slot, thisslot] = getslot(hObject, eventdata, handles);
-if strcmp(class(t{slot+1}), 'tcpip')
-    if strcmp(t{slot+1}.status, 'open')
-%         disp(['Slot ', num2str(slot), ' is already open'])
-        set(thisslot, 'ForegroundColor', [0,.8,0]);
-        set(handles.connectbutton, 'BackgroundColor', [.94,.94,.94]);
-        return
-    else
-        set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
-    end
-else
-    set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
-end
-function slot4_Callback(hObject, eventdata, handles)
-t = get(handles.conn, 'UserData');
-slotupdate(hObject, eventdata, handles)
-[slot, thisslot] = getslot(hObject, eventdata, handles);
-if strcmp(class(t{slot+1}), 'tcpip')
-    if strcmp(t{slot+1}.status, 'open')
-%         disp(['Slot ', num2str(slot), ' is already open'])
-        set(thisslot, 'ForegroundColor', [0,.8,0]);
-        set(handles.connectbutton, 'BackgroundColor', [.94,.94,.94]);
-        return
-    else
-        set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
-    end
-else
-    set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
-end
-function slot5_Callback(hObject, eventdata, handles)
-t = get(handles.conn, 'UserData');
-slotupdate(hObject, eventdata, handles)
-[slot, thisslot] = getslot(hObject, eventdata, handles);
-if strcmp(class(t{slot+1}), 'tcpip')
-    if strcmp(t{slot+1}.status, 'open')
-%         disp(['Slot ', num2str(slot), ' is already open'])
-        set(thisslot, 'ForegroundColor', [0,.8,0]);
-        set(handles.connectbutton, 'BackgroundColor', [.94,.94,.94]);
-        return
-    else
-        set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
-    end
-else
-    set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
+    handles.cfr2b19c0.Value = 1;
+    setcfrc0_Callback(hObject, eventdata, handles)
 end
 
-function slotupdate(hObject, eventdata, handles)
-update_FPA_values(hObject, eventdata, handles)
-update_CFR_values(hObject, eventdata, handles)
-copyfromboxc0_Callback(hObject, eventdata, handles)
-copyfromboxc1_Callback(hObject, eventdata, handles)
+for row = 1:1:ch0lines
+    if strcmpi(ch0{row,1}, 'lock')
+        handles.cfr1b11c0.Value = 1;handles.cfr1b11c1.Value = 1;
+        [CFR1c0, CFR2c0] = generate_CFR_c0(hObject, eventdata, handles);
+        [CFR1c1, CFR2c1] = generate_CFR_c1(hObject, eventdata, handles);
+        thisslot.UserData = setCFRreg(thisslot.UserData,0,1,CFR1c0);
+        thisslot.UserData = setCFRreg(thisslot.UserData,0,2,CFR2c0);
+        thisslot.UserData = setCFRreg(thisslot.UserData,1,1,CFR1c1);
+        thisslot.UserData = setCFRreg(thisslot.UserData,1,2,CFR2c1);
+        thisslot.UserData = flexupdateboth(thisslot.UserData);
+        handles.cfr1b11c0.Value = 0;handles.cfr1b11c1.Value = 0;
+        [CFR1c0, CFR2c0] = generate_CFR_c0(hObject, eventdata, handles);
+        [CFR1c1, CFR2c1] = generate_CFR_c1(hObject, eventdata, handles);
+        thisslot.UserData = setCFRreg(thisslot.UserData,0,1,CFR1c0);
+        thisslot.UserData = setCFRreg(thisslot.UserData,0,2,CFR2c0);
+        thisslot.UserData = setCFRreg(thisslot.UserData,1,1,CFR1c1);
+        thisslot.UserData = setCFRreg(thisslot.UserData,1,2,CFR2c1);
+        if strcmpi(ch0{row,2}, 'rackA')
+            thisslot.UserData = waitforRackA(thisslot.UserData, 0);
+            thisslot.UserData = flexupdateone(thisslot.UserData, 0);
+        elseif strcmpi(ch0{row,2}, 'rackB')
+            thisslot.UserData = waitforRackB(thisslot.UserData, 0);
+            thisslot.UserData = flexupdateone(thisslot.UserData, 0);
+        elseif strcmpi(ch0{row,2}, 'slotA')
+            thisslot.UserData = waitSlotTrig(thisslot.UserData, 0, 1,1);
+            thisslot.UserData = flexupdateone(thisslot.UserData, 0);
+        elseif strcmpi(ch0{row,2}, 'slotB')
+            thisslot.UserData = waitSlotTrig(thisslot.UserData, 0, 2,1);
+            thisslot.UserData = flexupdateone(thisslot.UserData, 0);
+        elseif strcmpi(ch0{row,2}, 'slotC')
+            thisslot.UserData = waitSlotTrig(thisslot.UserData, 0, 3,1);
+            thisslot.UserData = flexupdateone(thisslot.UserData, 0);
+        else
+            handles.errep.String = ['problem in row ', num2str(row), ' column 2'];
+            return
+        end
+        thisslot.UserData = flexupdateboth(thisslot.UserData);
+    elseif strcmpi(ch0{row,1}, 'wait')
+        if strcmpi(ch0{row,2}, 'rackA')
+            thisslot.UserData = waitforRackA(thisslot.UserData, 0);
+            thisslot.UserData = flexupdateone(thisslot.UserData, 0);
+        elseif strcmpi(ch0{row,2}, 'rackB')
+            thisslot.UserData = waitforRackB(thisslot.UserData, 0);
+            thisslot.UserData = flexupdateone(thisslot.UserData, 0);
+        elseif strcmpi(ch0{row,2}, 'slotA')
+            thisslot.UserData = waitSlotTrig(thisslot.UserData, 0, 1,1);
+            thisslot.UserData = flexupdateone(thisslot.UserData, 0);
+        elseif strcmpi(ch0{row,2}, 'slotB')
+            thisslot.UserData = waitSlotTrig(thisslot.UserData, 0, 2,1);
+            thisslot.UserData = flexupdateone(thisslot.UserData, 0);
+        elseif strcmpi(ch0{row,2}, 'slotC')
+            thisslot.UserData = waitSlotTrig(thisslot.UserData, 0, 3,1);
+            thisslot.UserData = flexupdateone(thisslot.UserData, 0);
+        elseif strcmpi(ch0{row,2}, 'timeus')
+            thisslot.UserData = waitus(thisslot.UserData, 0, str2double(ch0{row,5}) );
+            thisslot.UserData = flexupdateone(thisslot.UserData, 0);
+        elseif strcmpi(ch0{row,2}, 'timens')
+            thisslot.UserData = waitns(thisslot.UserData, 0, str2double(ch0{row,5}) );
+            thisslot.UserData = flexupdateone(thisslot.UserData, 0);
+        else
+            handles.errep.String = ['problem in row ', num2str(row), ' column 2'];
+            return
+        end
+    elseif strcmpi(ch0{row,1}, 'ramp')
+        if strcmpi(ch0{row,2}, 'freq')
+            [thisslot.UserData, freqstep, timestep, timediff] = ...
+                rampfreqtime(thisslot.UserData,     0,  ...
+                (str2double(ch0{row,3}) + str2double(handles.offset.String) )*freqmult(handles) ,...
+                (str2double(ch0{row,4}) + str2double(handles.offset.String) )*freqmult(handles),...
+                str2double(ch0{row,5}) * timemult(handles) );
+            if str2double(ch0{row,3}) > str2double(ch0{row,4})  % high to low
+                thisslot.UserData = rampup(  thisslot.UserData,0 );
+            else 
+                thisslot.UserData = rampdown(thisslot.UserData,0 );
+            end
+            thisslot.UserData = flexupdateone(thisslot.UserData,0);
+            ch0{row,6} = num2str(freqstep);
+            ch0{row,7} = num2str(timestep);
+            ch0{row,8} = num2str(timediff);
+            handles.sweepholder.UserData{slot+1,1}.Data = ch0;
+        elseif strcmpi(ch0{row,2}, 'phase')
+            
+        elseif strcmpi(ch0{row,2}, 'amp')
+            
+        else
+            handles.errep.String = ['problem in row ', num2str(row), ' column 2'];
+            return
+        end
+            
+    else
+        disp(['problem in row ', num2str(row), ' column 1'])
+        return
+    end
+end
+
+newstack(hObject, eventdata, handles);
 
 function freq0_Callback(hObject, eventdata, handles)
 [slot, thisslot] = getslot(hObject, eventdata, handles);
@@ -503,15 +474,21 @@ handles.freqtext.String = ['Frequency (',newunit,')'];
 tablenames = handles.swtabs0c0.ColumnName;
 tablenames{3} = ['Start (',newunit,'/°)'];
 tablenames{4} = ['Fin (',newunit,'/°)'];
-handles.swtabs0c0.ColumnName = tablenames;
+
+for slot = 1:1:6
+handles.sweepholder.UserData{slot,1}.ColumnName = tablenames;
+handles.sweepholder.UserData{slot,2}.ColumnName = tablenames;
+end
 function unittime_Callback(hObject, eventdata, handles)
 unitname = {'sec'; 'ms'; 'us'; 'ns' };
 newunit = unitname{handles.unittime.Value};
 tablenames = handles.swtabs0c0.ColumnName;
 tablenames{5} = ['Time (',newunit,')'];
-tablenames{9} = ['TimeDiff (',newunit,')'];
-handles.swtabs0c0.ColumnName = tablenames;
-
+tablenames{8} = ['tDiff (',newunit,')'];
+for slot = 1:1:6
+handles.sweepholder.UserData{slot,1}.ColumnName = tablenames;
+handles.sweepholder.UserData{slot,2}.ColumnName = tablenames;
+end
 function outmult = freqmult(handles)
 power = 10^(3*(handles.unitfreq.Value-1));
 multiplier = str2double(handles.multiplier.String);
@@ -879,6 +856,109 @@ switch prof1
         handles.stp7c1.Enable = 'on';        
 end
 
+function slot0_Callback(hObject, eventdata, handles)
+t = get(handles.conn, 'UserData');
+slotupdate(hObject, eventdata, handles)
+[slot, thisslot] = getslot(hObject, eventdata, handles);
+if strcmp(class(t{slot+1}), 'tcpip')
+    if strcmp(t{slot+1}.status, 'open')
+%         disp(['Slot ', num2str(slot), ' is already open'])
+        set(thisslot, 'ForegroundColor', [0,.8,0]);
+        set(handles.connectbutton, 'BackgroundColor', [.94,.94,.94]);
+        return
+    else
+        set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
+    end
+else
+    set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
+end
+function slot1_Callback(hObject, eventdata, handles)
+t = get(handles.conn, 'UserData');
+slotupdate(hObject, eventdata, handles)
+[slot, thisslot] = getslot(hObject, eventdata, handles);
+if strcmp(class(t{slot+1}), 'tcpip')
+    if strcmp(t{slot+1}.status, 'open')
+%         disp(['Slot ', num2str(slot), ' is already open'])
+        set(thisslot, 'ForegroundColor', [0,.8,0]);
+        set(handles.connectbutton, 'BackgroundColor', [.94,.94,.94]);
+        return
+    else
+        set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
+    end
+else
+    set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
+end
+function slot2_Callback(hObject, eventdata, handles)
+t = get(handles.conn, 'UserData');
+slotupdate(hObject, eventdata, handles)
+[slot, thisslot] = getslot(hObject, eventdata, handles);
+if strcmp(class(t{slot+1}), 'tcpip')
+    if strcmp(t{slot+1}.status, 'open')
+%         disp(['Slot ', num2str(slot), ' is already open'])
+        set(thisslot, 'ForegroundColor', [0,.8,0]);
+        set(handles.connectbutton, 'BackgroundColor', [.94,.94,.94]);
+        return
+    else
+        set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
+    end
+else
+    set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
+end
+function slot3_Callback(hObject, eventdata, handles)
+t = get(handles.conn, 'UserData');
+slotupdate(hObject, eventdata, handles)
+[slot, thisslot] = getslot(hObject, eventdata, handles);
+if strcmp(class(t{slot+1}), 'tcpip')
+    if strcmp(t{slot+1}.status, 'open')
+%         disp(['Slot ', num2str(slot), ' is already open'])
+        set(thisslot, 'ForegroundColor', [0,.8,0]);
+        set(handles.connectbutton, 'BackgroundColor', [.94,.94,.94]);
+        return
+    else
+        set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
+    end
+else
+    set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
+end
+function slot4_Callback(hObject, eventdata, handles)
+t = get(handles.conn, 'UserData');
+slotupdate(hObject, eventdata, handles)
+[slot, thisslot] = getslot(hObject, eventdata, handles);
+if strcmp(class(t{slot+1}), 'tcpip')
+    if strcmp(t{slot+1}.status, 'open')
+%         disp(['Slot ', num2str(slot), ' is already open'])
+        set(thisslot, 'ForegroundColor', [0,.8,0]);
+        set(handles.connectbutton, 'BackgroundColor', [.94,.94,.94]);
+        return
+    else
+        set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
+    end
+else
+    set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
+end
+function slot5_Callback(hObject, eventdata, handles)
+t = get(handles.conn, 'UserData');
+slotupdate(hObject, eventdata, handles)
+[slot, thisslot] = getslot(hObject, eventdata, handles);
+if strcmp(class(t{slot+1}), 'tcpip')
+    if strcmp(t{slot+1}.status, 'open')
+%         disp(['Slot ', num2str(slot), ' is already open'])
+        set(thisslot, 'ForegroundColor', [0,.8,0]);
+        set(handles.connectbutton, 'BackgroundColor', [.94,.94,.94]);
+        return
+    else
+        set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
+    end
+else
+    set(handles.connectbutton, 'BackgroundColor', [1,0,0]);
+end
+
+function slotupdate(hObject, eventdata, handles)
+update_FPA_values(hObject, eventdata, handles)
+update_CFR_values(hObject, eventdata, handles)
+copyfromboxc0_Callback(hObject, eventdata, handles)
+copyfromboxc1_Callback(hObject, eventdata, handles)
+
 function savevalues_Callback(hObject, eventdata, handles)
 %save the wokrspace for loading later
 assignin('base','FreqChan0',handles.freq0.UserData);
@@ -942,10 +1022,11 @@ thisslot.UserData = setCFRreg(thisslot.UserData,0,2,CFR2c0);
 thisslot.UserData = setCFRreg(thisslot.UserData,1,1,CFR1c1);
 thisslot.UserData = setCFRreg(thisslot.UserData,1,2,CFR2c1);
 
-thisslot.UserData = waitForEvent(thisslot.UserData,2,2);
+% Gotta figure this out %
+% thisslot.UserData = waitForEvent(thisslot.UserData,2,2);
 % thisslot.UserData = waitns(thisslot.UserData,0,24);
 % thisslot.UserData = waitns(thisslot.UserData,1,500);
-% thisslot.UserData = waitforRackA(thisslot.UserData,2);
+thisslot.UserData = waitforRackA(thisslot.UserData,2);
 
 thisslot.UserData = flexupdateboth(thisslot.UserData);
 newstack(hObject, eventdata, handles);
@@ -979,7 +1060,6 @@ function setboth0_Callback(hObject, eventdata, handles)
 setboth(hObject, eventdata, handles)
 function setboth1_Callback(hObject, eventdata, handles)
 setboth(hObject, eventdata, handles)
-
 function setboth(hObject, eventdata, handles)
 [CFR1c0, CFR2c0] = generate_CFR_c0(hObject, eventdata, handles);
 [CFR1c1, CFR2c1] = generate_CFR_c1(hObject, eventdata, handles);
@@ -1037,9 +1117,8 @@ handles.CFR2c0.UserData  =  data2c0;
 
 thisslot.UserData = setCFRreg(thisslot.UserData,0,1,CFR1c0);
 thisslot.UserData = setCFRreg(thisslot.UserData,0,2,CFR2c0);
-thisslot.UserData = flexupdateboth(thisslot.UserData);
+thisslot.UserData = flexupdateone(thisslot.UserData,0);
 newstack(hObject, eventdata, handles);
-
 function setcfrc1_Callback(hObject, eventdata, handles)
 [CFR1c1, CFR2c1] = generate_CFR_c1(hObject, eventdata, handles);
 handles.CFR1c1.String = CFR1c1;
@@ -1057,7 +1136,7 @@ handles.CFR2c1.UserData  =  data2c1;
 
 thisslot.UserData = setCFRreg(thisslot.UserData,1,1,CFR1c1);
 thisslot.UserData = setCFRreg(thisslot.UserData,1,2,CFR2c1);
-thisslot.UserData = flexupdateboth(thisslot.UserData);
+thisslot.UserData = flexupdateone(thisslot.UserData,1);
 newstack(hObject, eventdata, handles);
 
 function openCFRpanel_Callback(hObject, eventdata, handles)
@@ -1628,8 +1707,6 @@ for r = 1:1:numrows
 end
 handles.copydest.String = rowlist;
 
-function sendramps_Callback(hObject, eventdata, handles)
-
 function swtabs0c0_CellEditCallback(hObject, eventdata, handles)
 rownum_Callback(hObject, eventdata, handles);
 
@@ -1649,6 +1726,115 @@ else
     handles.edittable.String = 'Edit Tables';
 end
 
+
+function [slot, thisslot] = getslot(~, ~, handles)
+    if get(handles.slot0, 'Value')
+        slot=0;
+        thisslot = handles.slot0;
+    elseif(get(handles.slot1, 'Value'))
+        slot=1;
+        thisslot = handles.slot1;
+    elseif(get(handles.slot2, 'Value'))
+        slot=2;
+        thisslot = handles.slot2;
+    elseif(get(handles.slot3, 'Value'))
+        slot=3;
+        thisslot = handles.slot3;
+    elseif(get(handles.slot4, 'Value'))
+        slot=4;
+        thisslot = handles.slot4;
+    elseif(get(handles.slot5, 'Value'))
+        slot=5;
+        thisslot = handles.slot5;
+    else
+        return
+    end
+function [prof, thisprof] = getprof0(~, ~, handles)
+    if get(handles.stp0c0, 'Value')
+        prof=0;
+        thisprof = handles.stp0c0;
+    elseif(get(handles.stp1c0, 'Value'))
+        prof=1;
+        thisprof = handles.stp1c0;
+    elseif(get(handles.stp2c0, 'Value'))
+        prof=2;
+        thisprof = handles.stp2c0;
+    elseif(get(handles.stp3c0, 'Value'))
+        prof=3;
+        thisprof = handles.stp3c0;
+    elseif(get(handles.stp4c0, 'Value'))
+        prof=4;
+        thisprof = handles.stp4c0;
+    elseif(get(handles.stp5c0, 'Value'))
+        prof=5;
+        thisprof = handles.stp5c0;
+    elseif(get(handles.stp6c0, 'Value'))
+        prof=6;
+        thisprof = handles.stp6c0;
+    elseif(get(handles.stp7c0, 'Value'))
+        prof=7;
+        thisprof = handles.stp7c0;
+    else
+        return
+    end
+function [prof, thisprof] = getprof1(~, ~, handles)
+    if get(handles.stp0c1, 'Value')
+        prof=0;
+        thisprof = handles.stp0c1;
+    elseif(get(handles.stp1c1, 'Value'))
+        prof=1;
+        thisprof = handles.stp1c1;
+    elseif(get(handles.stp2c1, 'Value'))
+        prof=2;
+        thisprof = handles.stp2c1;
+    elseif(get(handles.stp3c1, 'Value'))
+        prof=3;
+        thisprof = handles.stp3c1;
+    elseif(get(handles.stp4c1, 'Value'))
+        prof=4;
+        thisprof = handles.stp4c1;
+    elseif(get(handles.stp5c1, 'Value'))
+        prof=5;
+        thisprof = handles.stp5c1;
+    elseif(get(handles.stp6c1, 'Value'))
+        prof=6;
+        thisprof = handles.stp6c1;
+    elseif(get(handles.stp7c1, 'Value'))
+        prof=7;
+        thisprof = handles.stp7c1;
+    else
+        return
+    end
+function [profc0, profc1] = getprofhfromnum(num, handles)
+    switch num
+        case 0
+            profc0 = handles.stp0c0;
+            profc1 = handles.stp0c1;
+        case 1
+            profc0 = handles.stp1c0;
+            profc1 = handles.stp1c1;
+        case 2
+            profc0 = handles.stp2c0;
+            profc1 = handles.stp3c1;
+        case 3
+            profc0 = handles.stp3c0;
+            profc1 = handles.stp3c1;
+        case 4
+            profc0 = handles.stp4c0;
+            profc1 = handles.stp4c1;
+        case 5
+            profc0 = handles.stp5c0;
+            profc1 = handles.stp5c1;
+        case 6
+            profc0 = handles.stp6c0;
+            profc1 = handles.stp6c1;
+        case 7
+            profc0 = handles.stp7c0;
+            profc1 = handles.stp7c1;
+        case 8
+            profc0 = handles.stp8c0;
+            profc1 = handles.stp8c1;
+    end
 function slotnum_Callback(hObject, eventdata, handles)
 rownum_Callback(hObject, eventdata, handles)
 function channum_Callback(hObject, eventdata, handles)
@@ -1711,4 +1897,4 @@ function newstack(hObject, eventdata, handles)
     handles.flush.BackgroundColor    = [1 1 0];
     handles.flushall.BackgroundColor = [1 1 0];
 
-
+function help_Callback(hObject, eventdata, handles)

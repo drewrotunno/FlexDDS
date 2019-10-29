@@ -3,7 +3,7 @@ function stack = pulseB(stack, time)
 
 stack = setSlotBNCBhigh(stack);
 stack = waitns(stack,0,time);
-stack = setSlotBNCBlow(stack)
+stack = setSlotBNCBlow(stack);
 
 end
 
