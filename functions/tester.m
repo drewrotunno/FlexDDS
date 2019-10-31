@@ -1,4 +1,5 @@
 
+%% I believe this command style is depreciated, and exists as a Release before the stack/flush switchover
 %   [a,b,c]=onerampphase(t,0, 0,360-.001, 4, .5)
 
 %   start 0 phase
