@@ -43,12 +43,12 @@ diffq = abs( (slope - round(slope)) / slope) ;
 
 while diffq > error
     diff = abs(slope-round(slope));
-    q = round(1/diff);
-    slope = slope*q;
-    if(other*q > maxword)
+    m = round(1/diff);
+    slope = slope*m;
+    if(other*m > maxword)
         break
     else
-        other = other*q;
+        other = other*m;
     end
     diffq = abs( (slope - round(slope)) / slope) ;
 end
