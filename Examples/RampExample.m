@@ -1,5 +1,7 @@
 % Make a Ramp using the End points and Total time of ramp
-
+% Phases will not remain be continuous 
+%   if you trigger during the sweep
+% Set initial phase as STP profiles if desired. 
 % Establish a connection to the FlexDDS via IP + slot#
 [t, stack] =openconn('192.168.0.45', 0);
 % t is the TCPIP element. 
@@ -28,21 +30,22 @@ time        =   3  ;        % in seconds
 
 stack = flexupdateboth(stack);
 
-% Are you guys silly? I'm still gonna send it 
-% https://www.youtube.com/watch?v=WIrWyr3HgXI
-stack = flexflush(t, stack);
-
-% careful with this, Everything will hang on a wait
 repeat_up_down = 3;
 
 for num = 1:1:repeat_up_down
     % now on triggers, change ramp direction
     stack = waitforRackA(stack, 2);
+%     stack = waitForEvent(stack,2,35);     % wait for ramp over 
     stack = rampup(stack, 2);
     
     stack = waitforRackA(stack, 2);
+%     stack = waitForEvent(stack,2,35);     % wait for ramp over 
     stack = rampdown(stack, 2);
 end
+% stack'
 
+% Are you guys silly? I'm still gonna send it 
+% https://www.youtube.com/watch?v=WIrWyr3HgXI
 stack = flexflush(t, stack);
+
 
