@@ -1846,7 +1846,6 @@ copydest_Callback(hObject, eventdata, handles)
 
 function tableeditpanel_CreateFcn(hObject, eventdata, handles)
 
-
 function thetable = gettable(hObject, eventdata, handles, slot, chan)
 switch slot
     case 0 
