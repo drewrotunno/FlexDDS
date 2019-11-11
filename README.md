@@ -3,7 +3,7 @@
  
 * In the MATLAB directory, right-click the top folder FlexDDS, Add to Path >> Selected Folders and Subfolders to access all functions. Or,  permanently with  Home >> Set Path >> Add with Subfolders ...
 * This depends on the tcpip() function in the Instrument Control Toolbox add-on for MATLAB.
-* If anyone can make this into a small executable without all of MATLAB on it's back I'll send you a gift basket
+* If anyone can make this into a small executable without all of MATLAB on its back I'll send you a gift basket
 
 [Live Working Sessions](https://github.com/drewrotunno/FlexDDS/releases)  can be initiated using the 0.1 Release. It is incompatable with the master version.
 
