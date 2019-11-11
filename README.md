@@ -9,7 +9,7 @@
 
 Connection relies on a static local IP set on the Flex's SD card config. Default is DHCP, or 192.168.11.99
 
-This version hopefully covers everything but RAM, i.e. Full STP profile control, DRG Frequency ramps, accessible CFR Registers, Triggers and output pulses from FlexDDS-NG's DCP, per slot and on the rack. This is a lot of 3-letter acronyms. 
+This version hopefully covers everything but RAM, i.e. Full STP profile control, DRG Frequency ramps, accessible CFR Registers, TTL triggers and output pulses from FlexDDS-NG's DCP, per slot and on the rack. This is a lot of 3-letter acronyms. 
 
 Careful applications of the commands is advised. Generally, functions are added to a 'stack', and then flushed all at once to the Flex's DCP. See the Examples for my best practices. 
 
