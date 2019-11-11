@@ -7,7 +7,7 @@
 
 [Live Working Sessions](https://github.com/drewrotunno/FlexDDS/releases)  can be initiated using the 0.1 Release. It is incompatable with the master version.
 
-Connection relies on a static local IP set on the Flew's SD card config. Default is DHCP, or 192.168.11.99
+Connection relies on a static local IP set on the Flex's SD card config. Default is DHCP, or 192.168.11.99
 
 A this version hopefully covers everything but RAM, i.e. Full STP profile control, DRG Frequency ramps, accessible CFR Registers, Triggers and output pulses from FlexDDS-NG's DCP, per slot and on the rack. This is a lot of 3-letter acronyms. 
 
