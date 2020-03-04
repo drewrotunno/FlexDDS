@@ -4,10 +4,10 @@
 %%% All CFR settings and STP profile stuff works fine on 6 slots afaik.
 %%%
 
-% TO USE:
 % [ ? ] button on top left might help.
 % Units and offsets can be set in the top left corner. 
 % starting values can be edited in the .fig with MATLAB's guide
+% type 'guide' in the command line, and open the .fig to edit
 
 % Enter Flex's IP Address in the top left corner
 % Select desired Slot to connect to (slot0 default)
@@ -16,8 +16,10 @@
 % All commands (CFR, Profile changes, STP Freq/phase/amps) are only stored 
 % locally until a [ Flush ] button is pressed. 
 
+% TO USE:
+% Connect to any slot, selected at the top middle. 
 % Select profiles to write data to in the top right. (0 default)
-% Set with button, individually or both
+% Change current profile with buttons, individually or both
 
 % Enter desired frequency, phase, and amplitude in the central boxes
 % Set with button, individually or both.  
@@ -37,4 +39,3 @@
 % (same freq, different phase) , pressing [Re-Lock Phase],
 % then [Flush One Slot]. On Trigger Rack A , the two channels 
 % should give the desired phase relationship
-
