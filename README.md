@@ -17,6 +17,8 @@ Bounty out on fixing the down-then-down ramping issue. See /ramp/multifreqtime.m
 
 A GUI That controls STP's and CFR's is available. Generally each profile and Slot keeps a record of its current state. These values can be saved, edited and loaded from the MATLAB workspace. 
 
+Feel free to ask any questions! I can be reached for the rest of 2020 at
+aprotunno [at] email.wm.edu
 
 ### Useful links
 ---
