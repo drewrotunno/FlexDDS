@@ -30,18 +30,18 @@ switch chan
     case 0
         binCFR{1} = hex2bin(lastCFR{1}(cfrnum,:));
         binCFR{1}(32-bitnum) = bitset;
-        newhexCFR{chan+1} = binaryVectorToHex(binCFR{1});
+        newhexCFR{chan+1} = binVec2Hex(binCFR{1});
     case 1
         binCFR{2} = hex2bin(lastCFR{2}(cfrnum,:));
         binCFR{2}(32-bitnum) = bitset;
-        newhexCFR{2} = binaryVectorToHex(binCFR{2});
+        newhexCFR{2} = binVec2Hex(binCFR{2});
     case 2
         binCFR{1} = hex2bin(lastCFR{1}(cfrnum,:));
         binCFR{1}(32-bitnum) = bitset;
-        newhexCFR{1} = binaryVectorToHex(binCFR{1});
+        newhexCFR{1} = binVec2Hex(binCFR{1});
         binCFR{2} = hex2bin(lastCFR{2}(cfrnum,:));
         binCFR{2}(32-bitnum) = bitset;
-        newhexCFR{2} = binaryVectorToHex(binCFR{2});
+        newhexCFR{2} = binVec2Hex(binCFR{2});
 end
 
 switch cfrnum
