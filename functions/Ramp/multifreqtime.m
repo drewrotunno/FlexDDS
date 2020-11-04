@@ -29,6 +29,13 @@ for r = 1:1:numramps
             lowftw  = freq2ftw(freqstart); highftw = freq2ftw(freqend);
         end
         isup(r) = 1;
+    elseif freqstart == freqend  
+        if mirror
+            lowftw  = freq2ftwM(freqend); highftw = freq2ftwM(freqstart);
+        else
+            lowftw  = freq2ftw(freqstart); highftw = freq2ftw(freqend);
+        end
+        isup(r) = 2;
     end
     fsteptot = hex2uint32(highftw)-hex2uint32(lowftw);
     % make num the larger value, proper fraction: num/den
