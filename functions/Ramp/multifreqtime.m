@@ -1,4 +1,4 @@
-function stack = multifreqtime(stack, chan, freqlist, timelist, knownCFR)
+function stack = multifreqtime(stack, chan, freqlist, timelist)
 
 numramps = numel(timelist);
 
@@ -63,7 +63,7 @@ for r = 1:1:numramps
 end
 % can print these to debug
 % isup'
-DRL'
+% DRL'
 % DRSS'
 % DRR'
 
@@ -81,7 +81,9 @@ switch chan
 %             stack = pulseB(stack,150);  %intended for debug 
             old = r;
         else
-            if isup(r-1) && isup(r)         %up then up
+            if isup(r) == 2                 %repeat
+                stack = waitforRackA(stack,2); 
+            elseif isup(r-1) && isup(r)         %up then up
                 if mirror 
                     stack = flexstack(stack,['dcp spi:DRL=0x',DRL{old}(1:8), DRL{r}(9:16)]);
                 else
@@ -157,4 +159,183 @@ switch chan
         end
         end
 
+    case 1
+        for r=1:1:numramps 
+        if r==1
+            stack = rampdown(stack,1);    % for safety
+            stack = flexstack(stack,['dcp 1 spi:DRL=0x',DRL{r}]);
+            stack = flexstack(stack,['dcp 1 spi:DRSS=0x',DRSS{r}]);
+            stack = flexstack(stack,['dcp 1 spi:DRR=0x',DRR{r}]);
+            stack = flexupdateboth(stack);
+            stack = waitforRackA(stack,1); stack = rampup(stack,1); 
+%             stack = pulseB(stack,150);  %intended for debug 
+            old = r;
+        else
+            if isup(r) == 2                 %repeat
+                stack = waitforRackA(stack,1); 
+            elseif isup(r-1) && isup(r)         %up then up
+                if mirror 
+                    stack = flexstack(stack,['dcp 1 spi:DRL=0x',DRL{old}(1:8), DRL{r}(9:16)]);
+                else
+                    stack = flexstack(stack,['dcp 1 spi:DRL=0x',DRL{r}(1:8), DRL{old}(9:16)]);
+                end
+                stack = flexstack(stack,['dcp 1 spi:DRSS=0x',DRSS{r}]);
+                stack = flexstack(stack,['dcp 1 spi:DRR=0x',DRR{r}]);
+                stack = waitforRackA(stack,1);    stack = flexupdateboth(stack);  
+                % stack = togglerampdir(stack,1); %already same
+%                 stack = pulseB(stack,150);  %intended for debug 
+            elseif isup(r-1) && ~isup(r)     %up then down
+                old = r-1;
+                if mirror 
+                    stack = flexstack(stack,['dcp 1 spi:DRL=0x',DRL{r}(1:8), DRL{old}(9:16)]);
+                else
+                    stack = flexstack(stack,['dcp 1 spi:DRL=0x',DRL{old}(1:8), DRL{r}(9:16)]);
+                end
+                stack = flexstack(stack,['dcp 1 spi:DRSS=0x',DRSS{r}]);
+                stack = flexstack(stack,['dcp 1 spi:DRR=0x',DRR{r}]);
+                stack = waitforRackA(stack,1);    
+                stack = flexupdateboth(stack);
+                stack = togglerampdir(stack,1); %has to change
+%                 stack = pulseB(stack,150);         %intended for debug  
+            elseif ~isup(r-1) && isup(r)     %down then up
+                old = r-1;
+                if mirror 
+                    stack = flexstack(stack,['dcp 1 spi:DRL=0x',DRL{old}(1:8), DRL{r}(9:16)]);
+                else
+                    stack = flexstack(stack,['dcp 1 spi:DRL=0x',DRL{r}(1:8), DRL{old}(9:16)]);
+                end
+                stack = flexstack(stack,['dcp 1 spi:DRSS=0x',DRSS{r}]);
+                stack = flexstack(stack,['dcp 1 spi:DRR=0x',DRR{r}]);
+                stack = waitforRackA(stack,1);    stack = flexupdateboth(stack);
+                stack = togglerampdir(stack,1); %has to change
+%                 stack = pulseB(stack,150);          %intended for debug 
+            elseif ~isup(r-1) && ~isup(r)     %down then down
+% This one is special. Re-limiting will snap to the new lower limit. 
+% instead, step up one step, then down after
+              % down then up - copied
+              % limit: one step above
+%               if isup(r-2)
+%                   old = r-2;
+%               end
+                if mirror 
+                    stack = flexstack(stack,['dcp 1 spi:DRL=0x',DRL{old}(1:8),uint2hex(hex2uint32(DRL{r}(9:16)) + 1)]);
+                else
+                    stack = flexstack(stack,['dcp 1 spi:DRL=0x',uint2hex(hex2uint32(DRL{r}(1:8)) + 1), DRL{old}(9:16)]);
+                end
+                    % one tiny step up: rate 1, step 1
+                stack = flexstack(stack,'dcp 1 spi:DRSS=0x0000000100000001');
+                stack = flexstack(stack,'dcp 1 spi:DRR=0x00010001');
+%                 stack = waitforRackA(stack,1);
+                stack = waitForEvent(stack,1,35);
+                stack = flexupdateboth(stack);
+                stack = togglerampdir(stack,1); %has to change
+%                 stack = pulseB(stack,150);            %intended for debug 
+                % end down then up
+
+                %up then down
+                old = r-1;
+                if mirror 
+                    stack = flexstack(stack,['dcp 1 spi:DRL=0x',DRL{r}(1:8), uint2hex(hex2uint32(DRL{r}(9:16)) + 1)]);
+                else
+                    stack = flexstack(stack,['dcp 1 spi:DRL=0x',uint2hex(hex2uint32(DRL{r}(1:8)) + 1), DRL{r}(9:16)]);
+                end
+                stack = flexstack(stack,['dcp 1 spi:DRSS=0x',DRSS{r}]);
+                stack = flexstack(stack,['dcp 1 spi:DRR=0x',DRR{r}]);
+                stack = waitforRackA(stack,1);
+                stack = flexupdateboth(stack);
+                stack = togglerampdir(stack,1); %has to change
+%                 stack = pulseB(stack,150);         %intended for debug  
+            end
+        end
+        end
+        
+    case 0
+        for r=1:1:numramps 
+        if r==1
+            stack = rampdown(stack,0);    % for safety
+            stack = flexstack(stack,['dcp 0 spi:DRL=0x',DRL{r}]);
+            stack = flexstack(stack,['dcp 0 spi:DRSS=0x',DRSS{r}]);
+            stack = flexstack(stack,['dcp 0 spi:DRR=0x',DRR{r}]);
+            stack = flexupdateboth(stack);
+            stack = waitforRackA(stack,0); stack = rampup(stack,0); 
+%             stack = pulseB(stack,150);  %intended for debug 
+            old = r;
+        else
+            if isup(r) == 2                 %repeat
+                stack = waitforRackA(stack,0); 
+            elseif isup(r-1) && isup(r)         %up then up
+                if mirror 
+                    stack = flexstack(stack,['dcp 0 spi:DRL=0x',DRL{old}(1:8), DRL{r}(9:16)]);
+                else
+                    stack = flexstack(stack,['dcp 0 spi:DRL=0x',DRL{r}(1:8), DRL{old}(9:16)]);
+                end
+                stack = flexstack(stack,['dcp 0 spi:DRSS=0x',DRSS{r}]);
+                stack = flexstack(stack,['dcp 0 spi:DRR=0x',DRR{r}]);
+                stack = waitforRackA(stack,0);    stack = flexupdateboth(stack);  
+                % stack = togglerampdir(stack,0); %already same
+%                 stack = pulseB(stack,150);  %intended for debug 
+            elseif isup(r-1) && ~isup(r)     %up then down
+                old = r-1;
+                if mirror 
+                    stack = flexstack(stack,['dcp 0 spi:DRL=0x',DRL{r}(1:8), DRL{old}(9:16)]);
+                else
+                    stack = flexstack(stack,['dcp 0 spi:DRL=0x',DRL{old}(1:8), DRL{r}(9:16)]);
+                end
+                stack = flexstack(stack,['dcp 0 spi:DRSS=0x',DRSS{r}]);
+                stack = flexstack(stack,['dcp 0 spi:DRR=0x',DRR{r}]);
+                stack = waitforRackA(stack,0);    
+                stack = flexupdateboth(stack);
+                stack = togglerampdir(stack,0); %has to change
+%                 stack = pulseB(stack,150);         %intended for debug  
+            elseif ~isup(r-1) && isup(r)     %down then up
+                old = r-1;
+                if mirror 
+                    stack = flexstack(stack,['dcp 0 spi:DRL=0x',DRL{old}(1:8), DRL{r}(9:16)]);
+                else
+                    stack = flexstack(stack,['dcp 0 spi:DRL=0x',DRL{r}(1:8), DRL{old}(9:16)]);
+                end
+                stack = flexstack(stack,['dcp 0 spi:DRSS=0x',DRSS{r}]);
+                stack = flexstack(stack,['dcp 0 spi:DRR=0x',DRR{r}]);
+                stack = waitforRackA(stack,0);    stack = flexupdateboth(stack);
+                stack = togglerampdir(stack,0); %has to change
+%                 stack = pulseB(stack,150);          %intended for debug 
+            elseif ~isup(r-1) && ~isup(r)     %down then down
+% This one is special. Re-limiting will snap to the new lower limit. 
+% instead, step up one step, then down after
+              % down then up - copied
+              % limit: one step above
+%               if isup(r-2)
+%                   old = r-2;
+%               end
+                if mirror 
+                    stack = flexstack(stack,['dcp 0 spi:DRL=0x',DRL{old}(1:8),uint2hex(hex2uint32(DRL{r}(9:16)) + 1)]);
+                else
+                    stack = flexstack(stack,['dcp 0 spi:DRL=0x',uint2hex(hex2uint32(DRL{r}(1:8)) + 1), DRL{old}(9:16)]);
+                end
+                    % one tiny step up: rate 1, step 1
+                stack = flexstack(stack,'dcp 0 spi:DRSS=0x0000000100000001');
+                stack = flexstack(stack,'dcp 0 spi:DRR=0x00010001');
+%                 stack = waitforRackA(stack,0);
+                stack = waitForEvent(stack,0,35);
+                stack = flexupdateboth(stack);
+                stack = togglerampdir(stack,0); %has to change
+%                 stack = pulseB(stack,150);            %intended for debug 
+                % end down then up
+
+                %up then down
+                old = r-1;
+                if mirror 
+                    stack = flexstack(stack,['dcp 0 spi:DRL=0x',DRL{r}(1:8), uint2hex(hex2uint32(DRL{r}(9:16)) + 1)]);
+                else
+                    stack = flexstack(stack,['dcp 0 spi:DRL=0x',uint2hex(hex2uint32(DRL{r}(1:8)) + 1), DRL{r}(9:16)]);
+                end
+                stack = flexstack(stack,['dcp 0 spi:DRSS=0x',DRSS{r}]);
+                stack = flexstack(stack,['dcp 0 spi:DRR=0x',DRR{r}]);
+                stack = waitforRackA(stack,0);
+                stack = flexupdateboth(stack);
+                stack = togglerampdir(stack,0); %has to change
+%                 stack = pulseB(stack,150);         %intended for debug  
+            end
+        end
+        end
 end
