@@ -5,7 +5,7 @@ numramps = numel(timelist);
 if ~( numel(timelist) == numel(phaselist)-1)
     disp('Wrong number of times / frequencies. Want NumFreqs = NumTimes+1'); return
 end
-if phaselist(2) > phaselist(1)
+if phaselist(2) < phaselist(1)
     disp('the first phase sweep should be up. make up a fake one if you have to. '); return
 end
 
