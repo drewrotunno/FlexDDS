@@ -64,7 +64,7 @@ else
     freqstep = other*1e9/2^32;
     timestep = round(other*num/den)*4e-9;
 end
-timediff = timestep * ( double(fsteptot) / double(freqword)) - timesec 
+timediff = timestep * ( double(fsteptot) / double(freqword)) - timesec ;
 
 
 DRL  = [highftw, lowftw];
