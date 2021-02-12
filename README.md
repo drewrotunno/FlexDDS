@@ -24,4 +24,4 @@ aprotunno [at] email.wm.edu
 ---
 [AD9910 Documentation](https://www.analog.com/media/en/technical-documentation/data-sheets/AD9910.pdf)
 
-[WieserLabs FlexDDS User Manual](https://www.wieserlabs.com/prods/radio-frequency/flexdds-ng/FlexDDS-NG_Manual.pdf)
+[WieserLabs FlexDDS User Manual](https://www.wieserlabs.com/products/radio-frequency/flexdds-ng/FlexDDS-NG_Manual.pdf)
